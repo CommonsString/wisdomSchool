@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.AbnormalInformationMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.AbnormalInformation" >
+    <id column="information_id" property="informationId" jdbcType="BIGINT" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="variant_type" property="variantType" jdbcType="CHAR" />
+    <result column="variant_date" property="variantDate" jdbcType="TIMESTAMP" />
+    <result column="school_year" property="schoolYear" jdbcType="CHAR" />
+    <result column="school_stage" property="schoolStage" jdbcType="CHAR" />
+    <result column="school_state" property="schoolState" jdbcType="CHAR" />
+    <result column="osaas_state" property="osaasState" jdbcType="CHAR" />
+    <result column="variant_reason" property="variantReason" jdbcType="VARCHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    information_id, school_id, variant_type, variant_date, school_year, school_stage, 
+    school_state, osaas_state, variant_reason, founder_id, create_time, operator_id, 
+    delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from abnormal_information
+    where information_id = #{informationId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from abnormal_information
+    where information_id = #{informationId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.AbnormalInformation" >
+    insert into abnormal_information (information_id, school_id, variant_type, 
+      variant_date, school_year, school_stage, 
+      school_state, osaas_state, variant_reason, 
+      founder_id, create_time, operator_id, 
+      delete_time, state)
+    values (#{informationId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{variantType,jdbcType=CHAR}, 
+      #{variantDate,jdbcType=TIMESTAMP}, #{schoolYear,jdbcType=CHAR}, #{schoolStage,jdbcType=CHAR}, 
+      #{schoolState,jdbcType=CHAR}, #{osaasState,jdbcType=CHAR}, #{variantReason,jdbcType=VARCHAR}, 
+      #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, 
+      #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.AbnormalInformation" >
+    insert into abnormal_information
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="informationId != null" >
+        information_id,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="variantType != null" >
+        variant_type,
+      </if>
+      <if test="variantDate != null" >
+        variant_date,
+      </if>
+      <if test="schoolYear != null" >
+        school_year,
+      </if>
+      <if test="schoolStage != null" >
+        school_stage,
+      </if>
+      <if test="schoolState != null" >
+        school_state,
+      </if>
+      <if test="osaasState != null" >
+        osaas_state,
+      </if>
+      <if test="variantReason != null" >
+        variant_reason,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="informationId != null" >
+        #{informationId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="variantType != null" >
+        #{variantType,jdbcType=CHAR},
+      </if>
+      <if test="variantDate != null" >
+        #{variantDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="schoolYear != null" >
+        #{schoolYear,jdbcType=CHAR},
+      </if>
+      <if test="schoolStage != null" >
+        #{schoolStage,jdbcType=CHAR},
+      </if>
+      <if test="schoolState != null" >
+        #{schoolState,jdbcType=CHAR},
+      </if>
+      <if test="osaasState != null" >
+        #{osaasState,jdbcType=CHAR},
+      </if>
+      <if test="variantReason != null" >
+        #{variantReason,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.AbnormalInformation" >
+    update abnormal_information
+    <set >
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="variantType != null" >
+        variant_type = #{variantType,jdbcType=CHAR},
+      </if>
+      <if test="variantDate != null" >
+        variant_date = #{variantDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="schoolYear != null" >
+        school_year = #{schoolYear,jdbcType=CHAR},
+      </if>
+      <if test="schoolStage != null" >
+        school_stage = #{schoolStage,jdbcType=CHAR},
+      </if>
+      <if test="schoolState != null" >
+        school_state = #{schoolState,jdbcType=CHAR},
+      </if>
+      <if test="osaasState != null" >
+        osaas_state = #{osaasState,jdbcType=CHAR},
+      </if>
+      <if test="variantReason != null" >
+        variant_reason = #{variantReason,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where information_id = #{informationId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.AbnormalInformation" >
+    update abnormal_information
+    set school_id = #{schoolId,jdbcType=BIGINT},
+      variant_type = #{variantType,jdbcType=CHAR},
+      variant_date = #{variantDate,jdbcType=TIMESTAMP},
+      school_year = #{schoolYear,jdbcType=CHAR},
+      school_stage = #{schoolStage,jdbcType=CHAR},
+      school_state = #{schoolState,jdbcType=CHAR},
+      osaas_state = #{osaasState,jdbcType=CHAR},
+      variant_reason = #{variantReason,jdbcType=VARCHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where information_id = #{informationId,jdbcType=BIGINT}
+  </update>
+</mapper>

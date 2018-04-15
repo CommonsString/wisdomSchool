@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witpower.mapper.AdminModularMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.AdminModular" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="page_name" property="pageName" jdbcType="VARCHAR" />
+    <result column="page_url" property="pageUrl" jdbcType="VARCHAR" />
+    <result column="page_type" property="pageType" jdbcType="CHAR" />
+    <result column="page_sort" property="pageSort" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="spare1" property="spare1" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, page_name, page_url, page_type, page_sort, parent_id, spare1, state, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin_modular
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from admin_modular
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.AdminModular" >
+    insert into admin_modular (id, page_name, page_url, 
+      page_type, page_sort, parent_id, 
+      spare1, state, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{pageName,jdbcType=VARCHAR}, #{pageUrl,jdbcType=VARCHAR}, 
+      #{pageType,jdbcType=CHAR}, #{pageSort,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
+      #{spare1,jdbcType=VARCHAR}, #{state,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.AdminModular" >
+    insert into admin_modular
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pageName != null" >
+        page_name,
+      </if>
+      <if test="pageUrl != null" >
+        page_url,
+      </if>
+      <if test="pageType != null" >
+        page_type,
+      </if>
+      <if test="pageSort != null" >
+        page_sort,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="spare1 != null" >
+        spare1,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pageName != null" >
+        #{pageName,jdbcType=VARCHAR},
+      </if>
+      <if test="pageUrl != null" >
+        #{pageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="pageType != null" >
+        #{pageType,jdbcType=CHAR},
+      </if>
+      <if test="pageSort != null" >
+        #{pageSort,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="spare1 != null" >
+        #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.AdminModular" >
+    update admin_modular
+    <set >
+      <if test="pageName != null" >
+        page_name = #{pageName,jdbcType=VARCHAR},
+      </if>
+      <if test="pageUrl != null" >
+        page_url = #{pageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="pageType != null" >
+        page_type = #{pageType,jdbcType=CHAR},
+      </if>
+      <if test="pageSort != null" >
+        page_sort = #{pageSort,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="spare1 != null" >
+        spare1 = #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.AdminModular" >
+    update admin_modular
+    set page_name = #{pageName,jdbcType=VARCHAR},
+      page_url = #{pageUrl,jdbcType=VARCHAR},
+      page_type = #{pageType,jdbcType=CHAR},
+      page_sort = #{pageSort,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      spare1 = #{spare1,jdbcType=VARCHAR},
+      state = #{state,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="BaseResultMap_AdminModulars" type="com.cj.witcommon.utils.entity.other.AdminModulars" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="page_name" property="pageName" jdbcType="VARCHAR" />
+    <result column="page_url" property="pageUrl" jdbcType="VARCHAR" />
+    <result column="page_type" property="pageType" jdbcType="CHAR" />
+    <result column="page_sort" property="pageSort" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="spare1" property="spare1" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <collection property="children" ofType="com.cj.witcommon.utils.entity.other.AdminModulars"></collection>
+  </resultMap>
+
+
+  <!--查询系统里所有目录-->
+  <select id="findAllCatalog" resultMap="BaseResultMap_AdminModulars">
+    SELECT
+    am.id,am.page_name,am.page_type,am.page_sort,am.parent_id
+    FROM
+    admin_modular am
+    --      如果是二级目录，可用内连再封装BaseResultMap
+    --     INNER JOIN admin_modular a ON am.`id` = a.`parent_id` AND am.id = 0
+    WHERE
+    am.page_type &gt; '0' AND am.state = '1'
+  </select>
+
+  <!--查询管理员所有的权限资源-->
+  <select id="findAllRoleModular" parameterType="java.util.List" resultMap="BaseResultMap">
+    SELECT
+    am.id,am.page_name,am.page_url,am.page_type,am.page_sort,am.parent_id
+    FROM admin_modular am
+    WHERE
+    am.state = '1'
+    AND
+    am.id IN
+    <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <!--查询所有的可使用的权限资源-->
+  <select id="findAllRoleModulars" resultMap="BaseResultMap">
+    SELECT
+    am.id,am.page_name,am.page_url,am.page_type,am.page_sort,am.parent_id
+    FROM admin_modular am
+    WHERE
+    am.state = '1'
+  </select>
+</mapper>

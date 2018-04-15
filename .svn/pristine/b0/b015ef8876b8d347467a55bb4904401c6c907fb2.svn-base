@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.StudentHomeMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.StudentHome" >
+    <id column="home_id" property="homeId" jdbcType="BIGINT" />
+    <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+    <result column="register_number" property="registerNumber" jdbcType="VARCHAR" />
+    <result column="parents_name" property="parentsName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="CHAR" />
+    <result column="member_relationship" property="memberRelationship" jdbcType="CHAR" />
+    <result column="id_card_no" property="idCardNo" jdbcType="VARCHAR" />
+    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="mail_box" property="mailBox" jdbcType="VARCHAR" />
+    <result column="highest_education" property="highestEducation" jdbcType="CHAR" />
+    <result column="occupation" property="occupation" jdbcType="VARCHAR" />
+    <result column="work_unit" property="workUnit" jdbcType="VARCHAR" />
+    <result column="guardian" property="guardian" jdbcType="CHAR" />
+    <result column="live_together" property="liveTogether" jdbcType="CHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    home_id, student_name, register_number, parents_name, gender, member_relationship, 
+    id_card_no, mobile_phone, mail_box, highest_education, occupation, work_unit, guardian, 
+    live_together, founder_id, create_time, operator_id, delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_home
+    where home_id = #{homeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from student_home
+    where home_id = #{homeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.StudentHome" >
+    insert into student_home (home_id, student_name, register_number, 
+      parents_name, gender, member_relationship, 
+      id_card_no, mobile_phone, mail_box, 
+      highest_education, occupation, work_unit, 
+      guardian, live_together, founder_id, 
+      create_time, operator_id, delete_time, 
+      state)
+    values (#{homeId,jdbcType=BIGINT}, #{studentName,jdbcType=VARCHAR}, #{registerNumber,jdbcType=VARCHAR}, 
+      #{parentsName,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, #{memberRelationship,jdbcType=CHAR}, 
+      #{idCardNo,jdbcType=VARCHAR}, #{mobilePhone,jdbcType=VARCHAR}, #{mailBox,jdbcType=VARCHAR}, 
+      #{highestEducation,jdbcType=CHAR}, #{occupation,jdbcType=VARCHAR}, #{workUnit,jdbcType=VARCHAR}, 
+      #{guardian,jdbcType=CHAR}, #{liveTogether,jdbcType=CHAR}, #{founderId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.StudentHome" >
+    insert into student_home
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="homeId != null" >
+        home_id,
+      </if>
+      <if test="studentName != null" >
+        student_name,
+      </if>
+      <if test="registerNumber != null" >
+        register_number,
+      </if>
+      <if test="parentsName != null" >
+        parents_name,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="memberRelationship != null" >
+        member_relationship,
+      </if>
+      <if test="idCardNo != null" >
+        id_card_no,
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone,
+      </if>
+      <if test="mailBox != null" >
+        mail_box,
+      </if>
+      <if test="highestEducation != null" >
+        highest_education,
+      </if>
+      <if test="occupation != null" >
+        occupation,
+      </if>
+      <if test="workUnit != null" >
+        work_unit,
+      </if>
+      <if test="guardian != null" >
+        guardian,
+      </if>
+      <if test="liveTogether != null" >
+        live_together,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="homeId != null" >
+        #{homeId,jdbcType=BIGINT},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerNumber != null" >
+        #{registerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="parentsName != null" >
+        #{parentsName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="memberRelationship != null" >
+        #{memberRelationship,jdbcType=CHAR},
+      </if>
+      <if test="idCardNo != null" >
+        #{idCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="mailBox != null" >
+        #{mailBox,jdbcType=VARCHAR},
+      </if>
+      <if test="highestEducation != null" >
+        #{highestEducation,jdbcType=CHAR},
+      </if>
+      <if test="occupation != null" >
+        #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="workUnit != null" >
+        #{workUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="guardian != null" >
+        #{guardian,jdbcType=CHAR},
+      </if>
+      <if test="liveTogether != null" >
+        #{liveTogether,jdbcType=CHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.StudentHome" >
+    update student_home
+    <set >
+      <if test="studentName != null" >
+        student_name = #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerNumber != null" >
+        register_number = #{registerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="parentsName != null" >
+        parents_name = #{parentsName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="memberRelationship != null" >
+        member_relationship = #{memberRelationship,jdbcType=CHAR},
+      </if>
+      <if test="idCardNo != null" >
+        id_card_no = #{idCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="mailBox != null" >
+        mail_box = #{mailBox,jdbcType=VARCHAR},
+      </if>
+      <if test="highestEducation != null" >
+        highest_education = #{highestEducation,jdbcType=CHAR},
+      </if>
+      <if test="occupation != null" >
+        occupation = #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="workUnit != null" >
+        work_unit = #{workUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="guardian != null" >
+        guardian = #{guardian,jdbcType=CHAR},
+      </if>
+      <if test="liveTogether != null" >
+        live_together = #{liveTogether,jdbcType=CHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where home_id = #{homeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.StudentHome" >
+    update student_home
+    set student_name = #{studentName,jdbcType=VARCHAR},
+      register_number = #{registerNumber,jdbcType=VARCHAR},
+      parents_name = #{parentsName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      member_relationship = #{memberRelationship,jdbcType=CHAR},
+      id_card_no = #{idCardNo,jdbcType=VARCHAR},
+      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      mail_box = #{mailBox,jdbcType=VARCHAR},
+      highest_education = #{highestEducation,jdbcType=CHAR},
+      occupation = #{occupation,jdbcType=VARCHAR},
+      work_unit = #{workUnit,jdbcType=VARCHAR},
+      guardian = #{guardian,jdbcType=CHAR},
+      live_together = #{liveTogether,jdbcType=CHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where home_id = #{homeId,jdbcType=BIGINT}
+  </update>
+</mapper>

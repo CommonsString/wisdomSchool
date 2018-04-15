@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.StudentScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.StudentScore" >
+    <id column="score_id" property="scoreId" jdbcType="BIGINT" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="exam_id" property="examId" jdbcType="BIGINT" />
+    <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+    <result column="register_number" property="registerNumber" jdbcType="VARCHAR" />
+    <result column="school_stage_id" property="schoolStageId" jdbcType="VARCHAR" />
+    <result column="school_subject_id" property="schoolSubjectId" jdbcType="BIGINT" />
+    <result column="score" property="score" jdbcType="DECIMAL" />
+    <result column="subject_total_score" property="subjectTotalScore" jdbcType="VARCHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    score_id, school_id, exam_id, student_name, register_number, school_stage_id, school_subject_id, 
+    score, subject_total_score, founder_id, create_time, operator_id, delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_score
+    where score_id = #{scoreId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from student_score
+    where score_id = #{scoreId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.StudentScore" >
+    insert into student_score (score_id, school_id, exam_id, 
+      student_name, register_number, school_stage_id, 
+      school_subject_id, score, subject_total_score, 
+      founder_id, create_time, operator_id, 
+      delete_time, state)
+    values (#{scoreId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{examId,jdbcType=BIGINT}, 
+      #{studentName,jdbcType=VARCHAR}, #{registerNumber,jdbcType=VARCHAR}, #{schoolStageId,jdbcType=VARCHAR}, 
+      #{schoolSubjectId,jdbcType=BIGINT}, #{score,jdbcType=DECIMAL}, #{subjectTotalScore,jdbcType=VARCHAR}, 
+      #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, 
+      #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.StudentScore" >
+    insert into student_score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="scoreId != null" >
+        score_id,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="examId != null" >
+        exam_id,
+      </if>
+      <if test="studentName != null" >
+        student_name,
+      </if>
+      <if test="registerNumber != null" >
+        register_number,
+      </if>
+      <if test="schoolStageId != null" >
+        school_stage_id,
+      </if>
+      <if test="schoolSubjectId != null" >
+        school_subject_id,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="subjectTotalScore != null" >
+        subject_total_score,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="scoreId != null" >
+        #{scoreId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="examId != null" >
+        #{examId,jdbcType=BIGINT},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerNumber != null" >
+        #{registerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolStageId != null" >
+        #{schoolStageId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolSubjectId != null" >
+        #{schoolSubjectId,jdbcType=BIGINT},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="subjectTotalScore != null" >
+        #{subjectTotalScore,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.StudentScore" >
+    update student_score
+    <set >
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="examId != null" >
+        exam_id = #{examId,jdbcType=BIGINT},
+      </if>
+      <if test="studentName != null" >
+        student_name = #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerNumber != null" >
+        register_number = #{registerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolStageId != null" >
+        school_stage_id = #{schoolStageId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolSubjectId != null" >
+        school_subject_id = #{schoolSubjectId,jdbcType=BIGINT},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="subjectTotalScore != null" >
+        subject_total_score = #{subjectTotalScore,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where score_id = #{scoreId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.StudentScore" >
+    update student_score
+    set school_id = #{schoolId,jdbcType=BIGINT},
+      exam_id = #{examId,jdbcType=BIGINT},
+      student_name = #{studentName,jdbcType=VARCHAR},
+      register_number = #{registerNumber,jdbcType=VARCHAR},
+      school_stage_id = #{schoolStageId,jdbcType=VARCHAR},
+      school_subject_id = #{schoolSubjectId,jdbcType=BIGINT},
+      score = #{score,jdbcType=DECIMAL},
+      subject_total_score = #{subjectTotalScore,jdbcType=VARCHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where score_id = #{scoreId,jdbcType=BIGINT}
+  </update>
+
+  <!--根据学籍号,科目id,查重-->
+  <select id="selectByCountScoreId" resultType="int">
+    SELECT COUNT(score_id)
+    FROM student_score
+    WHERE
+    register_number = #{registerNumber,jdbcType=VARCHAR}
+    AND
+    school_subject_id = #{subjectId,jdbcType=BIGINT}
+  </select>
+
+  <!--批量插入-->
+  <insert id="insertBathInfo" parameterType="com.cj.witbasics.entity.StudentScore" >
+    insert into student_score (school_id, exam_id,
+    student_name, register_number, school_stage_id,
+    school_subject_id, score,
+    founder_id, create_time, operator_id)
+    values 
+    <foreach collection="list" item="score" separator=",">
+      (#{score.schoolId,jdbcType=BIGINT}, #{score.examId,jdbcType=BIGINT},
+      #{score.studentName,jdbcType=VARCHAR}, #{score.registerNumber,jdbcType=VARCHAR}, #{score.schoolStageId,jdbcType=VARCHAR},
+      #{score.schoolSubjectId,jdbcType=BIGINT}, #{score.score,jdbcType=DECIMAL},
+      #{score.founderId,jdbcType=BIGINT}, #{score.createTime,jdbcType=TIMESTAMP}, #{score.operatorId,jdbcType=BIGINT}
+      )
+    </foreach>
+  </insert>
+</mapper>

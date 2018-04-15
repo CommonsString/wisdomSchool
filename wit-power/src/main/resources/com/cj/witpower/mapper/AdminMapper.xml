@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witpower.mapper.AdminMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.Admin" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="role_id" property="roleId" jdbcType="BIGINT" />
+    <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+    <result column="admin_pass" property="adminPass" jdbcType="VARCHAR" />
+    <result column="salt_val" property="saltVal" jdbcType="VARCHAR" />
+    <result column="admin_type" property="adminType" jdbcType="CHAR" />
+    <result column="admin_state" property="adminState" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, role_id, admin_name, admin_pass, salt_val, admin_type, admin_state, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from admin
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.Admin" >
+    insert into admin (id, role_id, admin_name, 
+      admin_pass, salt_val, admin_type, 
+      admin_state, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{adminName,jdbcType=VARCHAR}, 
+      #{adminPass,jdbcType=VARCHAR}, #{saltVal,jdbcType=VARCHAR}, #{adminType,jdbcType=CHAR}, 
+      #{adminState,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.Admin" >
+    <selectKey order="AFTER" keyProperty="id" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="adminName != null" >
+        admin_name,
+      </if>
+      <if test="adminPass != null" >
+        admin_pass,
+      </if>
+      <if test="saltVal != null" >
+        salt_val,
+      </if>
+      <if test="adminType != null" >
+        admin_type,
+      </if>
+      <if test="adminState != null" >
+        admin_state,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="adminName != null" >
+        #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPass != null" >
+        #{adminPass,jdbcType=VARCHAR},
+      </if>
+      <if test="saltVal != null" >
+        #{saltVal,jdbcType=VARCHAR},
+      </if>
+      <if test="adminType != null" >
+        #{adminType,jdbcType=CHAR},
+      </if>
+      <if test="adminState != null" >
+        #{adminState,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <!--修改管理员信息，更新加密后的密码和密码保护码-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.Admin" >
+    update admin
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="adminName != null" >
+        admin_name = #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPass != null" >
+        admin_pass = #{adminPass,jdbcType=VARCHAR},
+      </if>
+      <if test="saltVal != null" >
+        salt_val = #{saltVal,jdbcType=VARCHAR},
+      </if>
+      <if test="adminType != null" >
+        admin_type = #{adminType,jdbcType=CHAR},
+      </if>
+      <if test="adminState != null" >
+        admin_state = #{adminState,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.Admin" >
+    update admin
+    set role_id = #{roleId,jdbcType=BIGINT},
+      admin_name = #{adminName,jdbcType=VARCHAR},
+      admin_pass = #{adminPass,jdbcType=VARCHAR},
+      salt_val = #{saltVal,jdbcType=VARCHAR},
+      admin_type = #{adminType,jdbcType=CHAR},
+      admin_state = #{adminState,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+  <!--检查用户名是否已存在-->
+  <select id="findAdminByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT a.id
+    FROM
+    admin a
+    WHERE
+    a.admin_name = #{adminName}
+    AND
+    a.admin_state = '1'
+  </select>
+
+  <!--根据admin_name查询管理员信息-->
+  <select id="findAdmin" parameterType="com.cj.witbasics.entity.Admin" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM admin a
+    WHERE
+    a.admin_name = #{adminName}
+    AND
+    a.admin_state = '1'
+
+  </select>
+
+  <!--修改管理员信息-->
+  <update id="updateAdmin" parameterType="com.cj.witbasics.entity.Admin">
+    update admin
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="adminName != null" >
+        admin_name = #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPass != null" >
+        admin_pass = #{adminPass,jdbcType=VARCHAR},
+      </if>
+      <if test="saltVal != null" >
+        salt_val = #{saltVal,jdbcType=VARCHAR},
+      </if>
+      <if test="adminType != null" >
+        admin_type = #{adminType,jdbcType=CHAR},
+      </if>
+      <if test="adminState != null" >
+        admin_state = #{adminState,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+
+
+  <resultMap id="find_admins" type="java.util.LinkedHashMap">
+    <result column="id" property="id"></result>
+    <result column="admin_name" property="adminName"></result>
+    <result column="role_id" property="roleId"></result>
+    <result column="role_name" property="roleName"></result>
+    <result column="admin_state" property="adminState"></result>
+    <result column="admin_type" property="adminType"></result>
+    <result column="create_time" property="createTime"></result>
+  </resultMap>
+
+  <!--查询admin总条数-->
+  <select id="findAdminSize" resultType="java.lang.Long">
+    SELECT COUNT(1) FROM admin a WHERE a.admin_state = '1'
+  </select>
+
+  <!--分页查询管理员列表-->
+  <select id="findAllAdmin" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultMap="find_admins">
+    SELECT
+    a.id,a.admin_name,a.role_id,ar.role_name,a.admin_state,a.admin_type,a.create_time
+    FROM admin a
+    LEFT JOIN admin_role ar ON a.role_id = ar.id
+    WHERE a.admin_state = '1'
+    <if test="parameters != null">
+      <if test="parameters.id != null">
+        AND
+        a.id = #{parameters.id}
+      </if>
+      <if test="parameters.adminName != null">
+        AND
+        a.admin_name = #{parameters.adminName}
+      </if>
+      <if test="parameters.adminType != null">
+        AND
+        a.admin_type = #{parameters.adminType}
+      </if>
+      <if test="parameters.adminState != null">
+        AND
+        a.admin_state = #{parameters.adminState}
+      </if>
+    </if>
+    ORDER BY a.create_time DESC
+    limit #{minRow},#{pageSize}
+  </select>
+
+
+  <!--批量删除admin-admin_info表信息-->
+  <update id="updateAdmins" parameterType="java.util.List">
+    UPDATE
+    admin  a,admin_info  ai
+    SET a.admin_state = '0' , ai.state = '0'
+    WHERE
+    a.id IN
+    <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+      #{item,jdbcType=BIGINT}
+    </foreach>
+    AND
+    ai.admin_id IN
+    <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+      #{item,jdbcType=BIGINT}
+    </foreach>
+  </update>
+
+  <!--批量删除admin-student_osaas表信息-->
+  <update id="updateAdminsAndStudents" parameterType="java.util.List">
+    UPDATE
+    admin  a,student_osaas  so
+    SET
+    a.admin_state = '0' , so.state = '0'
+    WHERE
+    a.id IN
+    <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+      #{item,jdbcType=BIGINT}
+    </foreach>
+    AND
+    so.admin_id IN
+    <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+      #{item,jdbcType=BIGINT}
+    </foreach>
+  </update>
+
+  <!--批量删除 department_admin 表 adminID对应信息-->
+  <delete id="deleteDepartmentAdmin" parameterType="java.util.List">
+    DELETE FROM
+    department_admin
+    WHERE
+    admin_id IN
+    <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+      #{item,jdbcType=BIGINT}
+    </foreach>
+  </delete>
+
+</mapper>

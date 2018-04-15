@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.SchoolBasicMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolBasic" >
+    <id column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="school_name" property="schoolName" jdbcType="VARCHAR" />
+    <result column="school_english_name" property="schoolEnglishName" jdbcType="VARCHAR" />
+    <result column="school_address" property="schoolAddress" jdbcType="VARCHAR" />
+    <result column="school_zip_code" property="schoolZipCode" jdbcType="VARCHAR" />
+    <result column="school_phone" property="schoolPhone" jdbcType="VARCHAR" />
+    <result column="school_fax" property="schoolFax" jdbcType="VARCHAR" />
+    <result column="school_e_mail" property="schoolEMail" jdbcType="VARCHAR" />
+    <result column="school_web_url" property="schoolWebUrl" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="school_one_open_time" property="schoolOneOpenTime" jdbcType="TIMESTAMP" />
+    <result column="school_two_open_time" property="schoolTwoOpenTime" jdbcType="TIMESTAMP" />
+    <result column="school_cycle_second" property="schoolCycleSecond" jdbcType="VARCHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    school_id, school_name, school_english_name, school_address, school_zip_code, school_phone, 
+    school_fax, school_e_mail, school_web_url, area_id, city_id, province_id, school_one_open_time, 
+    school_two_open_time, school_cycle_second, founder_id, create_time, operator_id, 
+    delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_basic
+    where school_id = #{schoolId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from school_basic
+    where school_id = #{schoolId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolBasic" >
+    insert into school_basic (school_id, school_name, school_english_name, 
+      school_address, school_zip_code, school_phone, 
+      school_fax, school_e_mail, school_web_url, 
+      area_id, city_id, province_id, 
+      school_one_open_time, school_two_open_time, 
+      school_cycle_second, founder_id, create_time, 
+      operator_id, delete_time, state
+      )
+    values (#{schoolId,jdbcType=BIGINT}, #{schoolName,jdbcType=VARCHAR}, #{schoolEnglishName,jdbcType=VARCHAR}, 
+      #{schoolAddress,jdbcType=VARCHAR}, #{schoolZipCode,jdbcType=VARCHAR}, #{schoolPhone,jdbcType=VARCHAR}, 
+      #{schoolFax,jdbcType=VARCHAR}, #{schoolEMail,jdbcType=VARCHAR}, #{schoolWebUrl,jdbcType=VARCHAR}, 
+      #{areaId,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, 
+      #{schoolOneOpenTime,jdbcType=TIMESTAMP}, #{schoolTwoOpenTime,jdbcType=TIMESTAMP}, 
+      #{schoolCycleSecond,jdbcType=VARCHAR}, #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolBasic" >
+    insert into school_basic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="schoolName != null" >
+        school_name,
+      </if>
+      <if test="schoolEnglishName != null" >
+        school_english_name,
+      </if>
+      <if test="schoolAddress != null" >
+        school_address,
+      </if>
+      <if test="schoolZipCode != null" >
+        school_zip_code,
+      </if>
+      <if test="schoolPhone != null" >
+        school_phone,
+      </if>
+      <if test="schoolFax != null" >
+        school_fax,
+      </if>
+      <if test="schoolEMail != null" >
+        school_e_mail,
+      </if>
+      <if test="schoolWebUrl != null" >
+        school_web_url,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="provinceId != null" >
+        province_id,
+      </if>
+      <if test="schoolOneOpenTime != null" >
+        school_one_open_time,
+      </if>
+      <if test="schoolTwoOpenTime != null" >
+        school_two_open_time,
+      </if>
+      <if test="schoolCycleSecond != null" >
+        school_cycle_second,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolName != null" >
+        #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolEnglishName != null" >
+        #{schoolEnglishName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolAddress != null" >
+        #{schoolAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolZipCode != null" >
+        #{schoolZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolPhone != null" >
+        #{schoolPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolFax != null" >
+        #{schoolFax,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolEMail != null" >
+        #{schoolEMail,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolWebUrl != null" >
+        #{schoolWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolOneOpenTime != null" >
+        #{schoolOneOpenTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="schoolTwoOpenTime != null" >
+        #{schoolTwoOpenTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="schoolCycleSecond != null" >
+        #{schoolCycleSecond,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolBasic" >
+    update school_basic
+    <set >
+      <if test="schoolName != null" >
+        school_name = #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolEnglishName != null" >
+        school_english_name = #{schoolEnglishName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolAddress != null" >
+        school_address = #{schoolAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolZipCode != null" >
+        school_zip_code = #{schoolZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolPhone != null" >
+        school_phone = #{schoolPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolFax != null" >
+        school_fax = #{schoolFax,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolEMail != null" >
+        school_e_mail = #{schoolEMail,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolWebUrl != null" >
+        school_web_url = #{schoolWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        province_id = #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolOneOpenTime != null" >
+        school_one_open_time = #{schoolOneOpenTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="schoolTwoOpenTime != null" >
+        school_two_open_time = #{schoolTwoOpenTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="schoolCycleSecond != null" >
+        school_cycle_second = #{schoolCycleSecond,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where school_id = #{schoolId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolBasic" >
+    update school_basic
+    set school_name = #{schoolName,jdbcType=VARCHAR},
+      school_english_name = #{schoolEnglishName,jdbcType=VARCHAR},
+      school_address = #{schoolAddress,jdbcType=VARCHAR},
+      school_zip_code = #{schoolZipCode,jdbcType=VARCHAR},
+      school_phone = #{schoolPhone,jdbcType=VARCHAR},
+      school_fax = #{schoolFax,jdbcType=VARCHAR},
+      school_e_mail = #{schoolEMail,jdbcType=VARCHAR},
+      school_web_url = #{schoolWebUrl,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=VARCHAR},
+      school_one_open_time = #{schoolOneOpenTime,jdbcType=TIMESTAMP},
+      school_two_open_time = #{schoolTwoOpenTime,jdbcType=TIMESTAMP},
+      school_cycle_second = #{schoolCycleSecond,jdbcType=VARCHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where school_id = #{schoolId,jdbcType=BIGINT}
+  </update>
+
+  <!--检查学校信息是否已完善-->
+  <select id="finsSchoolBasic" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM school_basic sb
+    WHERE
+    sb.state NOT IN (0) AND sb.school_id = #{schoolId}
+  </select>
+
+  <!--查询本校区 学校、学段、班级 的 ID、名称-->
+  <select id="findAllSchoolBasic">
+    SELECT
+    sb.school_id,sb.school_name,sp.period_id,sp.period_name,sc.class_id,sc.class_name
+    FROM
+    school_basic sb,school_period sp,school_class sc
+    WHERE
+    sb.school_id = sp.school_id
+    AND
+    sp.period_id = sc.class_period_id
+
+
+  </select>
+</mapper>

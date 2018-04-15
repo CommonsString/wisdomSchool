@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.StudentOsaasMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.StudentOsaas" >
+    <id column="osaas_id" property="osaasId" jdbcType="BIGINT" />
+    <result column="admin_id" property="adminId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_uuid" property="userUuid" jdbcType="VARCHAR" />
+    <result column="user_nike" property="userNike" jdbcType="VARCHAR" />
+    <result column="user_head" property="userHead" jdbcType="VARCHAR" />
+    <result column="school_number" property="schoolNumber" jdbcType="VARCHAR" />
+    <result column="class_number" property="classNumber" jdbcType="VARCHAR" />
+    <result column="examination_number" property="examinationNumber" jdbcType="VARCHAR" />
+    <result column="register_number" property="registerNumber" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="CHAR" />
+    <result column="basic_id" property="basicId" jdbcType="BIGINT" />
+    <result column="period_id" property="periodId" jdbcType="BIGINT" />
+    <result column="grade_id" property="gradeId" jdbcType="BIGINT" />
+    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="birth_date" property="birthDate" jdbcType="TIMESTAMP" />
+    <result column="card_type" property="cardType" jdbcType="CHAR" />
+    <result column="card_number" property="cardNumber" jdbcType="VARCHAR" />
+    <result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
+    <result column="education_id" property="educationId" jdbcType="VARCHAR" />
+    <result column="national_register_number" property="nationalRegisterNumber" jdbcType="VARCHAR" />
+    <result column="different_countries" property="differentCountries" jdbcType="VARCHAR" />
+    <result column="hong_kong" property="hongKong" jdbcType="VARCHAR" />
+    <result column="registered_residence" property="registeredResidence" jdbcType="VARCHAR" />
+    <result column="registered_residence_detailed" property="registeredResidenceDetailed" jdbcType="VARCHAR" />
+    <result column="political_outlook" property="politicalOutlook" jdbcType="CHAR" />
+    <result column="nation" property="nation" jdbcType="VARCHAR" />
+    <result column="student_type" property="studentType" jdbcType="VARCHAR" />
+    <result column="way_of_studying" property="wayOfStudying" jdbcType="VARCHAR" />
+    <result column="treat_type" property="treatType" jdbcType="CHAR" />
+    <result column="present_address" property="presentAddress" jdbcType="VARCHAR" />
+    <result column="home_address" property="homeAddress" jdbcType="VARCHAR" />
+    <result column="home_address_detailed" property="homeAddressDetailed" jdbcType="VARCHAR" />
+    <result column="postal_address" property="postalAddress" jdbcType="VARCHAR" />
+    <result column="native_heath" property="nativeHeath" jdbcType="VARCHAR" />
+    <result column="place_of_origin" property="placeOfOrigin" jdbcType="VARCHAR" />
+    <result column="health_condition" property="healthCondition" jdbcType="VARCHAR" />
+    <result column="household_registration" property="householdRegistration" jdbcType="VARCHAR" />
+    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+    <result column="anaphylaxis" property="anaphylaxis" jdbcType="VARCHAR" />
+    <result column="past_medical_history" property="pastMedicalHistory" jdbcType="VARCHAR" />
+    <result column="one_child" property="oneChild" jdbcType="CHAR" />
+    <result column="military_region" property="militaryRegion" jdbcType="CHAR" />
+    <result column="preschool_education" property="preschoolEducation" jdbcType="CHAR" />
+    <result column="left_behind_children" property="leftBehindChildren" jdbcType="CHAR" />
+    <result column="work_for_children" property="workForChildren" jdbcType="CHAR" />
+    <result column="name_pinyin" property="namePinyin" jdbcType="VARCHAR" />
+    <result column="english_name" property="englishName" jdbcType="VARCHAR" />
+    <result column="this_city_osaas" property="thisCityOsaas" jdbcType="CHAR" />
+    <result column="enrolment_category" property="enrolmentCategory" jdbcType="VARCHAR" />
+    <result column="enrolment_mode" property="enrolmentMode" jdbcType="VARCHAR" />
+    <result column="student_source" property="studentSource" jdbcType="VARCHAR" />
+    <result column="date_of_admission" property="dateOfAdmission" jdbcType="TIMESTAMP" />
+    <result column="students_come_in" property="studentsComeIn" jdbcType="VARCHAR" />
+    <result column="original_school" property="originalSchool" jdbcType="VARCHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    osaas_id, admin_id, user_id, user_uuid, user_nike, user_head, school_number, class_number, 
+    examination_number, register_number, full_name, gender, basic_id, period_id, grade_id, 
+    class_id, birth_date, card_type, card_number, photo_url, education_id, national_register_number, 
+    different_countries, hong_kong, registered_residence, registered_residence_detailed, 
+    political_outlook, nation, student_type, way_of_studying, treat_type, present_address, 
+    home_address, home_address_detailed, postal_address, native_heath, place_of_origin, 
+    health_condition, household_registration, mobile_phone, zip_code, anaphylaxis, past_medical_history, 
+    one_child, military_region, preschool_education, left_behind_children, work_for_children, 
+    name_pinyin, english_name, this_city_osaas, enrolment_category, enrolment_mode, student_source, 
+    date_of_admission, students_come_in, original_school, founder_id, create_time, operator_id, 
+    delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from student_osaas
+    where osaas_id = #{osaasId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from student_osaas
+    where osaas_id = #{osaasId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.cj.witbasics.entity.StudentOsaas">
+    insert into student_osaas (osaas_id, admin_id, user_id, 
+      user_uuid, user_nike, user_head, 
+      school_number, class_number, examination_number, 
+      register_number, full_name, gender, 
+      basic_id, period_id, grade_id, 
+      class_id, birth_date, card_type, 
+      card_number, photo_url, education_id, 
+      national_register_number, different_countries, 
+      hong_kong, registered_residence, registered_residence_detailed, 
+      political_outlook, nation, student_type, 
+      way_of_studying, treat_type, present_address, 
+      home_address, home_address_detailed, postal_address, 
+      native_heath, place_of_origin, health_condition, 
+      household_registration, mobile_phone, zip_code, 
+      anaphylaxis, past_medical_history, one_child, 
+      military_region, preschool_education, left_behind_children, 
+      work_for_children, name_pinyin, english_name, 
+      this_city_osaas, enrolment_category, enrolment_mode, 
+      student_source, date_of_admission, students_come_in, 
+      original_school, founder_id, create_time, 
+      operator_id, delete_time, state
+      )
+    values (#{osaasId,jdbcType=BIGINT}, #{adminId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{userUuid,jdbcType=VARCHAR}, #{userNike,jdbcType=VARCHAR}, #{userHead,jdbcType=VARCHAR}, 
+      #{schoolNumber,jdbcType=VARCHAR}, #{classNumber,jdbcType=VARCHAR}, #{examinationNumber,jdbcType=VARCHAR}, 
+      #{registerNumber,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, 
+      #{basicId,jdbcType=BIGINT}, #{periodId,jdbcType=BIGINT}, #{gradeId,jdbcType=BIGINT}, 
+      #{classId,jdbcType=BIGINT}, #{birthDate,jdbcType=TIMESTAMP}, #{cardType,jdbcType=CHAR}, 
+      #{cardNumber,jdbcType=VARCHAR}, #{photoUrl,jdbcType=VARCHAR}, #{educationId,jdbcType=VARCHAR}, 
+      #{nationalRegisterNumber,jdbcType=VARCHAR}, #{differentCountries,jdbcType=VARCHAR}, 
+      #{hongKong,jdbcType=VARCHAR}, #{registeredResidence,jdbcType=VARCHAR}, #{registeredResidenceDetailed,jdbcType=VARCHAR}, 
+      #{politicalOutlook,jdbcType=CHAR}, #{nation,jdbcType=VARCHAR}, #{studentType,jdbcType=VARCHAR}, 
+      #{wayOfStudying,jdbcType=VARCHAR}, #{treatType,jdbcType=CHAR}, #{presentAddress,jdbcType=VARCHAR}, 
+      #{homeAddress,jdbcType=VARCHAR}, #{homeAddressDetailed,jdbcType=VARCHAR}, #{postalAddress,jdbcType=VARCHAR}, 
+      #{nativeHeath,jdbcType=VARCHAR}, #{placeOfOrigin,jdbcType=VARCHAR}, #{healthCondition,jdbcType=VARCHAR}, 
+      #{householdRegistration,jdbcType=VARCHAR}, #{mobilePhone,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, 
+      #{anaphylaxis,jdbcType=VARCHAR}, #{pastMedicalHistory,jdbcType=VARCHAR}, #{oneChild,jdbcType=CHAR}, 
+      #{militaryRegion,jdbcType=CHAR}, #{preschoolEducation,jdbcType=CHAR}, #{leftBehindChildren,jdbcType=CHAR}, 
+      #{workForChildren,jdbcType=CHAR}, #{namePinyin,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, 
+      #{thisCityOsaas,jdbcType=CHAR}, #{enrolmentCategory,jdbcType=VARCHAR}, #{enrolmentMode,jdbcType=VARCHAR}, 
+      #{studentSource,jdbcType=VARCHAR}, #{dateOfAdmission,jdbcType=TIMESTAMP}, #{studentsComeIn,jdbcType=VARCHAR}, 
+      #{originalSchool,jdbcType=VARCHAR}, #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.StudentOsaas" >
+    insert into student_osaas
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="osaasId != null" >
+        osaas_id,
+      </if>
+      <if test="adminId != null" >
+        admin_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userUuid != null" >
+        user_uuid,
+      </if>
+      <if test="userNike != null" >
+        user_nike,
+      </if>
+      <if test="userHead != null" >
+        user_head,
+      </if>
+      <if test="schoolNumber != null" >
+        school_number,
+      </if>
+      <if test="classNumber != null" >
+        class_number,
+      </if>
+      <if test="examinationNumber != null" >
+        examination_number,
+      </if>
+      <if test="registerNumber != null" >
+        register_number,
+      </if>
+      <if test="fullName != null" >
+        full_name,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="basicId != null" >
+        basic_id,
+      </if>
+      <if test="periodId != null" >
+        period_id,
+      </if>
+      <if test="gradeId != null" >
+        grade_id,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="birthDate != null" >
+        birth_date,
+      </if>
+      <if test="cardType != null" >
+        card_type,
+      </if>
+      <if test="cardNumber != null" >
+        card_number,
+      </if>
+      <if test="photoUrl != null" >
+        photo_url,
+      </if>
+      <if test="educationId != null" >
+        education_id,
+      </if>
+      <if test="nationalRegisterNumber != null" >
+        national_register_number,
+      </if>
+      <if test="differentCountries != null" >
+        different_countries,
+      </if>
+      <if test="hongKong != null" >
+        hong_kong,
+      </if>
+      <if test="registeredResidence != null" >
+        registered_residence,
+      </if>
+      <if test="registeredResidenceDetailed != null" >
+        registered_residence_detailed,
+      </if>
+      <if test="politicalOutlook != null" >
+        political_outlook,
+      </if>
+      <if test="nation != null" >
+        nation,
+      </if>
+      <if test="studentType != null" >
+        student_type,
+      </if>
+      <if test="wayOfStudying != null" >
+        way_of_studying,
+      </if>
+      <if test="treatType != null" >
+        treat_type,
+      </if>
+      <if test="presentAddress != null" >
+        present_address,
+      </if>
+      <if test="homeAddress != null" >
+        home_address,
+      </if>
+      <if test="homeAddressDetailed != null" >
+        home_address_detailed,
+      </if>
+      <if test="postalAddress != null" >
+        postal_address,
+      </if>
+      <if test="nativeHeath != null" >
+        native_heath,
+      </if>
+      <if test="placeOfOrigin != null" >
+        place_of_origin,
+      </if>
+      <if test="healthCondition != null" >
+        health_condition,
+      </if>
+      <if test="householdRegistration != null" >
+        household_registration,
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone,
+      </if>
+      <if test="zipCode != null" >
+        zip_code,
+      </if>
+      <if test="anaphylaxis != null" >
+        anaphylaxis,
+      </if>
+      <if test="pastMedicalHistory != null" >
+        past_medical_history,
+      </if>
+      <if test="oneChild != null" >
+        one_child,
+      </if>
+      <if test="militaryRegion != null" >
+        military_region,
+      </if>
+      <if test="preschoolEducation != null" >
+        preschool_education,
+      </if>
+      <if test="leftBehindChildren != null" >
+        left_behind_children,
+      </if>
+      <if test="workForChildren != null" >
+        work_for_children,
+      </if>
+      <if test="namePinyin != null" >
+        name_pinyin,
+      </if>
+      <if test="englishName != null" >
+        english_name,
+      </if>
+      <if test="thisCityOsaas != null" >
+        this_city_osaas,
+      </if>
+      <if test="enrolmentCategory != null" >
+        enrolment_category,
+      </if>
+      <if test="enrolmentMode != null" >
+        enrolment_mode,
+      </if>
+      <if test="studentSource != null" >
+        student_source,
+      </if>
+      <if test="dateOfAdmission != null" >
+        date_of_admission,
+      </if>
+      <if test="studentsComeIn != null" >
+        students_come_in,
+      </if>
+      <if test="originalSchool != null" >
+        original_school,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="osaasId != null" >
+        #{osaasId,jdbcType=BIGINT},
+      </if>
+      <if test="adminId != null" >
+        #{adminId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userUuid != null" >
+        #{userUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="userNike != null" >
+        #{userNike,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null" >
+        #{userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolNumber != null" >
+        #{schoolNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="classNumber != null" >
+        #{classNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="examinationNumber != null" >
+        #{examinationNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="registerNumber != null" >
+        #{registerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="basicId != null" >
+        #{basicId,jdbcType=BIGINT},
+      </if>
+      <if test="periodId != null" >
+        #{periodId,jdbcType=BIGINT},
+      </if>
+      <if test="gradeId != null" >
+        #{gradeId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="birthDate != null" >
+        #{birthDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=CHAR},
+      </if>
+      <if test="cardNumber != null" >
+        #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl != null" >
+        #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="educationId != null" >
+        #{educationId,jdbcType=VARCHAR},
+      </if>
+      <if test="nationalRegisterNumber != null" >
+        #{nationalRegisterNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="differentCountries != null" >
+        #{differentCountries,jdbcType=VARCHAR},
+      </if>
+      <if test="hongKong != null" >
+        #{hongKong,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredResidence != null" >
+        #{registeredResidence,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredResidenceDetailed != null" >
+        #{registeredResidenceDetailed,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalOutlook != null" >
+        #{politicalOutlook,jdbcType=CHAR},
+      </if>
+      <if test="nation != null" >
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="studentType != null" >
+        #{studentType,jdbcType=VARCHAR},
+      </if>
+      <if test="wayOfStudying != null" >
+        #{wayOfStudying,jdbcType=VARCHAR},
+      </if>
+      <if test="treatType != null" >
+        #{treatType,jdbcType=CHAR},
+      </if>
+      <if test="presentAddress != null" >
+        #{presentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddressDetailed != null" >
+        #{homeAddressDetailed,jdbcType=VARCHAR},
+      </if>
+      <if test="postalAddress != null" >
+        #{postalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="nativeHeath != null" >
+        #{nativeHeath,jdbcType=VARCHAR},
+      </if>
+      <if test="placeOfOrigin != null" >
+        #{placeOfOrigin,jdbcType=VARCHAR},
+      </if>
+      <if test="healthCondition != null" >
+        #{healthCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="householdRegistration != null" >
+        #{householdRegistration,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="anaphylaxis != null" >
+        #{anaphylaxis,jdbcType=VARCHAR},
+      </if>
+      <if test="pastMedicalHistory != null" >
+        #{pastMedicalHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="oneChild != null" >
+        #{oneChild,jdbcType=CHAR},
+      </if>
+      <if test="militaryRegion != null" >
+        #{militaryRegion,jdbcType=CHAR},
+      </if>
+      <if test="preschoolEducation != null" >
+        #{preschoolEducation,jdbcType=CHAR},
+      </if>
+      <if test="leftBehindChildren != null" >
+        #{leftBehindChildren,jdbcType=CHAR},
+      </if>
+      <if test="workForChildren != null" >
+        #{workForChildren,jdbcType=CHAR},
+      </if>
+      <if test="namePinyin != null" >
+        #{namePinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="thisCityOsaas != null" >
+        #{thisCityOsaas,jdbcType=CHAR},
+      </if>
+      <if test="enrolmentCategory != null" >
+        #{enrolmentCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="enrolmentMode != null" >
+        #{enrolmentMode,jdbcType=VARCHAR},
+      </if>
+      <if test="studentSource != null" >
+        #{studentSource,jdbcType=VARCHAR},
+      </if>
+      <if test="dateOfAdmission != null" >
+        #{dateOfAdmission,jdbcType=TIMESTAMP},
+      </if>
+      <if test="studentsComeIn != null" >
+        #{studentsComeIn,jdbcType=VARCHAR},
+      </if>
+      <if test="originalSchool != null" >
+        #{originalSchool,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.StudentOsaas" >
+    update student_osaas
+    <set >
+      <if test="adminId != null" >
+        admin_id = #{adminId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userUuid != null" >
+        user_uuid = #{userUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="userNike != null" >
+        user_nike = #{userNike,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null" >
+        user_head = #{userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolNumber != null" >
+        school_number = #{schoolNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="classNumber != null" >
+        class_number = #{classNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="examinationNumber != null" >
+        examination_number = #{examinationNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="registerNumber != null" >
+        register_number = #{registerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="basicId != null" >
+        basic_id = #{basicId,jdbcType=BIGINT},
+      </if>
+      <if test="periodId != null" >
+        period_id = #{periodId,jdbcType=BIGINT},
+      </if>
+      <if test="gradeId != null" >
+        grade_id = #{gradeId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="birthDate != null" >
+        birth_date = #{birthDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=CHAR},
+      </if>
+      <if test="cardNumber != null" >
+        card_number = #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl != null" >
+        photo_url = #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="educationId != null" >
+        education_id = #{educationId,jdbcType=VARCHAR},
+      </if>
+      <if test="nationalRegisterNumber != null" >
+        national_register_number = #{nationalRegisterNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="differentCountries != null" >
+        different_countries = #{differentCountries,jdbcType=VARCHAR},
+      </if>
+      <if test="hongKong != null" >
+        hong_kong = #{hongKong,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredResidence != null" >
+        registered_residence = #{registeredResidence,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredResidenceDetailed != null" >
+        registered_residence_detailed = #{registeredResidenceDetailed,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalOutlook != null" >
+        political_outlook = #{politicalOutlook,jdbcType=CHAR},
+      </if>
+      <if test="nation != null" >
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="studentType != null" >
+        student_type = #{studentType,jdbcType=VARCHAR},
+      </if>
+      <if test="wayOfStudying != null" >
+        way_of_studying = #{wayOfStudying,jdbcType=VARCHAR},
+      </if>
+      <if test="treatType != null" >
+        treat_type = #{treatType,jdbcType=CHAR},
+      </if>
+      <if test="presentAddress != null" >
+        present_address = #{presentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        home_address = #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddressDetailed != null" >
+        home_address_detailed = #{homeAddressDetailed,jdbcType=VARCHAR},
+      </if>
+      <if test="postalAddress != null" >
+        postal_address = #{postalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="nativeHeath != null" >
+        native_heath = #{nativeHeath,jdbcType=VARCHAR},
+      </if>
+      <if test="placeOfOrigin != null" >
+        place_of_origin = #{placeOfOrigin,jdbcType=VARCHAR},
+      </if>
+      <if test="healthCondition != null" >
+        health_condition = #{healthCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="householdRegistration != null" >
+        household_registration = #{householdRegistration,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        zip_code = #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="anaphylaxis != null" >
+        anaphylaxis = #{anaphylaxis,jdbcType=VARCHAR},
+      </if>
+      <if test="pastMedicalHistory != null" >
+        past_medical_history = #{pastMedicalHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="oneChild != null" >
+        one_child = #{oneChild,jdbcType=CHAR},
+      </if>
+      <if test="militaryRegion != null" >
+        military_region = #{militaryRegion,jdbcType=CHAR},
+      </if>
+      <if test="preschoolEducation != null" >
+        preschool_education = #{preschoolEducation,jdbcType=CHAR},
+      </if>
+      <if test="leftBehindChildren != null" >
+        left_behind_children = #{leftBehindChildren,jdbcType=CHAR},
+      </if>
+      <if test="workForChildren != null" >
+        work_for_children = #{workForChildren,jdbcType=CHAR},
+      </if>
+      <if test="namePinyin != null" >
+        name_pinyin = #{namePinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        english_name = #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="thisCityOsaas != null" >
+        this_city_osaas = #{thisCityOsaas,jdbcType=CHAR},
+      </if>
+      <if test="enrolmentCategory != null" >
+        enrolment_category = #{enrolmentCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="enrolmentMode != null" >
+        enrolment_mode = #{enrolmentMode,jdbcType=VARCHAR},
+      </if>
+      <if test="studentSource != null" >
+        student_source = #{studentSource,jdbcType=VARCHAR},
+      </if>
+      <if test="dateOfAdmission != null" >
+        date_of_admission = #{dateOfAdmission,jdbcType=TIMESTAMP},
+      </if>
+      <if test="studentsComeIn != null" >
+        students_come_in = #{studentsComeIn,jdbcType=VARCHAR},
+      </if>
+      <if test="originalSchool != null" >
+        original_school = #{originalSchool,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where osaas_id = #{osaasId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.StudentOsaas" >
+    update student_osaas
+    set admin_id = #{adminId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      user_uuid = #{userUuid,jdbcType=VARCHAR},
+      user_nike = #{userNike,jdbcType=VARCHAR},
+      user_head = #{userHead,jdbcType=VARCHAR},
+      school_number = #{schoolNumber,jdbcType=VARCHAR},
+      class_number = #{classNumber,jdbcType=VARCHAR},
+      examination_number = #{examinationNumber,jdbcType=VARCHAR},
+      registere_numbr = #{registerNumber,jdbcType=VARCHAR},
+      full_name = #{fullName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      basic_id = #{basicId,jdbcType=BIGINT},
+      period_id = #{periodId,jdbcType=BIGINT},
+      grade_id = #{gradeId,jdbcType=BIGINT},
+      class_id = #{classId,jdbcType=BIGINT},
+      birth_date = #{birthDate,jdbcType=TIMESTAMP},
+      card_type = #{cardType,jdbcType=CHAR},
+      card_number = #{cardNumber,jdbcType=VARCHAR},
+      photo_url = #{photoUrl,jdbcType=VARCHAR},
+      education_id = #{educationId,jdbcType=VARCHAR},
+      national_register_number = #{nationalRegisterNumber,jdbcType=VARCHAR},
+      different_countries = #{differentCountries,jdbcType=VARCHAR},
+      hong_kong = #{hongKong,jdbcType=VARCHAR},
+      registered_residence = #{registeredResidence,jdbcType=VARCHAR},
+      registered_residence_detailed = #{registeredResidenceDetailed,jdbcType=VARCHAR},
+      political_outlook = #{politicalOutlook,jdbcType=CHAR},
+      nation = #{nation,jdbcType=VARCHAR},
+      student_type = #{studentType,jdbcType=VARCHAR},
+      way_of_studying = #{wayOfStudying,jdbcType=VARCHAR},
+      treat_type = #{treatType,jdbcType=CHAR},
+      present_address = #{presentAddress,jdbcType=VARCHAR},
+      home_address = #{homeAddress,jdbcType=VARCHAR},
+      home_address_detailed = #{homeAddressDetailed,jdbcType=VARCHAR},
+      postal_address = #{postalAddress,jdbcType=VARCHAR},
+      native_heath = #{nativeHeath,jdbcType=VARCHAR},
+      place_of_origin = #{placeOfOrigin,jdbcType=VARCHAR},
+      health_condition = #{healthCondition,jdbcType=VARCHAR},
+      household_registration = #{householdRegistration,jdbcType=VARCHAR},
+      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      zip_code = #{zipCode,jdbcType=VARCHAR},
+      anaphylaxis = #{anaphylaxis,jdbcType=VARCHAR},
+      past_medical_history = #{pastMedicalHistory,jdbcType=VARCHAR},
+      one_child = #{oneChild,jdbcType=CHAR},
+      military_region = #{militaryRegion,jdbcType=CHAR},
+      preschool_education = #{preschoolEducation,jdbcType=CHAR},
+      left_behind_children = #{leftBehindChildren,jdbcType=CHAR},
+      work_for_children = #{workForChildren,jdbcType=CHAR},
+      name_pinyin = #{namePinyin,jdbcType=VARCHAR},
+      english_name = #{englishName,jdbcType=VARCHAR},
+      this_city_osaas = #{thisCityOsaas,jdbcType=CHAR},
+      enrolment_category = #{enrolmentCategory,jdbcType=VARCHAR},
+      enrolment_mode = #{enrolmentMode,jdbcType=VARCHAR},
+      student_source = #{studentSource,jdbcType=VARCHAR},
+      date_of_admission = #{dateOfAdmission,jdbcType=TIMESTAMP},
+      students_come_in = #{studentsComeIn,jdbcType=VARCHAR},
+      original_school = #{originalSchool,jdbcType=VARCHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where osaas_id = #{osaasId,jdbcType=BIGINT}
+  </update>
+
+
+  <!--模糊查询学生信息-->
+  <select id="findStudentsByCondition" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM student_osaas so
+    WHERE so.full_name OR so.gender OR so.register_number
+    LIKE concat(concat('%',#{parameter}),'%')
+    limit #{minRow},#{pageSize}
+  </select>
+
+  <!--统计该学号数量-->
+  <select id="selectBySchoolNumber" parameterType="String" resultType="int">
+    SELECT COUNT(school_number) FROM student_osaas so WHERE so.school_number = #{school_number}
+  </select>
+
+  <!--根据adminId查询 student_osaas 信息-->
+  <select id="selectStudentOsaas" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM student_osaas so
+    WHERE
+    so.admin_id = #{adminId}
+    AND
+    so.state NOT IN (0)
+  </select>
+
+</mapper>

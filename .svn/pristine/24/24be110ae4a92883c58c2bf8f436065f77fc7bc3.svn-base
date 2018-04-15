@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.RegionMapper" >
+
+
+
+  <!--<resultMap id="Region" type="com.cj.witcommon.utils.entity.other.Region">-->
+    <!--&lt;!&ndash;多个省&ndash;&gt;-->
+    <!--<result column="province_name" property="lable"></result>-->
+    <!--<result column="province_id" property="value"></result>-->
+    <!--&lt;!&ndash;一个省、多个市&ndash;&gt;-->
+    <!--<collection property="children" ofType="com.cj.witcommon.utils.entity.other.Region">-->
+      <!--<result column="city_name" property="lable"></result>-->
+      <!--<result column="city_id" property="value"></result>-->
+      <!--&lt;!&ndash;一个市、多个区县&ndash;&gt;-->
+      <!--<collection property="children" ofType="com.cj.witcommon.utils.entity.other.Region">-->
+        <!--<result column="area_name" property="lable"></result>-->
+        <!--<result column="area_id" property="value"></result>-->
+      <!--</collection>-->
+    <!--</collection>-->
+  <!--</resultMap>-->
+  <resultMap id="Region" type="com.cj.witcommon.utils.entity.other.Region">
+    <!--多个省-->
+    <result column="province_name" property="label"></result>
+    <result column="province_name" property="value"></result>
+    <!--一个省、多个市-->
+    <collection property="children" ofType="com.cj.witcommon.utils.entity.other.Region">
+      <result column="city_name" property="label"></result>
+      <result column="city_name" property="value"></result>
+      <!--一个市、多个区县-->
+      <collection property="children" ofType="com.cj.witcommon.utils.entity.other.Region">
+        <result column="area_name" property="label"></result>
+        <result column="area_name" property="value"></result>
+      </collection>
+    </collection>
+  </resultMap>
+
+  <!--查询所有的地区信息-->
+  <select id="findAllRegion" resultMap="Region">
+    SELECT
+    dp.province_name,dp.province_id,
+    dc.city_name,dc.city_id,
+    da.area_name,da.area_id
+    FROM
+    dq_province dp,
+    dq_city dc,
+    dq_area da
+    WHERE
+    dp.province_id = dc.province_id
+    AND
+    dc.city_id = da.city_id
+  </select>
+
+  <!--查询所有没有代理的省份编号、名称 信息-->
+  <select id="findProvinces" parameterType="java.util.Map" resultType="com.cj.witbasics.entity.DqProvince">
+    SELECT dp.province_id,dp.province_name
+    FROM dq_province dp
+    --     type==3,查询所有没有省代理的省份集合，type==33,查询所有省
+    <!-- <trim prefix="WHERE" prefixOverrides="AND"> -->
+    <if test="type == 3">
+      <trim prefix="WHERE">
+        <if test="list != null and list.size &gt; 0">
+          dp.province_id NOT IN
+          <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+          </foreach>
+        </if>
+      </trim>
+    </if>
+    ORDER BY dp.province_id ASC
+  </select>
+
+  <!--查询所有没有代理的城市编号、名称 信息-->
+  <select id="findCity" parameterType="java.util.Map" resultType="com.cj.witbasics.entity.DqCity">
+    SELECT dc.city_id,dc.city_name
+    FROM dq_city dc
+    WHERE dc.province_id = #{provinceId}
+
+    --     type==4,查询所有该省份下没有市代理的市集合，type==44,查询该省下所有市
+    <if test="type == 4">
+      <if test="list != null and list.size &gt; 0">
+        AND
+        dc.city_id NOT IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+          #{item}
+        </foreach>
+      </if>
+    </if>
+    ORDER BY dc.city_id ASC
+  </select>
+
+  <!--查询所有没有代理的区县编号、名称 信息-->
+  <select id="findArea" parameterType="java.util.Map" resultType="com.cj.witbasics.entity.DqArea">
+    SELECT da.area_id,da.area_name
+    FROM dq_area da
+    WHERE da.cityid = #{cityId}
+    --     type==5,查询所有该市下没有区县代理的区县集合，type==55,查询该市下所有区县
+    <if test="type == 5">
+      <if test="list != null and list.size &gt; 0">
+        AND
+        da.area_id NOT IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+          #{item}
+        </foreach>
+      </if>
+    </if>
+    ORDER BY da.area_id ASC
+  </select>
+
+
+
+  <!--查询代理的省、市、区的编号集合-->
+  <select id="findListId" parameterType="java.util.Map" resultType="java.lang.String">
+    SELECT
+    <if test="type == 3 or type == 33" >
+      a.admin_provinc
+    </if>
+    <if test="type == 4 or type == 44">
+      a.admin_citi
+    </if>
+    <if test="type == 5 or type == 55">
+      a.admin_area
+    </if>
+    FROM admin a
+    WHERE
+    a.admin_state NOT IN (-1)
+    <if test="type == 4 or type == 44">
+      AND
+      a.admin_provinc = #{provinceid}
+    </if>
+    <if test="type == 5 or type == 55">
+      AND
+      a.admin_citi = #{cityid}
+    </if>
+  </select>
+</mapper>

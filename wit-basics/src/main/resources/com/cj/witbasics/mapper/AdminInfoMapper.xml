@@ -1,0 +1,1819 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.AdminInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.AdminInfo" >
+    <id column="admin_info_id" property="adminInfoId" jdbcType="BIGINT" />
+    <result column="admin_id" property="adminId" jdbcType="BIGINT" />
+    <result column="admin_nick" property="adminNick" jdbcType="VARCHAR" />
+    <result column="admin_uuid" property="adminUuid" jdbcType="VARCHAR" />
+    <result column="admin_head" property="adminHead" jdbcType="VARCHAR" />
+    <result column="birth_date" property="birthDate" jdbcType="TIMESTAMP" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="english_name" property="englishName" jdbcType="VARCHAR" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="id_card_no" property="idCardNo" jdbcType="VARCHAR" />
+    <result column="party_time" property="partyTime" jdbcType="VARCHAR" />
+    <result column="political_outlook" property="politicalOutlook" jdbcType="CHAR" />
+    <result column="mail_box" property="mailBox" jdbcType="VARCHAR" />
+    <result column="home_address" property="homeAddress" jdbcType="VARCHAR" />
+    <result column="highest_school_system" property="highestSchoolSystem" jdbcType="VARCHAR" />
+    <result column="overseas_chinese" property="overseasChinese" jdbcType="CHAR" />
+    <result column="gender" property="gender" jdbcType="CHAR" />
+    <result column="residential_telephone" property="residentialTelephone" jdbcType="VARCHAR" />
+    <result column="family_zip_code" property="familyZipCode" jdbcType="VARCHAR" />
+    <result column="name_used_before" property="nameUsedBefore" jdbcType="VARCHAR" />
+    <result column="emergency_contact" property="emergencyContact" jdbcType="VARCHAR" />
+    <result column="nation" property="nation" jdbcType="VARCHAR" />
+    <result column="place_of_origin" property="placeOfOrigin" jdbcType="VARCHAR" />
+    <result column="spoken_english" property="spokenEnglish" jdbcType="VARCHAR" />
+    <result column="spoken_english_date" property="spokenEnglishDate" jdbcType="VARCHAR" />
+    <result column="spoken_english_number" property="spokenEnglishNumber" jdbcType="VARCHAR" />
+    <result column="computer_level" property="computerLevel" jdbcType="VARCHAR" />
+    <result column="computer_level_date" property="computerLevelDate" jdbcType="VARCHAR" />
+    <result column="computer_level_number" property="computerLevelNumber" jdbcType="VARCHAR" />
+    <result column="putonghua_grade" property="putonghuaGrade" jdbcType="VARCHAR" />
+    <result column="putonghua_grade_date" property="putonghuaGradeDate" jdbcType="VARCHAR" />
+    <result column="putonghua_grade_number" property="putonghuaGradeNumber" jdbcType="VARCHAR" />
+    <result column="highest_education" property="highestEducation" jdbcType="CHAR" />
+    <result column="highest_major" property="highestMajor" jdbcType="VARCHAR" />
+    <result column="highest_academic_degree" property="highestAcademicDegree" jdbcType="VARCHAR" />
+    <result column="academic_degree_type" property="academicDegreeType" jdbcType="VARCHAR" />
+    <result column="academic_degree_number" property="academicDegreeNumber" jdbcType="VARCHAR" />
+    <result column="highest_graduate_institutions" property="highestGraduateInstitutions" jdbcType="VARCHAR" />
+    <result column="highest_graduate_institutions_date" property="highestGraduateInstitutionsDate" jdbcType="VARCHAR" />
+    <result column="foreign_language" property="foreignLanguage" jdbcType="VARCHAR" />
+    <result column="foreign_language_level" property="foreignLanguageLevel" jdbcType="VARCHAR" />
+    <result column="primary_education" property="primaryEducation" jdbcType="VARCHAR" />
+    <result column="primary_major" property="primaryMajor" jdbcType="VARCHAR" />
+    <result column="primary_school_system" property="primarySchoolSystem" jdbcType="VARCHAR" />
+    <result column="primary_graduate_institutions" property="primaryGraduateInstitutions" jdbcType="VARCHAR" />
+    <result column="primary_graduate_institutions_date" property="primaryGraduateInstitutionsDate" jdbcType="VARCHAR" />
+    <result column="marriage" property="marriage" jdbcType="CHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="the_department" property="theDepartment" jdbcType="VARCHAR" />
+    <result column="office_phone" property="officePhone" jdbcType="VARCHAR" />
+    <result column="master_duties" property="masterDuties" jdbcType="VARCHAR" />
+    <result column="attach_duties" property="attachDuties" jdbcType="VARCHAR" />
+    <result column="teaching_and_research" property="teachingAndResearch" jdbcType="VARCHAR" />
+    <result column="substantive_level" property="substantiveLevel" jdbcType="VARCHAR" />
+    <result column="post_wage" property="postWage" jdbcType="VARCHAR" />
+    <result column="salary_scale" property="salaryScale" jdbcType="VARCHAR" />
+    <result column="post_wage_attach" property="postWageAttach" jdbcType="VARCHAR" />
+    <result column="salary_scale_attach" property="salaryScaleAttach" jdbcType="VARCHAR" />
+    <result column="teaching_subject" property="teachingSubject" jdbcType="VARCHAR" />
+    <result column="expertise_type" property="expertiseType" jdbcType="VARCHAR" />
+    <result column="teaching_level" property="teachingLevel" jdbcType="VARCHAR" />
+    <result column="professional_qualification" property="professionalQualification" jdbcType="VARCHAR" />
+    <result column="time_of_evaluation" property="timeOfEvaluation" jdbcType="VARCHAR" />
+    <result column="detailed_evaluation" property="detailedEvaluation" jdbcType="VARCHAR" />
+    <result column="full_time_teacher" property="fullTimeTeacher" jdbcType="VARCHAR" />
+    <result column="backbone_teacher_level" property="backboneTeacherLevel" jdbcType="VARCHAR" />
+    <result column="backbone_teacher_date" property="backboneTeacherDate" jdbcType="VARCHAR" />
+    <result column="class_headmaster" property="classHeadmaster" jdbcType="CHAR" />
+    <result column="class_headmaster_year" property="classHeadmasterYear" jdbcType="VARCHAR" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="school_campus" property="schoolCampus" jdbcType="VARCHAR" />
+    <result column="identity" property="identity" jdbcType="VARCHAR" />
+    <result column="come_school_date" property="comeSchoolDate" jdbcType="TIMESTAMP" />
+    <result column="school_age" property="schoolAge" jdbcType="VARCHAR" />
+    <result column="participate_work_date" property="participateWorkDate" jdbcType="VARCHAR" />
+    <result column="seniority_age" property="seniorityAge" jdbcType="VARCHAR" />
+    <result column="work_date" property="workDate" jdbcType="VARCHAR" />
+    <result column="continuity_age" property="continuityAge" jdbcType="VARCHAR" />
+    <result column="start_of_the" property="startOfThe" jdbcType="VARCHAR" />
+    <result column="appointment_year" property="appointmentYear" jdbcType="VARCHAR" />
+    <result column="contract_end_time" property="contractEndTime" jdbcType="VARCHAR" />
+    <result column="groupings" property="groupings" jdbcType="VARCHAR" />
+    <result column="teaching_section" property="teachingSection" jdbcType="VARCHAR" />
+    <result column="no_time_learning" property="noTimeLearning" jdbcType="VARCHAR" />
+    <result column="deduction_of_work" property="deductionOfWork" jdbcType="VARCHAR" />
+    <result column="deduction_of_work_reason" property="deductionOfWorkReason" jdbcType="VARCHAR" />
+    <result column="be_engaged" property="beEngaged" jdbcType="CHAR" />
+    <result column="grade_group" property="gradeGroup" jdbcType="VARCHAR" />
+    <result column="grade_group_code" property="gradeGroupCode" jdbcType="VARCHAR" />
+    <result column="professional_technology" property="professionalTechnology" jdbcType="VARCHAR" />
+    <result column="professional_technology_date" property="professionalTechnologyDate" jdbcType="VARCHAR" />
+    <result column="employment" property="employment" jdbcType="VARCHAR" />
+    <result column="employment_date" property="employmentDate" jdbcType="VARCHAR" />
+    <result column="junior_job" property="juniorJob" jdbcType="VARCHAR" />
+    <result column="junior_job_date" property="juniorJobDate" jdbcType="VARCHAR" />
+    <result column="teachers_congress" property="teachersCongress" jdbcType="CHAR" />
+    <result column="camp_family" property="campFamily" jdbcType="CHAR" />
+    <result column="teacher_card_code" property="teacherCardCode" jdbcType="VARCHAR" />
+    <result column="teacher_kind" property="teacherKind" jdbcType="VARCHAR" />
+    <result column="teacher_kind_subject" property="teacherKindSubject" jdbcType="VARCHAR" />
+    <result column="mental_health_level" property="mentalHealthLevel" jdbcType="VARCHAR" />
+    <result column="teacher_winning_type" property="teacherWinningType" jdbcType="VARCHAR" />
+    <result column="teacher_winning_date" property="teacherWinningDate" jdbcType="TIMESTAMP" />
+    <result column="teacher_winning_content" property="teacherWinningContent" jdbcType="VARCHAR" />
+    <result column="academic_work" property="academicWork" jdbcType="VARCHAR" />
+    <result column="academic_work_date" property="academicWorkDate" jdbcType="TIMESTAMP" />
+    <result column="work_experience" property="workExperience" jdbcType="VARCHAR" />
+    <result column="week_class" property="weekClass" jdbcType="VARCHAR" />
+    <result column="annual_assessment" property="annualAssessment" jdbcType="VARCHAR" />
+    <result column="the_assessment" property="theAssessment" jdbcType="VARCHAR" />
+    <result column="skill_certificate" property="skillCertificate" jdbcType="VARCHAR" />
+    <result column="committee_member" property="committeeMember" jdbcType="CHAR" />
+    <result column="record_of_teacher_work" property="recordOfTeacherWork" jdbcType="VARCHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="is_two_shoulders" property="isTwoShoulders" jdbcType="CHAR" />
+    <result column="staff_source" property="staffSource" jdbcType="VARCHAR" />
+    <result column="post" property="post" jdbcType="VARCHAR" />
+    <result column="post_attach" property="postAttach" jdbcType="VARCHAR" />
+    <result column="admin_state" property="adminState" jdbcType="VARCHAR"></result>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    admin_info_id, admin_id, admin_nick, admin_uuid, admin_head, birth_date, full_name, 
+    english_name, staff_number, mobile_phone, id_card_no, party_time, political_outlook, 
+    mail_box, home_address, highest_school_system, overseas_chinese, gender, residential_telephone, 
+    family_zip_code, name_used_before, emergency_contact, nation, place_of_origin, spoken_english, 
+    spoken_english_date, spoken_english_number, computer_level, computer_level_date, 
+    computer_level_number, putonghua_grade, putonghua_grade_date, putonghua_grade_number, 
+    highest_education, highest_major, highest_academic_degree, academic_degree_type, 
+    academic_degree_number, highest_graduate_institutions, highest_graduate_institutions_date, 
+    foreign_language, foreign_language_level, primary_education, primary_major, primary_school_system, 
+    primary_graduate_institutions, primary_graduate_institutions_date, marriage, remarks, 
+    the_department, office_phone, master_duties, attach_duties, teaching_and_research, 
+    substantive_level, post_wage, salary_scale, post_wage_attach, salary_scale_attach,
+    teaching_subject, expertise_type, teaching_level, professional_qualification, time_of_evaluation, 
+    detailed_evaluation, full_time_teacher, backbone_teacher_level, backbone_teacher_date, 
+    class_headmaster, class_headmaster_year, school_id, school_campus, identity, come_school_date, 
+    school_age, participate_work_date, seniority_age, work_date, continuity_age, start_of_the, 
+    appointment_year, contract_end_time, groupings, teaching_section, no_time_learning, 
+    deduction_of_work, deduction_of_work_reason, be_engaged, grade_group, grade_group_code, 
+    professional_technology, professional_technology_date, employment, employment_date, 
+    junior_job, junior_job_date, teachers_congress, camp_family, teacher_card_code, teacher_kind, 
+    teacher_kind_subject, mental_health_level, teacher_winning_type, teacher_winning_date, 
+    teacher_winning_content, academic_work, academic_work_date, work_experience, week_class, 
+    annual_assessment, the_assessment, skill_certificate, committee_member, record_of_teacher_work, 
+    founder_id, create_time, operator_id, delete_time, state, is_two_shoulders, staff_source
+    post,post_attach
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from admin_info
+    where admin_info_id = #{adminInfoId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from admin_info
+    where admin_info_id = #{adminInfoId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.AdminInfo" >
+    insert into admin_info (admin_info_id, admin_id, admin_nick, 
+      admin_uuid, admin_head, birth_date, 
+      full_name, english_name, staff_number, 
+      mobile_phone, id_card_no, party_time, 
+      political_outlook, mail_box, home_address, 
+      highest_school_system, overseas_chinese, gender, 
+      residential_telephone, family_zip_code, name_used_before, 
+      emergency_contact, nation, place_of_origin, 
+      spoken_english, spoken_english_date, spoken_english_number, 
+      computer_level, computer_level_date, computer_level_number, 
+      putonghua_grade, putonghua_grade_date, putonghua_grade_number, 
+      highest_education, highest_major, highest_academic_degree, 
+      academic_degree_type, academic_degree_number, 
+      highest_graduate_institutions, highest_graduate_institutions_date, 
+      foreign_language, foreign_language_level, 
+      primary_education, primary_major, primary_school_system, 
+      primary_graduate_institutions, primary_graduate_institutions_date, 
+      marriage, remarks, the_department, 
+      office_phone, master_duties, attach_duties, 
+      teaching_and_research, 
+      substantive_level,
+      post_wage, salary_scale, post_wage_attach, 
+      salary_scale_attach, teaching_subject, expertise_type, 
+      teaching_level, professional_qualification, 
+      time_of_evaluation, detailed_evaluation, full_time_teacher, 
+      backbone_teacher_level, backbone_teacher_date, 
+      class_headmaster, class_headmaster_year, school_id, 
+      school_campus, identity, come_school_date, 
+      school_age, participate_work_date, seniority_age, 
+      work_date, continuity_age, start_of_the, 
+      appointment_year, contract_end_time, groupings, 
+      teaching_section, no_time_learning, deduction_of_work, 
+      deduction_of_work_reason, be_engaged, grade_group, 
+      grade_group_code, professional_technology, 
+      professional_technology_date, employment, 
+      employment_date, junior_job, junior_job_date, 
+      teachers_congress, camp_family, teacher_card_code, 
+      teacher_kind, teacher_kind_subject, mental_health_level, 
+      teacher_winning_type, teacher_winning_date, 
+      teacher_winning_content, academic_work, academic_work_date, 
+      work_experience, week_class, annual_assessment, 
+      the_assessment, skill_certificate, committee_member, 
+      record_of_teacher_work, founder_id, create_time, 
+      operator_id, delete_time, state, 
+      is_two_shoulders, staff_source,post,post_attach)
+    values (#{adminInfoId,jdbcType=BIGINT}, #{adminId,jdbcType=BIGINT}, #{adminNick,jdbcType=VARCHAR}, 
+      #{adminUuid,jdbcType=VARCHAR}, #{adminHead,jdbcType=VARCHAR}, #{birthDate,jdbcType=TIMESTAMP}, 
+      #{fullName,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, #{staffNumber,jdbcType=VARCHAR}, 
+      #{mobilePhone,jdbcType=VARCHAR}, #{idCardNo,jdbcType=VARCHAR}, #{partyTime,jdbcType=VARCHAR}, 
+      #{politicalOutlook,jdbcType=CHAR}, #{mailBox,jdbcType=VARCHAR}, #{homeAddress,jdbcType=VARCHAR}, 
+      #{highestSchoolSystem,jdbcType=VARCHAR}, #{overseasChinese,jdbcType=CHAR}, #{gender,jdbcType=CHAR}, 
+      #{residentialTelephone,jdbcType=VARCHAR}, #{familyZipCode,jdbcType=VARCHAR}, #{nameUsedBefore,jdbcType=VARCHAR}, 
+      #{emergencyContact,jdbcType=VARCHAR}, #{nation,jdbcType=VARCHAR}, #{placeOfOrigin,jdbcType=VARCHAR}, 
+      #{spokenEnglish,jdbcType=VARCHAR}, #{spokenEnglishDate,jdbcType=VARCHAR}, #{spokenEnglishNumber,jdbcType=VARCHAR}, 
+      #{computerLevel,jdbcType=VARCHAR}, #{computerLevelDate,jdbcType=VARCHAR}, #{computerLevelNumber,jdbcType=VARCHAR}, 
+      #{putonghuaGrade,jdbcType=VARCHAR}, #{putonghuaGradeDate,jdbcType=VARCHAR}, #{putonghuaGradeNumber,jdbcType=VARCHAR}, 
+      #{highestEducation,jdbcType=CHAR}, #{highestMajor,jdbcType=VARCHAR}, #{highestAcademicDegree,jdbcType=VARCHAR}, 
+      #{academicDegreeType,jdbcType=VARCHAR}, #{academicDegreeNumber,jdbcType=VARCHAR}, 
+      #{highestGraduateInstitutions,jdbcType=VARCHAR}, #{highestGraduateInstitutionsDate,jdbcType=VARCHAR}, 
+      #{foreignLanguage,jdbcType=VARCHAR}, #{foreignLanguageLevel,jdbcType=VARCHAR}, 
+      #{primaryEducation,jdbcType=VARCHAR}, #{primaryMajor,jdbcType=VARCHAR}, #{primarySchoolSystem,jdbcType=VARCHAR}, 
+      #{primaryGraduateInstitutions,jdbcType=VARCHAR}, #{primaryGraduateInstitutionsDate,jdbcType=VARCHAR}, 
+      #{marriage,jdbcType=CHAR}, #{remarks,jdbcType=VARCHAR}, #{theDepartment,jdbcType=VARCHAR}, 
+      #{officePhone,jdbcType=VARCHAR}, #{masterDuties,jdbcType=VARCHAR}, #{attachDuties,jdbcType=VARCHAR}, 
+      #{teachingAndResearch,jdbcType=VARCHAR}, #{substantiveLevel,jdbcType=VARCHAR},
+      #{postWage,jdbcType=VARCHAR}, #{salaryScale,jdbcType=VARCHAR}, #{postWageAttach,jdbcType=VARCHAR}, 
+      #{salaryScaleAttach,jdbcType=VARCHAR}, #{teachingSubject,jdbcType=VARCHAR}, #{expertiseType,jdbcType=VARCHAR}, 
+      #{teachingLevel,jdbcType=VARCHAR}, #{professionalQualification,jdbcType=VARCHAR}, 
+      #{timeOfEvaluation,jdbcType=VARCHAR}, #{detailedEvaluation,jdbcType=VARCHAR}, #{fullTimeTeacher,jdbcType=VARCHAR}, 
+      #{backboneTeacherLevel,jdbcType=VARCHAR}, #{backboneTeacherDate,jdbcType=VARCHAR}, 
+      #{classHeadmaster,jdbcType=CHAR}, #{classHeadmasterYear,jdbcType=VARCHAR}, #{schoolId,jdbcType=BIGINT}, 
+      #{schoolCampus,jdbcType=VARCHAR}, #{identity,jdbcType=VARCHAR}, #{comeSchoolDate,jdbcType=TIMESTAMP}, 
+      #{schoolAge,jdbcType=VARCHAR}, #{participateWorkDate,jdbcType=VARCHAR}, #{seniorityAge,jdbcType=VARCHAR}, 
+      #{workDate,jdbcType=VARCHAR}, #{continuityAge,jdbcType=VARCHAR}, #{startOfThe,jdbcType=VARCHAR}, 
+      #{appointmentYear,jdbcType=VARCHAR}, #{contractEndTime,jdbcType=VARCHAR}, #{groupings,jdbcType=VARCHAR}, 
+      #{teachingSection,jdbcType=VARCHAR}, #{noTimeLearning,jdbcType=VARCHAR}, #{deductionOfWork,jdbcType=VARCHAR}, 
+      #{deductionOfWorkReason,jdbcType=VARCHAR}, #{beEngaged,jdbcType=CHAR}, #{gradeGroup,jdbcType=VARCHAR}, 
+      #{gradeGroupCode,jdbcType=VARCHAR}, #{professionalTechnology,jdbcType=VARCHAR}, 
+      #{professionalTechnologyDate,jdbcType=VARCHAR}, #{employment,jdbcType=VARCHAR}, 
+      #{employmentDate,jdbcType=VARCHAR}, #{juniorJob,jdbcType=VARCHAR}, #{juniorJobDate,jdbcType=VARCHAR}, 
+      #{teachersCongress,jdbcType=CHAR}, #{campFamily,jdbcType=CHAR}, #{teacherCardCode,jdbcType=VARCHAR}, 
+      #{teacherKind,jdbcType=VARCHAR}, #{teacherKindSubject,jdbcType=VARCHAR}, #{mentalHealthLevel,jdbcType=VARCHAR}, 
+      #{teacherWinningType,jdbcType=VARCHAR}, #{teacherWinningDate,jdbcType=TIMESTAMP}, 
+      #{teacherWinningContent,jdbcType=VARCHAR}, #{academicWork,jdbcType=VARCHAR}, #{academicWorkDate,jdbcType=TIMESTAMP}, 
+      #{workExperience,jdbcType=VARCHAR}, #{weekClass,jdbcType=VARCHAR}, #{annualAssessment,jdbcType=VARCHAR}, 
+      #{theAssessment,jdbcType=VARCHAR}, #{skillCertificate,jdbcType=VARCHAR}, #{committeeMember,jdbcType=CHAR}, 
+      #{recordOfTeacherWork,jdbcType=VARCHAR}, #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR}, 
+      #{isTwoShoulders,jdbcType=CHAR}, #{staffSource,jdbcType=VARCHAR},#{post,jdbcType=VARCHAR},
+      #{postAttach,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.AdminInfo" >
+    insert into admin_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adminInfoId != null" >
+        admin_info_id,
+      </if>
+      <if test="adminId != null" >
+        admin_id,
+      </if>
+      <if test="adminNick != null" >
+        admin_nick,
+      </if>
+      <if test="adminUuid != null" >
+        admin_uuid,
+      </if>
+      <if test="adminHead != null" >
+        admin_head,
+      </if>
+      <if test="birthDate != null" >
+        birth_date,
+      </if>
+      <if test="fullName != null" >
+        full_name,
+      </if>
+      <if test="englishName != null" >
+        english_name,
+      </if>
+      <if test="staffNumber != null" >
+        staff_number,
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone,
+      </if>
+      <if test="idCardNo != null" >
+        id_card_no,
+      </if>
+      <if test="partyTime != null" >
+        party_time,
+      </if>
+      <if test="politicalOutlook != null" >
+        political_outlook,
+      </if>
+      <if test="mailBox != null" >
+        mail_box,
+      </if>
+      <if test="homeAddress != null" >
+        home_address,
+      </if>
+      <if test="highestSchoolSystem != null" >
+        highest_school_system,
+      </if>
+      <if test="overseasChinese != null" >
+        overseas_chinese,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="residentialTelephone != null" >
+        residential_telephone,
+      </if>
+      <if test="familyZipCode != null" >
+        family_zip_code,
+      </if>
+      <if test="nameUsedBefore != null" >
+        name_used_before,
+      </if>
+      <if test="emergencyContact != null" >
+        emergency_contact,
+      </if>
+      <if test="nation != null" >
+        nation,
+      </if>
+      <if test="placeOfOrigin != null" >
+        place_of_origin,
+      </if>
+      <if test="spokenEnglish != null" >
+        spoken_english,
+      </if>
+      <if test="spokenEnglishDate != null" >
+        spoken_english_date,
+      </if>
+      <if test="spokenEnglishNumber != null" >
+        spoken_english_number,
+      </if>
+      <if test="computerLevel != null" >
+        computer_level,
+      </if>
+      <if test="computerLevelDate != null" >
+        computer_level_date,
+      </if>
+      <if test="computerLevelNumber != null" >
+        computer_level_number,
+      </if>
+      <if test="putonghuaGrade != null" >
+        putonghua_grade,
+      </if>
+      <if test="putonghuaGradeDate != null" >
+        putonghua_grade_date,
+      </if>
+      <if test="putonghuaGradeNumber != null" >
+        putonghua_grade_number,
+      </if>
+      <if test="highestEducation != null" >
+        highest_education,
+      </if>
+      <if test="highestMajor != null" >
+        highest_major,
+      </if>
+      <if test="highestAcademicDegree != null" >
+        highest_academic_degree,
+      </if>
+      <if test="academicDegreeType != null" >
+        academic_degree_type,
+      </if>
+      <if test="academicDegreeNumber != null" >
+        academic_degree_number,
+      </if>
+      <if test="highestGraduateInstitutions != null" >
+        highest_graduate_institutions,
+      </if>
+      <if test="highestGraduateInstitutionsDate != null" >
+        highest_graduate_institutions_date,
+      </if>
+      <if test="foreignLanguage != null" >
+        foreign_language,
+      </if>
+      <if test="foreignLanguageLevel != null" >
+        foreign_language_level,
+      </if>
+      <if test="primaryEducation != null" >
+        primary_education,
+      </if>
+      <if test="primaryMajor != null" >
+        primary_major,
+      </if>
+      <if test="primarySchoolSystem != null" >
+        primary_school_system,
+      </if>
+      <if test="primaryGraduateInstitutions != null" >
+        primary_graduate_institutions,
+      </if>
+      <if test="primaryGraduateInstitutionsDate != null" >
+        primary_graduate_institutions_date,
+      </if>
+      <if test="marriage != null" >
+        marriage,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="theDepartment != null" >
+        the_department,
+      </if>
+      <if test="officePhone != null" >
+        office_phone,
+      </if>
+      <if test="masterDuties != null" >
+        master_duties,
+      </if>
+      <if test="attachDuties != null" >
+        attach_duties,
+      </if>
+      <if test="teachingAndResearch != null" >
+        teaching_and_research,
+      </if>
+      <if test="substantiveLevel != null" >
+        substantive_level,
+      </if>
+      <if test="postWage != null" >
+        post_wage,
+      </if>
+      <if test="salaryScale != null" >
+        salary_scale,
+      </if>
+      <if test="postWageAttach != null" >
+        post_wage_attach,
+      </if>
+      <if test="salaryScaleAttach != null" >
+        salary_scale_attach,
+      </if>
+      <if test="teachingSubject != null" >
+        teaching_subject,
+      </if>
+      <if test="expertiseType != null" >
+        expertise_type,
+      </if>
+      <if test="teachingLevel != null" >
+        teaching_level,
+      </if>
+      <if test="professionalQualification != null" >
+        professional_qualification,
+      </if>
+      <if test="timeOfEvaluation != null" >
+        time_of_evaluation,
+      </if>
+      <if test="detailedEvaluation != null" >
+        detailed_evaluation,
+      </if>
+      <if test="fullTimeTeacher != null" >
+        full_time_teacher,
+      </if>
+      <if test="backboneTeacherLevel != null" >
+        backbone_teacher_level,
+      </if>
+      <if test="backboneTeacherDate != null" >
+        backbone_teacher_date,
+      </if>
+      <if test="classHeadmaster != null" >
+        class_headmaster,
+      </if>
+      <if test="classHeadmasterYear != null" >
+        class_headmaster_year,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="schoolCampus != null" >
+        school_campus,
+      </if>
+      <if test="identity != null" >
+        identity,
+      </if>
+      <if test="comeSchoolDate != null" >
+        come_school_date,
+      </if>
+      <if test="schoolAge != null" >
+        school_age,
+      </if>
+      <if test="participateWorkDate != null" >
+        participate_work_date,
+      </if>
+      <if test="seniorityAge != null" >
+        seniority_age,
+      </if>
+      <if test="workDate != null" >
+        work_date,
+      </if>
+      <if test="continuityAge != null" >
+        continuity_age,
+      </if>
+      <if test="startOfThe != null" >
+        start_of_the,
+      </if>
+      <if test="appointmentYear != null" >
+        appointment_year,
+      </if>
+      <if test="contractEndTime != null" >
+        contract_end_time,
+      </if>
+      <if test="groupings != null" >
+        groupings,
+      </if>
+      <if test="teachingSection != null" >
+        teaching_section,
+      </if>
+      <if test="noTimeLearning != null" >
+        no_time_learning,
+      </if>
+      <if test="deductionOfWork != null" >
+        deduction_of_work,
+      </if>
+      <if test="deductionOfWorkReason != null" >
+        deduction_of_work_reason,
+      </if>
+      <if test="beEngaged != null" >
+        be_engaged,
+      </if>
+      <if test="gradeGroup != null" >
+        grade_group,
+      </if>
+      <if test="gradeGroupCode != null" >
+        grade_group_code,
+      </if>
+      <if test="professionalTechnology != null" >
+        professional_technology,
+      </if>
+      <if test="professionalTechnologyDate != null" >
+        professional_technology_date,
+      </if>
+      <if test="employment != null" >
+        employment,
+      </if>
+      <if test="employmentDate != null" >
+        employment_date,
+      </if>
+      <if test="juniorJob != null" >
+        junior_job,
+      </if>
+      <if test="juniorJobDate != null" >
+        junior_job_date,
+      </if>
+      <if test="teachersCongress != null" >
+        teachers_congress,
+      </if>
+      <if test="campFamily != null" >
+        camp_family,
+      </if>
+      <if test="teacherCardCode != null" >
+        teacher_card_code,
+      </if>
+      <if test="teacherKind != null" >
+        teacher_kind,
+      </if>
+      <if test="teacherKindSubject != null" >
+        teacher_kind_subject,
+      </if>
+      <if test="mentalHealthLevel != null" >
+        mental_health_level,
+      </if>
+      <if test="teacherWinningType != null" >
+        teacher_winning_type,
+      </if>
+      <if test="teacherWinningDate != null" >
+        teacher_winning_date,
+      </if>
+      <if test="teacherWinningContent != null" >
+        teacher_winning_content,
+      </if>
+      <if test="academicWork != null" >
+        academic_work,
+      </if>
+      <if test="academicWorkDate != null" >
+        academic_work_date,
+      </if>
+      <if test="workExperience != null" >
+        work_experience,
+      </if>
+      <if test="weekClass != null" >
+        week_class,
+      </if>
+      <if test="annualAssessment != null" >
+        annual_assessment,
+      </if>
+      <if test="theAssessment != null" >
+        the_assessment,
+      </if>
+      <if test="skillCertificate != null" >
+        skill_certificate,
+      </if>
+      <if test="committeeMember != null" >
+        committee_member,
+      </if>
+      <if test="recordOfTeacherWork != null" >
+        record_of_teacher_work,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="isTwoShoulders != null" >
+        is_two_shoulders,
+      </if>
+      <if test="staffSource != null" >
+        staff_source,
+      </if>
+      <if test="post != null" >
+        post,
+      </if>
+      <if test="postAttach != null" >
+        post_attach,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adminInfoId != null" >
+        #{adminInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="adminId != null" >
+        #{adminId,jdbcType=BIGINT},
+      </if>
+      <if test="adminNick != null" >
+        #{adminNick,jdbcType=VARCHAR},
+      </if>
+      <if test="adminUuid != null" >
+        #{adminUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="adminHead != null" >
+        #{adminHead,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDate != null" >
+        #{birthDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fullName != null" >
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffNumber != null" >
+        #{staffNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardNo != null" >
+        #{idCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="partyTime != null" >
+        #{partyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalOutlook != null" >
+        #{politicalOutlook,jdbcType=CHAR},
+      </if>
+      <if test="mailBox != null" >
+        #{mailBox,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="highestSchoolSystem != null" >
+        #{highestSchoolSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="overseasChinese != null" >
+        #{overseasChinese,jdbcType=CHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="residentialTelephone != null" >
+        #{residentialTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="familyZipCode != null" >
+        #{familyZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nameUsedBefore != null" >
+        #{nameUsedBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="emergencyContact != null" >
+        #{emergencyContact,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null" >
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="placeOfOrigin != null" >
+        #{placeOfOrigin,jdbcType=VARCHAR},
+      </if>
+      <if test="spokenEnglish != null" >
+        #{spokenEnglish,jdbcType=VARCHAR},
+      </if>
+      <if test="spokenEnglishDate != null" >
+        #{spokenEnglishDate,jdbcType=VARCHAR},
+      </if>
+      <if test="spokenEnglishNumber != null" >
+        #{spokenEnglishNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="computerLevel != null" >
+        #{computerLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="computerLevelDate != null" >
+        #{computerLevelDate,jdbcType=VARCHAR},
+      </if>
+      <if test="computerLevelNumber != null" >
+        #{computerLevelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="putonghuaGrade != null" >
+        #{putonghuaGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="putonghuaGradeDate != null" >
+        #{putonghuaGradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="putonghuaGradeNumber != null" >
+        #{putonghuaGradeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="highestEducation != null" >
+        #{highestEducation,jdbcType=CHAR},
+      </if>
+      <if test="highestMajor != null" >
+        #{highestMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="highestAcademicDegree != null" >
+        #{highestAcademicDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="academicDegreeType != null" >
+        #{academicDegreeType,jdbcType=VARCHAR},
+      </if>
+      <if test="academicDegreeNumber != null" >
+        #{academicDegreeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="highestGraduateInstitutions != null" >
+        #{highestGraduateInstitutions,jdbcType=VARCHAR},
+      </if>
+      <if test="highestGraduateInstitutionsDate != null" >
+        #{highestGraduateInstitutionsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="foreignLanguage != null" >
+        #{foreignLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="foreignLanguageLevel != null" >
+        #{foreignLanguageLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryEducation != null" >
+        #{primaryEducation,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryMajor != null" >
+        #{primaryMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="primarySchoolSystem != null" >
+        #{primarySchoolSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryGraduateInstitutions != null" >
+        #{primaryGraduateInstitutions,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryGraduateInstitutionsDate != null" >
+        #{primaryGraduateInstitutionsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null" >
+        #{marriage,jdbcType=CHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="theDepartment != null" >
+        #{theDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="officePhone != null" >
+        #{officePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="masterDuties != null" >
+        #{masterDuties,jdbcType=VARCHAR},
+      </if>
+      <if test="attachDuties != null" >
+        #{attachDuties,jdbcType=VARCHAR},
+      </if>
+      <if test="teachingAndResearch != null" >
+        #{teachingAndResearch,jdbcType=VARCHAR},
+      </if>
+      <if test="substantiveLevel != null" >
+        #{
+substantiveLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="postWage != null" >
+        #{postWage,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryScale != null" >
+        #{salaryScale,jdbcType=VARCHAR},
+      </if>
+      <if test="postWageAttach != null" >
+        #{postWageAttach,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryScaleAttach != null" >
+        #{salaryScaleAttach,jdbcType=VARCHAR},
+      </if>
+      <if test="teachingSubject != null" >
+        #{teachingSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="expertiseType != null" >
+        #{expertiseType,jdbcType=VARCHAR},
+      </if>
+      <if test="teachingLevel != null" >
+        #{teachingLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="professionalQualification != null" >
+        #{professionalQualification,jdbcType=VARCHAR},
+      </if>
+      <if test="timeOfEvaluation != null" >
+        #{timeOfEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedEvaluation != null" >
+        #{detailedEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="fullTimeTeacher != null" >
+        #{fullTimeTeacher,jdbcType=VARCHAR},
+      </if>
+      <if test="backboneTeacherLevel != null" >
+        #{backboneTeacherLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="backboneTeacherDate != null" >
+        #{backboneTeacherDate,jdbcType=VARCHAR},
+      </if>
+      <if test="classHeadmaster != null" >
+        #{classHeadmaster,jdbcType=CHAR},
+      </if>
+      <if test="classHeadmasterYear != null" >
+        #{classHeadmasterYear,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolCampus != null" >
+        #{schoolCampus,jdbcType=VARCHAR},
+      </if>
+      <if test="identity != null" >
+        #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="comeSchoolDate != null" >
+        #{comeSchoolDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="schoolAge != null" >
+        #{schoolAge,jdbcType=VARCHAR},
+      </if>
+      <if test="participateWorkDate != null" >
+        #{participateWorkDate,jdbcType=VARCHAR},
+      </if>
+      <if test="seniorityAge != null" >
+        #{seniorityAge,jdbcType=VARCHAR},
+      </if>
+      <if test="workDate != null" >
+        #{workDate,jdbcType=VARCHAR},
+      </if>
+      <if test="continuityAge != null" >
+        #{continuityAge,jdbcType=VARCHAR},
+      </if>
+      <if test="startOfThe != null" >
+        #{startOfThe,jdbcType=VARCHAR},
+      </if>
+      <if test="appointmentYear != null" >
+        #{appointmentYear,jdbcType=VARCHAR},
+      </if>
+      <if test="contractEndTime != null" >
+        #{contractEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="groupings != null" >
+        #{groupings,jdbcType=VARCHAR},
+      </if>
+      <if test="teachingSection != null" >
+        #{teachingSection,jdbcType=VARCHAR},
+      </if>
+      <if test="noTimeLearning != null" >
+        #{noTimeLearning,jdbcType=VARCHAR},
+      </if>
+      <if test="deductionOfWork != null" >
+        #{deductionOfWork,jdbcType=VARCHAR},
+      </if>
+      <if test="deductionOfWorkReason != null" >
+        #{deductionOfWorkReason,jdbcType=VARCHAR},
+      </if>
+      <if test="beEngaged != null" >
+        #{beEngaged,jdbcType=CHAR},
+      </if>
+      <if test="gradeGroup != null" >
+        #{gradeGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeGroupCode != null" >
+        #{gradeGroupCode,jdbcType=VARCHAR},
+      </if>
+      <if test="professionalTechnology != null" >
+        #{professionalTechnology,jdbcType=VARCHAR},
+      </if>
+      <if test="professionalTechnologyDate != null" >
+        #{professionalTechnologyDate,jdbcType=VARCHAR},
+      </if>
+      <if test="employment != null" >
+        #{employment,jdbcType=VARCHAR},
+      </if>
+      <if test="employmentDate != null" >
+        #{employmentDate,jdbcType=VARCHAR},
+      </if>
+      <if test="juniorJob != null" >
+        #{juniorJob,jdbcType=VARCHAR},
+      </if>
+      <if test="juniorJobDate != null" >
+        #{juniorJobDate,jdbcType=VARCHAR},
+      </if>
+      <if test="teachersCongress != null" >
+        #{teachersCongress,jdbcType=CHAR},
+      </if>
+      <if test="campFamily != null" >
+        #{campFamily,jdbcType=CHAR},
+      </if>
+      <if test="teacherCardCode != null" >
+        #{teacherCardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherKind != null" >
+        #{teacherKind,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherKindSubject != null" >
+        #{teacherKindSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="mentalHealthLevel != null" >
+        #{mentalHealthLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherWinningType != null" >
+        #{teacherWinningType,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherWinningDate != null" >
+        #{teacherWinningDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="teacherWinningContent != null" >
+        #{teacherWinningContent,jdbcType=VARCHAR},
+      </if>
+      <if test="academicWork != null" >
+        #{academicWork,jdbcType=VARCHAR},
+      </if>
+      <if test="academicWorkDate != null" >
+        #{academicWorkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workExperience != null" >
+        #{workExperience,jdbcType=VARCHAR},
+      </if>
+      <if test="weekClass != null" >
+        #{weekClass,jdbcType=VARCHAR},
+      </if>
+      <if test="annualAssessment != null" >
+        #{annualAssessment,jdbcType=VARCHAR},
+      </if>
+      <if test="theAssessment != null" >
+        #{theAssessment,jdbcType=VARCHAR},
+      </if>
+      <if test="skillCertificate != null" >
+        #{skillCertificate,jdbcType=VARCHAR},
+      </if>
+      <if test="committeeMember != null" >
+        #{committeeMember,jdbcType=CHAR},
+      </if>
+      <if test="recordOfTeacherWork != null" >
+        #{recordOfTeacherWork,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+      <if test="isTwoShoulders != null" >
+        #{isTwoShoulders,jdbcType=CHAR},
+      </if>
+      <if test="staffSource != null" >
+        #{staffSource,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null" >
+        #{post,jdbcType=VARCHAR},
+      </if>
+      <if test="postAttach != null" >
+        #{postAttach,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据adminId修改adminInfo信息-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.AdminInfo" >
+    update admin_info
+    <set >
+      <if test="adminId != null" >
+        admin_id = #{adminId,jdbcType=BIGINT},
+      </if>
+      <if test="adminNick != null" >
+        admin_nick = #{adminNick,jdbcType=VARCHAR},
+      </if>
+      <if test="adminUuid != null" >
+        admin_uuid = #{adminUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="adminHead != null" >
+        admin_head = #{adminHead,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDate != null" >
+        birth_date = #{birthDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        english_name = #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffNumber != null" >
+        staff_number = #{staffNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardNo != null" >
+        id_card_no = #{idCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="partyTime != null" >
+        party_time = #{partyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalOutlook != null" >
+        political_outlook = #{politicalOutlook,jdbcType=CHAR},
+      </if>
+      <if test="mailBox != null" >
+        mail_box = #{mailBox,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        home_address = #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="highestSchoolSystem != null" >
+        highest_school_system = #{highestSchoolSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="overseasChinese != null" >
+        overseas_chinese = #{overseasChinese,jdbcType=CHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="residentialTelephone != null" >
+        residential_telephone = #{residentialTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="familyZipCode != null" >
+        family_zip_code = #{familyZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nameUsedBefore != null" >
+        name_used_before = #{nameUsedBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="emergencyContact != null" >
+        emergency_contact = #{emergencyContact,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null" >
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="placeOfOrigin != null" >
+        place_of_origin = #{placeOfOrigin,jdbcType=VARCHAR},
+      </if>
+      <if test="spokenEnglish != null" >
+        spoken_english = #{spokenEnglish,jdbcType=VARCHAR},
+      </if>
+      <if test="spokenEnglishDate != null" >
+        spoken_english_date = #{spokenEnglishDate,jdbcType=VARCHAR},
+      </if>
+      <if test="spokenEnglishNumber != null" >
+        spoken_english_number = #{spokenEnglishNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="computerLevel != null" >
+        computer_level = #{computerLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="computerLevelDate != null" >
+        computer_level_date = #{computerLevelDate,jdbcType=VARCHAR},
+      </if>
+      <if test="computerLevelNumber != null" >
+        computer_level_number = #{computerLevelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="putonghuaGrade != null" >
+        putonghua_grade = #{putonghuaGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="putonghuaGradeDate != null" >
+        putonghua_grade_date = #{putonghuaGradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="putonghuaGradeNumber != null" >
+        putonghua_grade_number = #{putonghuaGradeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="highestEducation != null" >
+        highest_education = #{highestEducation,jdbcType=CHAR},
+      </if>
+      <if test="highestMajor != null" >
+        highest_major = #{highestMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="highestAcademicDegree != null" >
+        highest_academic_degree = #{highestAcademicDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="academicDegreeType != null" >
+        academic_degree_type = #{academicDegreeType,jdbcType=VARCHAR},
+      </if>
+      <if test="academicDegreeNumber != null" >
+        academic_degree_number = #{academicDegreeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="highestGraduateInstitutions != null" >
+        highest_graduate_institutions = #{highestGraduateInstitutions,jdbcType=VARCHAR},
+      </if>
+      <if test="highestGraduateInstitutionsDate != null" >
+        highest_graduate_institutions_date = #{highestGraduateInstitutionsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="foreignLanguage != null" >
+        foreign_language = #{foreignLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="foreignLanguageLevel != null" >
+        foreign_language_level = #{foreignLanguageLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryEducation != null" >
+        primary_education = #{primaryEducation,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryMajor != null" >
+        primary_major = #{primaryMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="primarySchoolSystem != null" >
+        primary_school_system = #{primarySchoolSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryGraduateInstitutions != null" >
+        primary_graduate_institutions = #{primaryGraduateInstitutions,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryGraduateInstitutionsDate != null" >
+        primary_graduate_institutions_date = #{primaryGraduateInstitutionsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null" >
+        marriage = #{marriage,jdbcType=CHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="theDepartment != null" >
+        the_department = #{theDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="officePhone != null" >
+        office_phone = #{officePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="masterDuties != null" >
+        master_duties = #{masterDuties,jdbcType=VARCHAR},
+      </if>
+      <if test="attachDuties != null" >
+        attach_duties = #{attachDuties,jdbcType=VARCHAR},
+      </if>
+      <if test="teachingAndResearch != null" >
+        teaching_and_research = #{teachingAndResearch,jdbcType=VARCHAR},
+      </if>
+      <if test="substantiveLevel != null" >
+        substantive_level = #{substantiveLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="postWage != null" >
+        post_wage = #{postWage,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryScale != null" >
+        salary_scale = #{salaryScale,jdbcType=VARCHAR},
+      </if>
+      <if test="postWageAttach != null" >
+        post_wage_attach = #{postWageAttach,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryScaleAttach != null" >
+        salary_scale_attach = #{salaryScaleAttach,jdbcType=VARCHAR},
+      </if>
+      <if test="teachingSubject != null" >
+        teaching_subject = #{teachingSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="expertiseType != null" >
+        expertise_type = #{expertiseType,jdbcType=VARCHAR},
+      </if>
+      <if test="teachingLevel != null" >
+        teaching_level = #{teachingLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="professionalQualification != null" >
+        professional_qualification = #{professionalQualification,jdbcType=VARCHAR},
+      </if>
+      <if test="timeOfEvaluation != null" >
+        time_of_evaluation = #{timeOfEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedEvaluation != null" >
+        detailed_evaluation = #{detailedEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="fullTimeTeacher != null" >
+        full_time_teacher = #{fullTimeTeacher,jdbcType=VARCHAR},
+      </if>
+      <if test="backboneTeacherLevel != null" >
+        backbone_teacher_level = #{backboneTeacherLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="backboneTeacherDate != null" >
+        backbone_teacher_date = #{backboneTeacherDate,jdbcType=VARCHAR},
+      </if>
+      <if test="classHeadmaster != null" >
+        class_headmaster = #{classHeadmaster,jdbcType=CHAR},
+      </if>
+      <if test="classHeadmasterYear != null" >
+        class_headmaster_year = #{classHeadmasterYear,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolCampus != null" >
+        school_campus = #{schoolCampus,jdbcType=VARCHAR},
+      </if>
+      <if test="identity != null" >
+        identity = #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="comeSchoolDate != null" >
+        come_school_date = #{comeSchoolDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="schoolAge != null" >
+        school_age = #{schoolAge,jdbcType=VARCHAR},
+      </if>
+      <if test="participateWorkDate != null" >
+        participate_work_date = #{participateWorkDate,jdbcType=VARCHAR},
+      </if>
+      <if test="seniorityAge != null" >
+        seniority_age = #{seniorityAge,jdbcType=VARCHAR},
+      </if>
+      <if test="workDate != null" >
+        work_date = #{workDate,jdbcType=VARCHAR},
+      </if>
+      <if test="continuityAge != null" >
+        continuity_age = #{continuityAge,jdbcType=VARCHAR},
+      </if>
+      <if test="startOfThe != null" >
+        start_of_the = #{startOfThe,jdbcType=VARCHAR},
+      </if>
+      <if test="appointmentYear != null" >
+        appointment_year = #{appointmentYear,jdbcType=VARCHAR},
+      </if>
+      <if test="contractEndTime != null" >
+        contract_end_time = #{contractEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="groupings != null" >
+        groupings = #{groupings,jdbcType=VARCHAR},
+      </if>
+      <if test="teachingSection != null" >
+        teaching_section = #{teachingSection,jdbcType=VARCHAR},
+      </if>
+      <if test="noTimeLearning != null" >
+        no_time_learning = #{noTimeLearning,jdbcType=VARCHAR},
+      </if>
+      <if test="deductionOfWork != null" >
+        deduction_of_work = #{deductionOfWork,jdbcType=VARCHAR},
+      </if>
+      <if test="deductionOfWorkReason != null" >
+        deduction_of_work_reason = #{deductionOfWorkReason,jdbcType=VARCHAR},
+      </if>
+      <if test="beEngaged != null" >
+        be_engaged = #{beEngaged,jdbcType=CHAR},
+      </if>
+      <if test="gradeGroup != null" >
+        grade_group = #{gradeGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeGroupCode != null" >
+        grade_group_code = #{gradeGroupCode,jdbcType=VARCHAR},
+      </if>
+      <if test="professionalTechnology != null" >
+        professional_technology = #{professionalTechnology,jdbcType=VARCHAR},
+      </if>
+      <if test="professionalTechnologyDate != null" >
+        professional_technology_date = #{professionalTechnologyDate,jdbcType=VARCHAR},
+      </if>
+      <if test="employment != null" >
+        employment = #{employment,jdbcType=VARCHAR},
+      </if>
+      <if test="employmentDate != null" >
+        employment_date = #{employmentDate,jdbcType=VARCHAR},
+      </if>
+      <if test="juniorJob != null" >
+        junior_job = #{juniorJob,jdbcType=VARCHAR},
+      </if>
+      <if test="juniorJobDate != null" >
+        junior_job_date = #{juniorJobDate,jdbcType=VARCHAR},
+      </if>
+      <if test="teachersCongress != null" >
+        teachers_congress = #{teachersCongress,jdbcType=CHAR},
+      </if>
+      <if test="campFamily != null" >
+        camp_family = #{campFamily,jdbcType=CHAR},
+      </if>
+      <if test="teacherCardCode != null" >
+        teacher_card_code = #{teacherCardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherKind != null" >
+        teacher_kind = #{teacherKind,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherKindSubject != null" >
+        teacher_kind_subject = #{teacherKindSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="mentalHealthLevel != null" >
+        mental_health_level = #{mentalHealthLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherWinningType != null" >
+        teacher_winning_type = #{teacherWinningType,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherWinningDate != null" >
+        teacher_winning_date = #{teacherWinningDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="teacherWinningContent != null" >
+        teacher_winning_content = #{teacherWinningContent,jdbcType=VARCHAR},
+      </if>
+      <if test="academicWork != null" >
+        academic_work = #{academicWork,jdbcType=VARCHAR},
+      </if>
+      <if test="academicWorkDate != null" >
+        academic_work_date = #{academicWorkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workExperience != null" >
+        work_experience = #{workExperience,jdbcType=VARCHAR},
+      </if>
+      <if test="weekClass != null" >
+        week_class = #{weekClass,jdbcType=VARCHAR},
+      </if>
+      <if test="annualAssessment != null" >
+        annual_assessment = #{annualAssessment,jdbcType=VARCHAR},
+      </if>
+      <if test="theAssessment != null" >
+        the_assessment = #{theAssessment,jdbcType=VARCHAR},
+      </if>
+      <if test="skillCertificate != null" >
+        skill_certificate = #{skillCertificate,jdbcType=VARCHAR},
+      </if>
+      <if test="committeeMember != null" >
+        committee_member = #{committeeMember,jdbcType=CHAR},
+      </if>
+      <if test="recordOfTeacherWork != null" >
+        record_of_teacher_work = #{recordOfTeacherWork,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="isTwoShoulders != null" >
+        is_two_shoulders = #{isTwoShoulders,jdbcType=CHAR},
+      </if>
+      <if test="staffSource != null" >
+        staff_source = #{staffSource,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null" >
+        post = #{post,jdbcType=VARCHAR},
+      </if>
+      <if test="postAttach != null" >
+        postAttach = #{postAttach,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where admin_id = #{adminId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.AdminInfo" >
+    update admin_info
+    set admin_id = #{adminId,jdbcType=BIGINT},
+      admin_nick = #{adminNick,jdbcType=VARCHAR},
+      admin_uuid = #{adminUuid,jdbcType=VARCHAR},
+      admin_head = #{adminHead,jdbcType=VARCHAR},
+      birth_date = #{birthDate,jdbcType=TIMESTAMP},
+      full_name = #{fullName,jdbcType=VARCHAR},
+      english_name = #{englishName,jdbcType=VARCHAR},
+      staff_number = #{staffNumber,jdbcType=VARCHAR},
+      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      id_card_no = #{idCardNo,jdbcType=VARCHAR},
+      party_time = #{partyTime,jdbcType=VARCHAR},
+      political_outlook = #{politicalOutlook,jdbcType=CHAR},
+      mail_box = #{mailBox,jdbcType=VARCHAR},
+      home_address = #{homeAddress,jdbcType=VARCHAR},
+      highest_school_system = #{highestSchoolSystem,jdbcType=VARCHAR},
+      overseas_chinese = #{overseasChinese,jdbcType=CHAR},
+      gender = #{gender,jdbcType=CHAR},
+      residential_telephone = #{residentialTelephone,jdbcType=VARCHAR},
+      family_zip_code = #{familyZipCode,jdbcType=VARCHAR},
+      name_used_before = #{nameUsedBefore,jdbcType=VARCHAR},
+      emergency_contact = #{emergencyContact,jdbcType=VARCHAR},
+      nation = #{nation,jdbcType=VARCHAR},
+      place_of_origin = #{placeOfOrigin,jdbcType=VARCHAR},
+      spoken_english = #{spokenEnglish,jdbcType=VARCHAR},
+      spoken_english_date = #{spokenEnglishDate,jdbcType=VARCHAR},
+      spoken_english_number = #{spokenEnglishNumber,jdbcType=VARCHAR},
+      computer_level = #{computerLevel,jdbcType=VARCHAR},
+      computer_level_date = #{computerLevelDate,jdbcType=VARCHAR},
+      computer_level_number = #{computerLevelNumber,jdbcType=VARCHAR},
+      putonghua_grade = #{putonghuaGrade,jdbcType=VARCHAR},
+      putonghua_grade_date = #{putonghuaGradeDate,jdbcType=VARCHAR},
+      putonghua_grade_number = #{putonghuaGradeNumber,jdbcType=VARCHAR},
+      highest_education = #{highestEducation,jdbcType=CHAR},
+      highest_major = #{highestMajor,jdbcType=VARCHAR},
+      highest_academic_degree = #{highestAcademicDegree,jdbcType=VARCHAR},
+      academic_degree_type = #{academicDegreeType,jdbcType=VARCHAR},
+      academic_degree_number = #{academicDegreeNumber,jdbcType=VARCHAR},
+      highest_graduate_institutions = #{highestGraduateInstitutions,jdbcType=VARCHAR},
+      highest_graduate_institutions_date = #{highestGraduateInstitutionsDate,jdbcType=VARCHAR},
+      foreign_language = #{foreignLanguage,jdbcType=VARCHAR},
+      foreign_language_level = #{foreignLanguageLevel,jdbcType=VARCHAR},
+      primary_education = #{primaryEducation,jdbcType=VARCHAR},
+      primary_major = #{primaryMajor,jdbcType=VARCHAR},
+      primary_school_system = #{primarySchoolSystem,jdbcType=VARCHAR},
+      primary_graduate_institutions = #{primaryGraduateInstitutions,jdbcType=VARCHAR},
+      primary_graduate_institutions_date = #{primaryGraduateInstitutionsDate,jdbcType=VARCHAR},
+      marriage = #{marriage,jdbcType=CHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      the_department = #{theDepartment,jdbcType=VARCHAR},
+      office_phone = #{officePhone,jdbcType=VARCHAR},
+      master_duties = #{masterDuties,jdbcType=VARCHAR},
+      attach_duties = #{attachDuties,jdbcType=VARCHAR},
+      teaching_and_research = #{teachingAndResearch,jdbcType=VARCHAR},
+      substantive_level = #{substantiveLevel,jdbcType=VARCHAR},
+      post_wage = #{postWage,jdbcType=VARCHAR},
+      salary_scale = #{salaryScale,jdbcType=VARCHAR},
+      post_wage_attach = #{postWageAttach,jdbcType=VARCHAR},
+      salary_scale_attach = #{salaryScaleAttach,jdbcType=VARCHAR},
+      teaching_subject = #{teachingSubject,jdbcType=VARCHAR},
+      expertise_type = #{expertiseType,jdbcType=VARCHAR},
+      teaching_level = #{teachingLevel,jdbcType=VARCHAR},
+      professional_qualification = #{professionalQualification,jdbcType=VARCHAR},
+      time_of_evaluation = #{timeOfEvaluation,jdbcType=VARCHAR},
+      detailed_evaluation = #{detailedEvaluation,jdbcType=VARCHAR},
+      full_time_teacher = #{fullTimeTeacher,jdbcType=VARCHAR},
+      backbone_teacher_level = #{backboneTeacherLevel,jdbcType=VARCHAR},
+      backbone_teacher_date = #{backboneTeacherDate,jdbcType=VARCHAR},
+      class_headmaster = #{classHeadmaster,jdbcType=CHAR},
+      class_headmaster_year = #{classHeadmasterYear,jdbcType=VARCHAR},
+      school_id = #{schoolId,jdbcType=BIGINT},
+      school_campus = #{schoolCampus,jdbcType=VARCHAR},
+      identity = #{identity,jdbcType=VARCHAR},
+      come_school_date = #{comeSchoolDate,jdbcType=TIMESTAMP},
+      school_age = #{schoolAge,jdbcType=VARCHAR},
+      participate_work_date = #{participateWorkDate,jdbcType=VARCHAR},
+      seniority_age = #{seniorityAge,jdbcType=VARCHAR},
+      work_date = #{workDate,jdbcType=VARCHAR},
+      continuity_age = #{continuityAge,jdbcType=VARCHAR},
+      start_of_the = #{startOfThe,jdbcType=VARCHAR},
+      appointment_year = #{appointmentYear,jdbcType=VARCHAR},
+      contract_end_time = #{contractEndTime,jdbcType=VARCHAR},
+      groupings = #{groupings,jdbcType=VARCHAR},
+      teaching_section = #{teachingSection,jdbcType=VARCHAR},
+      no_time_learning = #{noTimeLearning,jdbcType=VARCHAR},
+      deduction_of_work = #{deductionOfWork,jdbcType=VARCHAR},
+      deduction_of_work_reason = #{deductionOfWorkReason,jdbcType=VARCHAR},
+      be_engaged = #{beEngaged,jdbcType=CHAR},
+      grade_group = #{gradeGroup,jdbcType=VARCHAR},
+      grade_group_code = #{gradeGroupCode,jdbcType=VARCHAR},
+      professional_technology = #{professionalTechnology,jdbcType=VARCHAR},
+      professional_technology_date = #{professionalTechnologyDate,jdbcType=VARCHAR},
+      employment = #{employment,jdbcType=VARCHAR},
+      employment_date = #{employmentDate,jdbcType=VARCHAR},
+      junior_job = #{juniorJob,jdbcType=VARCHAR},
+      junior_job_date = #{juniorJobDate,jdbcType=VARCHAR},
+      teachers_congress = #{teachersCongress,jdbcType=CHAR},
+      camp_family = #{campFamily,jdbcType=CHAR},
+      teacher_card_code = #{teacherCardCode,jdbcType=VARCHAR},
+      teacher_kind = #{teacherKind,jdbcType=VARCHAR},
+      teacher_kind_subject = #{teacherKindSubject,jdbcType=VARCHAR},
+      mental_health_level = #{mentalHealthLevel,jdbcType=VARCHAR},
+      teacher_winning_type = #{teacherWinningType,jdbcType=VARCHAR},
+      teacher_winning_date = #{teacherWinningDate,jdbcType=TIMESTAMP},
+      teacher_winning_content = #{teacherWinningContent,jdbcType=VARCHAR},
+      academic_work = #{academicWork,jdbcType=VARCHAR},
+      academic_work_date = #{academicWorkDate,jdbcType=TIMESTAMP},
+      work_experience = #{workExperience,jdbcType=VARCHAR},
+      week_class = #{weekClass,jdbcType=VARCHAR},
+      annual_assessment = #{annualAssessment,jdbcType=VARCHAR},
+      the_assessment = #{theAssessment,jdbcType=VARCHAR},
+      skill_certificate = #{skillCertificate,jdbcType=VARCHAR},
+      committee_member = #{committeeMember,jdbcType=CHAR},
+      record_of_teacher_work = #{recordOfTeacherWork,jdbcType=VARCHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR},
+      is_two_shoulders = #{isTwoShoulders,jdbcType=CHAR},
+      staff_source = #{staffSource,jdbcType=VARCHAR},
+      post = #{post,jdbcType=VARCHAR},
+      post_attach = #{postAttach,jdbcType=VARCHAR},
+    where admin_info_id = #{adminInfoId,jdbcType=BIGINT}
+  </update>
+  <!--id, admin_id 姓名，身份证号，教职工编号，出生年月，性别，手机号-->
+  <select id="selectByDepartAndName" parameterType="com.cj.witbasics.entity.AdminInfo" resultMap="BaseResultMap" >
+
+    SELECT adi.admin_info_id, adi.admin_id, adi.full_name, adi.id_card_no ,
+    adi.staff_number, adi.birth_date, adi.gender, adi.mobile_phone
+    FROM admin_info adi INNER JOIN admin ON adi.admin_id=admin.id
+    <where>
+      adi.the_department=#{theDepartment,jdbcType=VARCHAR}
+      AND  adi.full_name LIKE concat(concat("%",#{fullName,jdbcType=VARCHAR}),"%") AND admin.admin_state=1
+
+    </where>
+  </select>
+  <select id="selectMaxStaffNumber" resultType="java.lang.Long">
+    SELECT MAX(admin_info_id) FROM admin_info
+  </select>
+  <insert id="insertAdminSelective" parameterType="com.cj.witbasics.entity.Admin" >
+    <selectKey order="AFTER" keyProperty="id" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="adminName != null" >
+        admin_name,
+      </if>
+      <if test="adminPass != null" >
+        admin_pass,
+      </if>
+      <if test="saltVal != null" >
+        salt_val,
+      </if>
+      <if test="adminType != null" >
+        admin_type,
+      </if>
+      <if test="adminState != null" >
+        admin_state,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="adminName != null" >
+        #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPass != null" >
+        #{adminPass,jdbcType=VARCHAR},
+      </if>
+      <if test="saltVal != null" >
+        #{saltVal,jdbcType=VARCHAR},
+      </if>
+      <if test="adminType != null" >
+        #{adminType,jdbcType=CHAR},
+      </if>
+      <if test="adminState != null" >
+        #{adminState,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="deleteByAdminId" parameterType="hashMap" >
+    UPDATE admin set admin_state=#{adminState,jdbcType=CHAR},update_time=#{updateTime,jdbcType=TIMESTAMP} WHERE id=#{adminId,jdbcType=BIGINT}
+  </update>
+  <update id="deleteByAdminInfoId" parameterType  ="hashMap" >
+    UPDATE admin_info set state=#{adminState,jdbcType=CHAR},delete_time=#{updateTime,jdbcType=TIMESTAMP},operator_id=#{operator_id，jdbcType=BIGINT} WHERE admin_id=#{adminId,jdbcType=BIGINT}
+  </update>
+  <update id="updateAdminPass" parameterType="hashMap" >
+    UPDATE admin set admin_pass=#{adminPass,jdbcType=VARCHAR},update_time=#{updateTime,jdbcType=TIMESTAMP} WHERE id=#{adminId,jdbcType=BIGINT}
+  </update>
+  <update id="updateAdminTime" parameterType="hashMap">
+    UPDATE
+    admin
+    set
+    update_time=#{updateTime,jdbcType=TIMESTAMP}
+    WHERE
+    id=#{adminId,jdbcType=BIGINT}
+  </update>
+  <update id="lockingAdminByAdminId" parameterType="hashMap" >
+    UPDATE  admin set update_time=#{updateTime,jdbcType=TIMESTAMP},admin_state=#{adminState,jdbcType=BIGINT} WHERE id=#{adminId,jdbcType=BIGINT}
+  </update>
+
+  <resultMap id="AdminInfoDepartment" type="java.util.Map">
+    <result column="admin_info_id" property="adminInfoId"></result>
+    <result column="admin_id" property="adminId"></result>
+    <result column="the_department" property="theDepartment"></result>
+    <result column="full_name" property="fullName"></result>
+    <result column="mail_box" property="mailBox"></result>
+    <result column="mobile_phone" property="mobilePhone"></result>
+    <result column="home_address" property="homeAddress"></result>
+    <result column="admin_state" property="adminState"></result>
+    <result column="staff_number" property="staffNumber"></result>
+    <result column="birth_date" property="birthDate"></result>
+    <result column="id_card_no" property="idCardNo"></result>
+    <result column="gender" property="gender"></result>
+
+  </resultMap>
+
+  <!--（查询部门下所有人,根据部门ID、姓名双条件）人事详情表id, 姓名、所属部门、邮箱、电话、地址-->
+  <select id="selectAdminInfoByDepartment" resultMap="BaseResultMap" parameterType="com.cj.witcommon.utils.entity.other.Pager" >
+    SELECT
+    ai.admin_info_id,ai.admin_id,ai.the_department,ai.full_name,ai.staff_number,ai.mail_box,ai.mobile_phone,ai.home_address
+    FROM
+    admin_info ai,department_admin da
+    WHERE
+    ai.admin_id = da.admin_id
+
+
+      <if test="parameters.containsKey('did')">
+        AND  da.d_id = #{parameters.did}
+      </if>
+      <if test="parameters.containsKey('fullName')">
+        AND  ai.full_name LIKE  concat(concat('%',#{parameters.fullName}),'%')
+      </if>
+
+
+
+
+    AND ai.state = '1'
+    limit #{minRow},#{pageSize}
+
+  </select>
+  <!--（查询部门下所有人,根据部门ID、姓名双条件）人事详情表id, 姓名、所属部门、邮箱、电话、地址信息 总条数 -->
+  <select id="selectAdminInfoByDepartmentTotal" resultType="java.lang.Integer" parameterType="com.cj.witcommon.utils.entity.other.Pager" >
+    SELECT
+    COUNT(ai.admin_info_id)
+    FROM
+    admin_info ai,department_admin da
+    WHERE
+    ai.admin_id = da.admin_id
+
+    <!-- 判断map的key是否存在 -->
+    <if test="parameters.containsKey('did')">
+      AND  da.d_id = #{parameters.did}
+    </if>
+    <if test="parameters.containsKey('fullName')">
+      AND  ai.full_name LIKE  concat(concat('%',#{parameters.fullName}),'%')
+    </if>
+
+
+
+    AND ai.state = '1'
+
+  </select>
+
+  <!--(查询所有人，不管有没有部门)人事详情表id, 姓名、所属部门、邮箱、电话、地址-->
+  <select id="selectAdminInfoAndDepartment" resultMap="BaseResultMap" parameterType="com.cj.witcommon.utils.entity.other.Pager" >
+    SELECT
+    ai.admin_info_id,ai.admin_id,ai.the_department,ai.full_name,ai.staff_number,ai.mail_box,ai.mobile_phone,ai.home_address
+    FROM
+    admin_info  ai
+    LEFT JOIN department_admin da ON ai.admin_id = da.admin_id
+    WHERE
+    ai.state = '1'
+
+
+    <if test="parameter != null and parameter != '' " >
+      AND  da.id = #{parameter}  OR ai.full_name = #{parameter}
+    </if>
+
+    limit #{minRow},#{pageSize}
+
+  </select>
+
+  <!--(查询所有人，不管有没有部门)人事详情表id, 姓名、所属部门、邮箱、电话、地址 信息总条数-->
+  <select id="selectAdminInfoAndDepartmentTotal" resultType="java.lang.Integer" parameterType="com.cj.witcommon.utils.entity.other.Pager" >
+    SELECT
+    COUNT(ai.admin_info_id)
+    FROM
+    admin_info  ai
+    LEFT JOIN department_admin da ON ai.admin_id = da.admin_id
+    WHERE
+    ai.state = '1'
+
+
+    <if test="parameter != null and parameter != '' " >
+      AND  da.id = #{parameter}  OR ai.full_name = #{parameter}
+    </if>
+
+
+  </select>
+
+  <!--分页、模糊（姓名、教职工编号）、条件（部门） 查询人事信息（ID、姓名、身份证号、教职工编号、出生年月、性别、手机号）-->
+  <select id="selectAdminInfoByVague" resultMap="BaseResultMap" parameterType="com.cj.witcommon.utils.entity.other.Pager" >
+    SELECT
+    ai.admin_info_id,ai.admin_id ,ai.birth_date ,ai.full_name,ai.id_card_no,ai.staff_number,ai.birth_date,ai.gender,ai.mobile_phone,ai.the_department,a.admin_state
+    FROM
+    admin_info ai,admin a
+    WHERE
+    ai.state = '1'
+    AND
+    a.id = ai.admin_id
+    <if test="parameters.containsKey('theDepartment')">
+      AND
+      ai.the_department = #{parameters.theDepartment}
+    </if>
+
+    <if test="parameters.containsKey('vague')">
+      AND
+      ai.full_name LIKE concat(concat('%',#{parameters.vague}),'%')
+      OR
+      ai.staff_number LIKE concat(concat('%',#{parameters.vague}),'%')
+    </if>
+    limit #{minRow},#{pageSize}
+  </select>
+
+  <!--分页、模糊（姓名、教职工编号）、条件（部门） 查询人事信息（ID、姓名、身份证号、教职工编号、出生年月、性别、手机号）总条数 -->
+  <select id="selectAdminInfoByVagueTotal" resultType="java.lang.Integer" parameterType="com.cj.witcommon.utils.entity.other.Pager" >
+    SELECT
+    COUNT(ai.admin_info_id)
+    FROM
+    admin_info ai,admin a
+    WHERE
+    ai.state = '1'
+    AND
+    a.id = ai.admin_id
+    <if test="parameters.containsKey('theDepartment')">
+      AND
+      ai.the_department = #{parameters.theDepartment}
+    </if>
+
+    <if test="parameters.containsKey('vague')">
+      AND
+      ai.full_name LIKE concat(concat('%',#{parameters.vague}),'%')
+      OR
+      ai.staff_number LIKE concat(concat('%',#{parameters.vague}),'%')
+    </if>
+  </select>
+
+
+  <!--更新 admin_info、department_admin部门信息-->
+  <update id="updateStaffDepartment" parameterType="java.util.Map">
+    UPDATE
+    admin_info AS ai,department_admin AS da
+    SET
+    ai.the_department=#{theDepartment,jdbcType=VARCHAR},
+    ai.operator_id=#{operatorId,jdbcType=BIGINT},
+    da.d_id = #{did}
+    WHERE
+    ai.admin_id=#{adminId}
+    AND
+    da.admin_id = #{adminId}
+  </update>
+
+  <!-- 根据教师编号查询对应ID -->
+  <select id="selectByAdminInfoId" parameterType="String" resultType="long">
+    SELECT admin_info_id FROM admin_info WHERE staff_number = #{staffNum}
+  </select>
+
+  <!--根据 adminId 查询 adminIdInfo 信息-->
+  <select id="selectByadminId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM admin_info ai
+    WHERE
+    ai.admin_id = #{adminId}
+    AND
+    ai.state = '1'
+
+  </select>
+
+  <resultMap id="BaseResultMapAdminRole" type="com.cj.witbasics.entity.AdminRole" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List_AdminRole" >
+    id, role_name, type, state, create_time
+  </sql>
+
+  <!--根据 adminRoleId 查询角色信息-->
+  <select id="findAdminRoleByAdminRoleId" parameterType="java.lang.Long" resultMap="BaseResultMapAdminRole">
+    SELECT
+    <include refid="Base_Column_List_AdminRole"/>
+    FROM
+    admin_role ar
+    WHERE
+    ar.id = #{adminRoleId}
+    AND
+    ar.state = '1'
+  </select>
+
+  <!--根据adminId查询adminName-->
+  <select id="findAdminNameByadminId" parameterType="java.lang.Long" resultType="java.lang.String" >
+    SELECT
+    a.admin_name
+    FROM
+    admin a
+    WHERE
+    a.id = #{adminId}
+  </select>
+  
+
+</mapper>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cj.witbasics.mapper.SchoolPeriodClassThetimeMapper">
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolPeriodClassThetime">
+    <id column="ssct_id" jdbcType="BIGINT" property="ssctId" />
+    <result column="school_id" jdbcType="BIGINT" property="schoolId" />
+    <result column="period_id" jdbcType="BIGINT" property="periodId" />
+    <result column="class_id" jdbcType="BIGINT" property="classId" />
+    <result column="admin_id" jdbcType="BIGINT" property="adminId" />
+    <result column="headmaster" jdbcType="VARCHAR" property="headmaster" />
+    <result column="thetime" jdbcType="DATE" property="thetime" />
+    <result column="founder_id" jdbcType="BIGINT" property="founderId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="operator_id" jdbcType="BIGINT" property="operatorId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="state" jdbcType="CHAR" property="state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ssct_id, school_id, period_id, class_id, admin_id, headmaster, thetime, founder_id, 
+    create_time, operator_id, update_time, state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List" />
+  from school_period_class_thetime
+  where ssct_id = #{ssctId,jdbcType=BIGINT}
+</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from school_period_class_thetime
+    where ssct_id = #{ssctId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolPeriodClassThetime">
+    insert into school_period_class_thetime (ssct_id, school_id, period_id, 
+      class_id, admin_id, headmaster, 
+      thetime, founder_id, create_time, 
+      operator_id, update_time, state
+      )
+    values (#{ssctId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{periodId,jdbcType=BIGINT}, 
+      #{classId,jdbcType=BIGINT}, #{adminId,jdbcType=BIGINT}, #{headmaster,jdbcType=VARCHAR}, 
+      #{thetime,jdbcType=DATE}, #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{operatorId,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolPeriodClassThetime">
+    insert into school_period_class_thetime
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ssctId != null">
+        ssct_id,
+      </if>
+      <if test="schoolId != null">
+        school_id,
+      </if>
+      <if test="periodId != null">
+        period_id,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="headmaster != null">
+        headmaster,
+      </if>
+      <if test="thetime != null">
+        thetime,
+      </if>
+      <if test="founderId != null">
+        founder_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operatorId != null">
+        operator_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ssctId != null">
+        #{ssctId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolId != null">
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="periodId != null">
+        #{periodId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="adminId != null">
+        #{adminId,jdbcType=BIGINT},
+      </if>
+      <if test="headmaster != null">
+        #{headmaster,jdbcType=VARCHAR},
+      </if>
+      <if test="thetime != null">
+        #{thetime,jdbcType=DATE},
+      </if>
+      <if test="founderId != null">
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null">
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolPeriodClassThetime">
+    update school_period_class_thetime
+    <set>
+      <if test="schoolId != null">
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="periodId != null">
+        period_id = #{periodId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="adminId != null">
+        admin_id = #{adminId,jdbcType=BIGINT},
+      </if>
+      <if test="headmaster != null">
+        headmaster = #{headmaster,jdbcType=VARCHAR},
+      </if>
+      <if test="thetime != null">
+        thetime = #{thetime,jdbcType=DATE},
+      </if>
+      <if test="founderId != null">
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null">
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where ssct_id = #{ssctId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolPeriodClassThetime">
+    update school_period_class_thetime
+    set school_id = #{schoolId,jdbcType=BIGINT},
+      period_id = #{periodId,jdbcType=BIGINT},
+      class_id = #{classId,jdbcType=BIGINT},
+      admin_id = #{adminId,jdbcType=BIGINT},
+      headmaster = #{headmaster,jdbcType=VARCHAR},
+      thetime = #{thetime,jdbcType=DATE},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where ssct_id = #{ssctId,jdbcType=BIGINT}
+  </update>
+
+</mapper>

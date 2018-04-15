@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.SchoolRoomMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolRoom" >
+    <id column="room_id" property="roomId" jdbcType="BIGINT" />
+    <result column="room_name" property="roomName" jdbcType="VARCHAR" />
+    <result column="room_type" property="roomType" jdbcType="VARCHAR" />
+    <result column="room_code" property="roomCode" jdbcType="VARCHAR" />
+    <result column="campus_id" property="campusId" jdbcType="INTEGER" />
+    <result column="room_campus" property="roomCampus" jdbcType="VARCHAR" />
+    <result column="build_id" property="buildId" jdbcType="INTEGER" />
+    <result column="room_building" property="roomBuilding" jdbcType="VARCHAR" />
+    <result column="room_floor" property="roomFloor" jdbcType="VARCHAR" />
+    <result column="room_capacity" property="roomCapacity" jdbcType="VARCHAR" />
+    <result column="room_seat" property="roomSeat" jdbcType="VARCHAR" />
+    <result column="room_exam_seat" property="roomExamSeat" jdbcType="VARCHAR" />
+    <result column="room_teaching" property="roomTeaching" jdbcType="CHAR" />
+    <result column="room_admin" property="roomAdmin" jdbcType="VARCHAR" />
+    <result column="room_remarks" property="roomRemarks" jdbcType="VARCHAR" />
+    <result column="room_goods" property="roomGoods" jdbcType="VARCHAR" />
+    <result column="room_goods_code" property="roomGoodsCode" jdbcType="VARCHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    room_id, room_name, room_type, room_code, campus_id, room_campus, build_id, room_building, 
+    room_floor, room_capacity, room_seat, room_exam_seat, room_teaching, room_admin, 
+    room_remarks, room_goods, room_goods_code, founder_id, create_time, operator_id, 
+    delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_room
+    where room_id = #{roomId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from school_room
+    where room_id = #{roomId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolRoom" >
+    insert into school_room (room_id, room_name, room_type, 
+      room_code, campus_id, room_campus, 
+      build_id, room_building, room_floor, 
+      room_capacity, room_seat, room_exam_seat, 
+      room_teaching, room_admin, room_remarks, 
+      room_goods, room_goods_code, founder_id, 
+      create_time, operator_id, delete_time, 
+      state)
+    values (#{roomId,jdbcType=BIGINT}, #{roomName,jdbcType=VARCHAR}, #{roomType,jdbcType=VARCHAR}, 
+      #{roomCode,jdbcType=VARCHAR}, #{campusId,jdbcType=INTEGER}, #{roomCampus,jdbcType=VARCHAR}, 
+      #{buildId,jdbcType=INTEGER}, #{roomBuilding,jdbcType=VARCHAR}, #{roomFloor,jdbcType=VARCHAR}, 
+      #{roomCapacity,jdbcType=VARCHAR}, #{roomSeat,jdbcType=VARCHAR}, #{roomExamSeat,jdbcType=VARCHAR}, 
+      #{roomTeaching,jdbcType=CHAR}, #{roomAdmin,jdbcType=VARCHAR}, #{roomRemarks,jdbcType=VARCHAR}, 
+      #{roomGoods,jdbcType=VARCHAR}, #{roomGoodsCode,jdbcType=VARCHAR}, #{founderId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolRoom" >
+    insert into school_room
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roomId != null" >
+        room_id,
+      </if>
+      <if test="roomName != null" >
+        room_name,
+      </if>
+      <if test="roomType != null" >
+        room_type,
+      </if>
+      <if test="roomCode != null" >
+        room_code,
+      </if>
+      <if test="campusId != null" >
+        campus_id,
+      </if>
+      <if test="roomCampus != null" >
+        room_campus,
+      </if>
+      <if test="buildId != null" >
+        build_id,
+      </if>
+      <if test="roomBuilding != null" >
+        room_building,
+      </if>
+      <if test="roomFloor != null" >
+        room_floor,
+      </if>
+      <if test="roomCapacity != null" >
+        room_capacity,
+      </if>
+      <if test="roomSeat != null" >
+        room_seat,
+      </if>
+      <if test="roomExamSeat != null" >
+        room_exam_seat,
+      </if>
+      <if test="roomTeaching != null" >
+        room_teaching,
+      </if>
+      <if test="roomAdmin != null" >
+        room_admin,
+      </if>
+      <if test="roomRemarks != null" >
+        room_remarks,
+      </if>
+      <if test="roomGoods != null" >
+        room_goods,
+      </if>
+      <if test="roomGoodsCode != null" >
+        room_goods_code,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roomId != null" >
+        #{roomId,jdbcType=BIGINT},
+      </if>
+      <if test="roomName != null" >
+        #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="roomType != null" >
+        #{roomType,jdbcType=VARCHAR},
+      </if>
+      <if test="roomCode != null" >
+        #{roomCode,jdbcType=VARCHAR},
+      </if>
+      <if test="campusId != null" >
+        #{campusId,jdbcType=INTEGER},
+      </if>
+      <if test="roomCampus != null" >
+        #{roomCampus,jdbcType=VARCHAR},
+      </if>
+      <if test="buildId != null" >
+        #{buildId,jdbcType=INTEGER},
+      </if>
+      <if test="roomBuilding != null" >
+        #{roomBuilding,jdbcType=VARCHAR},
+      </if>
+      <if test="roomFloor != null" >
+        #{roomFloor,jdbcType=VARCHAR},
+      </if>
+      <if test="roomCapacity != null" >
+        #{roomCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="roomSeat != null" >
+        #{roomSeat,jdbcType=VARCHAR},
+      </if>
+      <if test="roomExamSeat != null" >
+        #{roomExamSeat,jdbcType=VARCHAR},
+      </if>
+      <if test="roomTeaching != null" >
+        #{roomTeaching,jdbcType=CHAR},
+      </if>
+      <if test="roomAdmin != null" >
+        #{roomAdmin,jdbcType=VARCHAR},
+      </if>
+      <if test="roomRemarks != null" >
+        #{roomRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="roomGoods != null" >
+        #{roomGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="roomGoodsCode != null" >
+        #{roomGoodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolRoom" >
+    update school_room
+    <set >
+      <if test="roomName != null" >
+        room_name = #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="roomType != null" >
+        room_type = #{roomType,jdbcType=VARCHAR},
+      </if>
+      <if test="roomCode != null" >
+        room_code = #{roomCode,jdbcType=VARCHAR},
+      </if>
+      <if test="campusId != null" >
+        campus_id = #{campusId,jdbcType=INTEGER},
+      </if>
+      <if test="roomCampus != null" >
+        room_campus = #{roomCampus,jdbcType=VARCHAR},
+      </if>
+      <if test="buildId != null" >
+        build_id = #{buildId,jdbcType=INTEGER},
+      </if>
+      <if test="roomBuilding != null" >
+        room_building = #{roomBuilding,jdbcType=VARCHAR},
+      </if>
+      <if test="roomFloor != null" >
+        room_floor = #{roomFloor,jdbcType=VARCHAR},
+      </if>
+      <if test="roomCapacity != null" >
+        room_capacity = #{roomCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="roomSeat != null" >
+        room_seat = #{roomSeat,jdbcType=VARCHAR},
+      </if>
+      <if test="roomExamSeat != null" >
+        room_exam_seat = #{roomExamSeat,jdbcType=VARCHAR},
+      </if>
+      <if test="roomTeaching != null" >
+        room_teaching = #{roomTeaching,jdbcType=CHAR},
+      </if>
+      <if test="roomAdmin != null" >
+        room_admin = #{roomAdmin,jdbcType=VARCHAR},
+      </if>
+      <if test="roomRemarks != null" >
+        room_remarks = #{roomRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="roomGoods != null" >
+        room_goods = #{roomGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="roomGoodsCode != null" >
+        room_goods_code = #{roomGoodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where room_id = #{roomId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolRoom" >
+    update school_room
+    set room_name = #{roomName,jdbcType=VARCHAR},
+      room_type = #{roomType,jdbcType=VARCHAR},
+      room_code = #{roomCode,jdbcType=VARCHAR},
+      campus_id = #{campusId,jdbcType=INTEGER},
+      room_campus = #{roomCampus,jdbcType=VARCHAR},
+      build_id = #{buildId,jdbcType=INTEGER},
+      room_building = #{roomBuilding,jdbcType=VARCHAR},
+      room_floor = #{roomFloor,jdbcType=VARCHAR},
+      room_capacity = #{roomCapacity,jdbcType=VARCHAR},
+      room_seat = #{roomSeat,jdbcType=VARCHAR},
+      room_exam_seat = #{roomExamSeat,jdbcType=VARCHAR},
+      room_teaching = #{roomTeaching,jdbcType=CHAR},
+      room_admin = #{roomAdmin,jdbcType=VARCHAR},
+      room_remarks = #{roomRemarks,jdbcType=VARCHAR},
+      room_goods = #{roomGoods,jdbcType=VARCHAR},
+      room_goods_code = #{roomGoodsCode,jdbcType=VARCHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where room_id = #{roomId,jdbcType=BIGINT}
+  </update>
+</mapper>

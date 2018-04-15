@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.StudentWinningMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.StudentWinning" >
+    <id column="winning_id" property="winningId" jdbcType="BIGINT" />
+    <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+    <result column="register_number" property="registerNumber" jdbcType="VARCHAR" />
+    <result column="winning_name" property="winningName" jdbcType="VARCHAR" />
+    <result column="winning_level" property="winningLevel" jdbcType="VARCHAR" />
+    <result column="winning_number" property="winningNumber" jdbcType="VARCHAR" />
+    <result column="winning_date" property="winningDate" jdbcType="TIMESTAMP" />
+    <result column="winning_explain" property="winningExplain" jdbcType="VARCHAR" />
+    <result column="winning_enclosure" property="winningEnclosure" jdbcType="VARCHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    winning_id, student_name, register_number, winning_name, winning_level, winning_number, 
+    winning_date, winning_explain, winning_enclosure, founder_id, create_time, operator_id, 
+    delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_winning
+    where winning_id = #{winningId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from student_winning
+    where winning_id = #{winningId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.StudentWinning" >
+    insert into student_winning (winning_id, student_name, register_number, 
+      winning_name, winning_level, winning_number, 
+      winning_date, winning_explain, winning_enclosure, 
+      founder_id, create_time, operator_id, 
+      delete_time, state)
+    values (#{winningId,jdbcType=BIGINT}, #{studentName,jdbcType=VARCHAR}, #{registerNumber,jdbcType=VARCHAR}, 
+      #{winningName,jdbcType=VARCHAR}, #{winningLevel,jdbcType=VARCHAR}, #{winningNumber,jdbcType=VARCHAR}, 
+      #{winningDate,jdbcType=TIMESTAMP}, #{winningExplain,jdbcType=VARCHAR}, #{winningEnclosure,jdbcType=VARCHAR}, 
+      #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, 
+      #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.StudentWinning" >
+    insert into student_winning
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="winningId != null" >
+        winning_id,
+      </if>
+      <if test="studentName != null" >
+        student_name,
+      </if>
+      <if test="registerNumber != null" >
+        register_number,
+      </if>
+      <if test="winningName != null" >
+        winning_name,
+      </if>
+      <if test="winningLevel != null" >
+        winning_level,
+      </if>
+      <if test="winningNumber != null" >
+        winning_number,
+      </if>
+      <if test="winningDate != null" >
+        winning_date,
+      </if>
+      <if test="winningExplain != null" >
+        winning_explain,
+      </if>
+      <if test="winningEnclosure != null" >
+        winning_enclosure,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="winningId != null" >
+        #{winningId,jdbcType=BIGINT},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerNumber != null" >
+        #{registerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="winningName != null" >
+        #{winningName,jdbcType=VARCHAR},
+      </if>
+      <if test="winningLevel != null" >
+        #{winningLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="winningNumber != null" >
+        #{winningNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="winningDate != null" >
+        #{winningDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="winningExplain != null" >
+        #{winningExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="winningEnclosure != null" >
+        #{winningEnclosure,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.StudentWinning" >
+    update student_winning
+    <set >
+      <if test="studentName != null" >
+        student_name = #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerNumber != null" >
+        register_number = #{registerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="winningName != null" >
+        winning_name = #{winningName,jdbcType=VARCHAR},
+      </if>
+      <if test="winningLevel != null" >
+        winning_level = #{winningLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="winningNumber != null" >
+        winning_number = #{winningNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="winningDate != null" >
+        winning_date = #{winningDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="winningExplain != null" >
+        winning_explain = #{winningExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="winningEnclosure != null" >
+        winning_enclosure = #{winningEnclosure,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where winning_id = #{winningId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.StudentWinning" >
+    update student_winning
+    set student_name = #{studentName,jdbcType=VARCHAR},
+      register_number = #{registerNumber,jdbcType=VARCHAR},
+      winning_name = #{winningName,jdbcType=VARCHAR},
+      winning_level = #{winningLevel,jdbcType=VARCHAR},
+      winning_number = #{winningNumber,jdbcType=VARCHAR},
+      winning_date = #{winningDate,jdbcType=TIMESTAMP},
+      winning_explain = #{winningExplain,jdbcType=VARCHAR},
+      winning_enclosure = #{winningEnclosure,jdbcType=VARCHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where winning_id = #{winningId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.SchoolClassLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolClassLevel" >
+    <id column="class_level_id" property="classLevelId" jdbcType="INTEGER" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="classlevel_name" property="classlevelName" jdbcType="VARCHAR" />
+    <result column="is_edit" property="isEdit" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    class_level_id, school_id, classlevel_name, is_edit
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from school_class_level
+    where class_level_id = #{classLevelId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from school_class_level
+    where class_level_id = #{classLevelId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolClassLevel" >
+    insert into school_class_level (class_level_id, school_id, classlevel_name
+      )
+    values (#{classLevelId,jdbcType=INTEGER}, #{schoolId,jdbcType=BIGINT}, #{classlevelName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolClassLevel" >
+    insert into school_class_level
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classLevelId != null" >
+        class_level_id,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="classlevelName != null" >
+        classlevel_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classLevelId != null" >
+        #{classLevelId,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="classlevelName != null" >
+        #{classlevelName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolClassLevel" >
+    update school_class_level
+    <set >
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="classlevelName != null" >
+        classlevel_name = #{classlevelName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where class_level_id = #{classLevelId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolClassLevel" >
+    update school_class_level
+    set school_id = #{schoolId,jdbcType=BIGINT},
+      classlevel_name = #{classlevelName,jdbcType=VARCHAR}
+    where class_level_id = #{classLevelId,jdbcType=INTEGER}
+  </update>
+
+  <!--班级层次，查重-->
+  <select id="selectByClassLevel" parameterType="String" resultType="int">
+      SELECT COUNT(classlevel_name) FROM school_class_level WHERE classlevel_name = #{classtypeName} limit 1
+  </select>
+
+
+  <!--根据学校ID，返回层次集合-->
+  <select id="sselectLevelBySchoolId" parameterType="long" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM school_class_level AS sl
+    WHERE
+    sl.school_id = #{schoolId,jdbcType=BIGINT}
+  </select>
+
+  <!--批量新增班级层次-->
+  <insert id="addBathClassLevel" parameterType="List">
+    insert into school_class_level
+    (class_level_id, school_id, classlevel_name, is_edit)
+    values
+    <foreach collection="list" item="level" separator=",">
+      (#{level.classLevelId,jdbcType=INTEGER},
+      #{level.schoolId,jdbcType=BIGINT},
+      #{level.classlevelName,jdbcType=VARCHAR},
+      #{level.isEdit,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+</mapper>

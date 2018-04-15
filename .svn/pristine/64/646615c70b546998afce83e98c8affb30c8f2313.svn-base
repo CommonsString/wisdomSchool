@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.SchoolExamMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolExam" >
+    <id column="exam_id" property="examId" jdbcType="BIGINT" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="exam_object_id" property="examObjectId" jdbcType="BIGINT" />
+    <result column="exam_object" property="examObject" jdbcType="VARCHAR" />
+    <result column="exam_type" property="examType" jdbcType="CHAR" />
+    <result column="exam_type_name" property="examTypeName" jdbcType="VARCHAR" />
+    <result column="exam_time" property="examTime" jdbcType="TIMESTAMP" />
+    <result column="exam_name" property="examName" jdbcType="VARCHAR" />
+    <result column="exam_subject_id" property="examSubjectId" jdbcType="BIGINT" />
+    <result column="exam_subject" property="examSubject" jdbcType="VARCHAR" />
+    <result column="class_id" property="classId" jdbcType="INTEGER" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    exam_id, school_id, exam_object_id, exam_object, exam_type, exam_type_name, exam_time,
+    exam_name, exam_subject_id, exam_subject, class_id, founder_id, create_time, operator_id,
+    delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from school_exam
+    where exam_id = #{examId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from school_exam
+    where exam_id = #{examId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolExam" >
+    insert into school_exam (exam_id, school_id, exam_object_id,
+    exam_object, exam_type, exam_type_name,
+    exam_time, exam_name, exam_subject_id,
+    exam_subject, class_id, founder_id,
+    create_time, operator_id, delete_time,
+    state)
+    values (#{examId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{examObjectId,jdbcType=BIGINT},
+    #{examObject,jdbcType=VARCHAR}, #{examType,jdbcType=CHAR}, #{examTypeName,jdbcType=VARCHAR},
+    #{examTime,jdbcType=TIMESTAMP}, #{examName,jdbcType=VARCHAR}, #{examSubjectId,jdbcType=BIGINT},
+    #{examSubject,jdbcType=VARCHAR}, #{classId,jdbcType=INTEGER}, #{founderId,jdbcType=BIGINT},
+    #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP},
+    #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolExam" >
+    insert into school_exam
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="examId != null" >
+        exam_id,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="examObjectId != null" >
+        exam_object_id,
+      </if>
+      <if test="examObject != null" >
+        exam_object,
+      </if>
+      <if test="examType != null" >
+        exam_type,
+      </if>
+      <if test="examTypeName != null" >
+        exam_type_name,
+      </if>
+      <if test="examTime != null" >
+        exam_time,
+      </if>
+      <if test="examName != null" >
+        exam_name,
+      </if>
+      <if test="examSubjectId != null" >
+        exam_subject_id,
+      </if>
+      <if test="examSubject != null" >
+        exam_subject,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="examId != null" >
+        #{examId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="examObjectId != null" >
+        #{examObjectId,jdbcType=BIGINT},
+      </if>
+      <if test="examObject != null" >
+        #{examObject,jdbcType=VARCHAR},
+      </if>
+      <if test="examType != null" >
+        #{examType,jdbcType=CHAR},
+      </if>
+      <if test="examTypeName != null" >
+        #{examTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="examTime != null" >
+        #{examTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examName != null" >
+        #{examName,jdbcType=VARCHAR},
+      </if>
+      <if test="examSubjectId != null" >
+        #{examSubjectId,jdbcType=BIGINT},
+      </if>
+      <if test="examSubject != null" >
+        #{examSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolExam" >
+    update school_exam
+    <set >
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="examObjectId != null" >
+        exam_object_id = #{examObjectId,jdbcType=BIGINT},
+      </if>
+      <if test="examObject != null" >
+        exam_object = #{examObject,jdbcType=VARCHAR},
+      </if>
+      <if test="examType != null" >
+        exam_type = #{examType,jdbcType=CHAR},
+      </if>
+      <if test="examTypeName != null" >
+        exam_type_name = #{examTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="examTime != null" >
+        exam_time = #{examTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examName != null" >
+        exam_name = #{examName,jdbcType=VARCHAR},
+      </if>
+      <if test="examSubjectId != null" >
+        exam_subject_id = #{examSubjectId,jdbcType=BIGINT},
+      </if>
+      <if test="examSubject != null" >
+        exam_subject = #{examSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where exam_id = #{examId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolExam" >
+    update school_exam
+    set school_id = #{schoolId,jdbcType=BIGINT},
+      exam_object_id = #{examObjectId,jdbcType=BIGINT},
+      exam_object = #{examObject,jdbcType=VARCHAR},
+      exam_type = #{examType,jdbcType=CHAR},
+      exam_type_name = #{examTypeName,jdbcType=VARCHAR},
+      exam_time = #{examTime,jdbcType=TIMESTAMP},
+      exam_name = #{examName,jdbcType=VARCHAR},
+      exam_subject_id = #{examSubjectId,jdbcType=BIGINT},
+      exam_subject = #{examSubject,jdbcType=VARCHAR},
+      class_id = #{classId,jdbcType=INTEGER},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where exam_id = #{examId,jdbcType=BIGINT}
+  </update>
+
+
+
+  <resultMap id="PeriondGradeUMap" type="com.cj.witcommon.entity.PeriodUnderGrade" >
+    <result column="period_id" property="periodId" jdbcType="BIGINT" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="period_name" property="periodName" jdbcType="VARCHAR" />
+    <collection property="grade" ofType="com.cj.witcommon.entity.GradeInfo" select="getGradeInfoM" column="{periodId=period_id,schoolId=school_id}">
+    </collection>
+  </resultMap>
+  <!--子查询map-->
+  <resultMap id="gradeAgeMap" type="com.cj.witcommon.entity.GradeInfo">
+    <result column="grade_id" property="gradeId" jdbcType="BIGINT" />
+    <result column="grade_name" property="gradeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <!--子查询***查询年级信息-->
+  <select id="getGradeInfoM" resultMap="gradeAgeMap">
+      SELECT
+      grade_id, grade_name
+      FROM school_grade
+      WHERE
+      period_id = #{periodId}
+      AND
+      school_id = #{schoolId}
+  </select>
+  <!--查询当前学校学段和年级信息，树形结构封装-->
+  <select id="selectBySchoolIdForExam" resultMap="PeriondGradeUMap">
+    SELECT
+    period_id, period_name, school_id
+    FROM school_period
+    WHERE school_id = #{schoolId}
+  </select>
+
+  <resultMap id="PeriodAndGrade" type="java.util.LinkedHashMap">
+    <result column="period_id" property="periodId"></result>
+    <result column="period_name" property="periodName"></result>
+    <result column="grade_id" property="gradeId"></result>
+    <result column="grade_name" property="gradeName"></result>
+  </resultMap>
+
+  <!--根据学校ID联查学段-年级关系数据集合-->
+  <select id="findAllPeriodAndGrade" parameterType="java.lang.Long" resultMap="PeriodAndGrade">
+    SELECT
+    sp.period_id, sp.period_name,sg.grade_id,sg.grade_name
+    FROM
+    school_period sp,school_grade sg
+    WHERE
+    sp.period_id = sg.period_id
+    AND
+    sp.school_id = #{schoolId}
+  </select>
+
+  <!--根据班级id,科目名,查重记录-->
+  <select id="selectCountBySubjectNameAndClassId" parameterType="java.util.List" resultType="int">
+	SELECT COUNT(exam_id)
+	FROM school_exam
+	WHERE
+	class_id = #{classId,jdbcType=INTEGER}
+	AND
+	exam_subject = #{subjectName,jdbcType=VARCHAR}
+	limit 1
+  </select>
+
+  <!--批量插入-->
+  <insert id="insertBatchInfoByU" parameterType="java.util.List">
+     insert into school_exam (exam_type_name,
+      exam_time, exam_name, exam_subject,
+      class_id, founder_id, create_time
+      )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.examTypeName,jdbcType=VARCHAR},
+      #{item.examTime,jdbcType=TIMESTAMP}, #{item.examName,jdbcType=VARCHAR}, #{item.examSubject,jdbcType=VARCHAR},
+      #{item.classId,jdbcType=INTEGER}, #{item.founderId,jdbcType=BIGINT}, #{item.createTime,jdbcType=TIMESTAMP}
+      )
+    </foreach>
+  </insert>
+
+
+  <!--查询考试名称-->
+  <select id="selectBySchoolId" parameterType="Long" resultMap="BaseResultMap">
+    SELECT exam_id, exam_type_name
+    FROM school_exam
+    WHERE
+    school_id = #{schoolId,jdbcType=BIGINT}
+  </select>
+
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.ClassSubjectInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.ClassSubjectInfo" >
+    <id column="cls_sub_id" property="clsSubId" jdbcType="BIGINT" />
+    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="subject_id" property="subjectId" jdbcType="BIGINT" />
+    <result column="admin_info_id" property="adminInfoId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cls_sub_id, class_id, subject_id, admin_info_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from class_subject_info
+    where cls_sub_id = #{clsSubId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from class_subject_info
+    where cls_sub_id = #{clsSubId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.ClassSubjectInfo" >
+    insert into class_subject_info (cls_sub_id, class_id, subject_id, 
+      admin_info_id)
+    values (#{clsSubId,jdbcType=BIGINT}, #{classId,jdbcType=BIGINT}, #{subjectId,jdbcType=BIGINT}, 
+      #{adminInfoId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.ClassSubjectInfo" >
+    insert into class_subject_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="clsSubId != null" >
+        cls_sub_id,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="subjectId != null" >
+        subject_id,
+      </if>
+      <if test="adminInfoId != null" >
+        admin_info_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="clsSubId != null" >
+        #{clsSubId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="adminInfoId != null" >
+        #{adminInfoId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.ClassSubjectInfo" >
+    update class_subject_info
+    <set >
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="subjectId != null" >
+        subject_id = #{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="adminInfoId != null" >
+        admin_info_id = #{adminInfoId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where cls_sub_id = #{clsSubId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.ClassSubjectInfo" >
+    update class_subject_info
+    set class_id = #{classId,jdbcType=BIGINT},
+      subject_id = #{subjectId,jdbcType=BIGINT},
+      admin_info_id = #{adminInfoId,jdbcType=BIGINT}
+    where cls_sub_id = #{clsSubId,jdbcType=BIGINT}
+  </update>
+
+
+  <!--根据班级ID和学科ID修改教师ID-->
+  <update id="updateBySubjectIdAndAdmin">
+    update class_subject_info
+    set admin_info_id = #{adminInfoId,jdbcType=BIGINT}
+    where class_id = #{classId,jdbcType=BIGINT} AND subject_id = #{subjectId,jdbcType=BIGINT}
+  </update>
+
+  <!--格式: 科目ID——教师ID   -->
+  <update id="updateBySubjectTest">
+    <foreach collection="list" index="sub">
+        <foreach collection="list" item="val" index="key" separator=";">
+          UPDATE class_subject_info
+          <set>
+              admin_info_id = #{list[${key}],jdbcType=BIGINT},
+          </set>
+          WHERE
+          class_id = #{classId,jdbcType=BIGINT}  AND subject_id = #{key,jdbcType=BIGINT}
+        </foreach>
+    </foreach>
+  </update>
+
+  <!--查找科目是否再使用-->
+  <select id="selectCountBySubjectId" parameterType="Long">
+  SELECT COUNT(cls_sub_id)
+  FROM class_subject_info
+  WHERE
+  subject_id = #{subjectId,jdbcType=BIGINT}
+  LIMIT 1;
+  </select>
+
+</mapper>

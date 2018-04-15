@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.SchoolBuildMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolBuild" >
+    <id column="build_id" property="buildId" jdbcType="BIGINT" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="build_name" property="buildName" jdbcType="VARCHAR" />
+    <result column="build_code" property="buildCode" jdbcType="VARCHAR" />
+    <result column="build_type" property="buildType" jdbcType="VARCHAR" />
+    <result column="build_campus" property="buildCampus" jdbcType="VARCHAR" />
+    <result column="build_address" property="buildAddress" jdbcType="VARCHAR" />
+    <result column="build_describe" property="buildDescribe" jdbcType="VARCHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    build_id, school_id, build_name, build_code, build_type, build_campus, build_address, 
+    build_describe, founder_id, create_time, operator_id, delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_build
+    where build_id = #{buildId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from school_build
+    where build_id = #{buildId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolBuild" >
+    insert into school_build (build_id, school_id, build_name, 
+      build_code, build_type, build_campus, 
+      build_address, build_describe, founder_id, 
+      create_time, operator_id, delete_time, 
+      state)
+    values (#{buildId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{buildName,jdbcType=VARCHAR}, 
+      #{buildCode,jdbcType=VARCHAR}, #{buildType,jdbcType=VARCHAR}, #{buildCampus,jdbcType=VARCHAR}, 
+      #{buildAddress,jdbcType=VARCHAR}, #{buildDescribe,jdbcType=VARCHAR}, #{founderId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolBuild" >
+    insert into school_build
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="buildId != null" >
+        build_id,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="buildName != null" >
+        build_name,
+      </if>
+      <if test="buildCode != null" >
+        build_code,
+      </if>
+      <if test="buildType != null" >
+        build_type,
+      </if>
+      <if test="buildCampus != null" >
+        build_campus,
+      </if>
+      <if test="buildAddress != null" >
+        build_address,
+      </if>
+      <if test="buildDescribe != null" >
+        build_describe,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="buildId != null" >
+        #{buildId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="buildName != null" >
+        #{buildName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildCode != null" >
+        #{buildCode,jdbcType=VARCHAR},
+      </if>
+      <if test="buildType != null" >
+        #{buildType,jdbcType=VARCHAR},
+      </if>
+      <if test="buildCampus != null" >
+        #{buildCampus,jdbcType=VARCHAR},
+      </if>
+      <if test="buildAddress != null" >
+        #{buildAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="buildDescribe != null" >
+        #{buildDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolBuild" >
+    update school_build
+    <set >
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="buildName != null" >
+        build_name = #{buildName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildCode != null" >
+        build_code = #{buildCode,jdbcType=VARCHAR},
+      </if>
+      <if test="buildType != null" >
+        build_type = #{buildType,jdbcType=VARCHAR},
+      </if>
+      <if test="buildCampus != null" >
+        build_campus = #{buildCampus,jdbcType=VARCHAR},
+      </if>
+      <if test="buildAddress != null" >
+        build_address = #{buildAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="buildDescribe != null" >
+        build_describe = #{buildDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where build_id = #{buildId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolBuild" >
+    update school_build
+    set school_id = #{schoolId,jdbcType=BIGINT},
+      build_name = #{buildName,jdbcType=VARCHAR},
+      build_code = #{buildCode,jdbcType=VARCHAR},
+      build_type = #{buildType,jdbcType=VARCHAR},
+      build_campus = #{buildCampus,jdbcType=VARCHAR},
+      build_address = #{buildAddress,jdbcType=VARCHAR},
+      build_describe = #{buildDescribe,jdbcType=VARCHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where build_id = #{buildId,jdbcType=BIGINT}
+  </update>
+</mapper>

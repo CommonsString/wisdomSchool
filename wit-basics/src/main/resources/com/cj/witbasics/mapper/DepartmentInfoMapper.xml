@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.DepartmentInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.DepartmentInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="d_name" property="dName" jdbcType="VARCHAR" />
+    <result column="d_number" property="dNumber" jdbcType="VARCHAR" />
+    <result column="d_effectiveness" property="dEffectiveness" jdbcType="CHAR" />
+    <result column="d_sort" property="dSort" jdbcType="INTEGER" />
+    <result column="d_leader_id" property="dLeaderId" jdbcType="BIGINT" />
+    <result column="d_leader" property="dLeader" jdbcType="VARCHAR" />
+    <result column="d_attribute" property="dAttribute" jdbcType="BIGINT" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, d_name, d_number, d_effectiveness, d_sort, d_leader_id, d_leader, d_attribute,
+    school_id, create_time, founder_id, operator_id, delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from department_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from department_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.DepartmentInfo" >
+    insert into department_info (id, d_name, d_number,
+    d_effectiveness, d_sort, d_leader_id,
+    d_leader, d_attribute, school_id,
+    create_time, founder_id, operator_id,
+    delete_time, state)
+    values (#{id,jdbcType=BIGINT}, #{dName,jdbcType=VARCHAR}, #{dNumber,jdbcType=VARCHAR},
+    #{dEffectiveness,jdbcType=CHAR}, #{dSort,jdbcType=INTEGER}, #{dLeaderId,jdbcType=BIGINT},
+    #{dLeader,jdbcType=VARCHAR}, #{dAttribute,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT},
+    #{createTime,jdbcType=TIMESTAMP}, #{founderId,jdbcType=BIGINT}, #{operatorId,jdbcType=BIGINT},
+    #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.DepartmentInfo" >
+    insert into department_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dName != null" >
+        d_name,
+      </if>
+      <if test="dNumber != null" >
+        d_number,
+      </if>
+      <if test="dEffectiveness != null" >
+        d_effectiveness,
+      </if>
+      <if test="dSort != null" >
+        d_sort,
+      </if>
+      <if test="dLeaderId != null" >
+        d_leader_id,
+      </if>
+      <if test="dLeader != null" >
+        d_leader,
+      </if>
+      <if test="dAttribute != null" >
+        d_attribute,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="dName != null" >
+        #{dName,jdbcType=VARCHAR},
+      </if>
+      <if test="dNumber != null" >
+        #{dNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="dEffectiveness != null" >
+        #{dEffectiveness,jdbcType=CHAR},
+      </if>
+      <if test="dSort != null" >
+        #{dSort,jdbcType=INTEGER},
+      </if>
+      <if test="dLeaderId != null" >
+        #{dLeaderId,jdbcType=BIGINT},
+      </if>
+      <if test="dLeader != null" >
+        #{dLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="dAttribute != null" >
+        #{dAttribute,jdbcType=BIGINT},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <!--根据部门ID修改部门信息-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.DepartmentInfo" >
+    update department_info
+    <set >
+      <if test="dName != null" >
+        d_name = #{dName,jdbcType=VARCHAR},
+      </if>
+      <if test="dNumber != null" >
+        d_number = #{dNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="dEffectiveness != null" >
+        d_effectiveness = #{dEffectiveness,jdbcType=CHAR},
+      </if>
+      <if test="dSort != null" >
+        d_sort = #{dSort,jdbcType=INTEGER},
+      </if>
+      <if test="dLeaderId != null" >
+        d_leader_id = #{dLeaderId,jdbcType=BIGINT},
+      </if>
+      <if test="dLeader != null" >
+        d_leader = #{dLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="dAttribute != null" >
+        d_attribute = #{dAttribute,jdbcType=BIGINT},
+      </if>
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.DepartmentInfo" >
+    update department_info
+    set d_name = #{dName,jdbcType=VARCHAR},
+    d_number = #{dNumber,jdbcType=VARCHAR},
+    d_effectiveness = #{dEffectiveness,jdbcType=CHAR},
+    d_sort = #{dSort,jdbcType=INTEGER},
+    d_leader_id = #{dLeaderId,jdbcType=BIGINT},
+    d_leader = #{dLeader,jdbcType=VARCHAR},
+    d_attribute = #{dAttribute,jdbcType=BIGINT},
+    school_id = #{schoolId,jdbcType=BIGINT},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    founder_id = #{founderId,jdbcType=BIGINT},
+    operator_id = #{operatorId,jdbcType=BIGINT},
+    delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+    state = #{state,jdbcType=CHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!--部门名称，部门编号，成立时间 ，有效性，部门排序，部门领导，所属部门-->
+  <select id="selectDepartmentInfoById" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+    SELECT
+    df.id, df.d_name,df.d_number, df.d_effectiveness, df.d_sort, df.d_leader, df.d_attribute, df.create_time
+    FROM department_info df
+    WHERE
+    df.id=#{id}
+    AND df.state NOT IN (0)
+  </select>
+
+
+  <!--&lt;!&ndash;根据部门ID、模糊查询条件 查询部门人员信息&ndash;&gt;-->
+  <!--<select id="selectAdminInfoByDepartment" parameterType="java.lang.Long" resultMap="">-->
+    <!--SELECT-->
+    <!--*-->
+    <!--FROM department_admin da,admin_info ai-->
+    <!--WHERE-->
+    <!--da.id = #{id} AND da.admin_id = ai.admin_id-->
+  <!--</select>-->
+
+  <!--获取所有部门信息-->
+  <select id="getAllDepartmentInfo" resultMap="BaseResultMap">
+    SELECT
+    df.id,df.d_name
+    FROM department_info df
+    WHERE
+    df.state NOT IN (0)
+  </select>
+
+  <!--根据部门名称查询部门信息-->
+  <select id="findDepartmentInfoByName" parameterType="com.cj.witbasics.entity.DepartmentInfo" resultMap="BaseResultMap">
+    SELECT
+     <include refid="Base_Column_List"/>
+     FROM
+    department_info di
+    WHERE
+    di.d_name = #{dName}
+    AND
+    di.id NOT IN (#{id})
+  </select>
+
+
+
+</mapper>

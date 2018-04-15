@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.SchoolGradeMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolGrade" >
+    <id column="grade_id" property="gradeId" jdbcType="BIGINT" />
+    <result column="period_id" property="periodId" jdbcType="BIGINT" />
+    <result column="grade_name" property="gradeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    grade_id, period_id, grade_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from school_grade
+    where grade_id = #{gradeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from school_grade
+    where grade_id = #{gradeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolGrade" >
+    insert into school_grade (grade_id, period_id, grade_name
+      )
+    values (#{gradeId,jdbcType=BIGINT}, #{periodId,jdbcType=BIGINT}, #{gradeName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolGrade" >
+    insert into school_grade
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gradeId != null" >
+        grade_id,
+      </if>
+      <if test="periodId != null" >
+        period_id,
+      </if>
+      <if test="gradeName != null" >
+        grade_name,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gradeId != null" >
+        #{gradeId,jdbcType=BIGINT},
+      </if>
+      <if test="periodId != null" >
+        #{periodId,jdbcType=BIGINT},
+      </if>
+      <if test="gradeName != null" >
+        #{gradeName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolGrade" >
+    update school_grade
+    <set >
+      <if test="periodId != null" >
+        period_id = #{periodId,jdbcType=BIGINT},
+      </if>
+      <if test="gradeName != null" >
+        grade_name = #{gradeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where grade_id = #{gradeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolGrade" >
+    update school_grade
+    set period_id = #{periodId,jdbcType=BIGINT},
+      grade_name = #{gradeName,jdbcType=VARCHAR}
+    where grade_id = #{gradeId,jdbcType=BIGINT}
+  </update>
+
+  <!--批量删除-->
+  <delete id="deleteBatchByPeriodId" parameterType="java.util.List">
+    update school_grade
+    <set>
+      state = '0',
+    </set>
+    WHERE period_id IN
+    <foreach collection="list" item="periodId" open="(" separator="," close=")">
+      #{periodId}
+    </foreach>
+  </delete>
+
+  <!--根据学段ID删除信息-->
+  <delete id="deleteByPeriodId" parameterType="com.cj.witbasics.entity.SchoolGrade">
+    update school_grade
+    <set >
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE period_id  IN (#{periodId})
+</delete>
+
+
+  <!--根据学段ID，修改年级名称-->
+  <update id="updateByPeriodId" parameterType="com.cj.witbasics.entity.SchoolGrade">
+    UPDATE school_grade
+      <set>
+          <if test="gradeName != null">
+            grade_name = #{gradeName,jdbcType=VARCHAR},
+          </if>
+      </set>
+    WHERE period_id = #{periodId,jdbcType=BIGINT}
+  </update>
+
+
+  <!--根据年级名，查重-->
+  <select id="selectByGradeName" resultType="int">
+    SELECT COUNT(sg.grade_name)
+    FROM school_grade AS sg
+    WHERE
+    sg.grade_name = #{gradeName,jdbcType=VARCHAR}
+    AND
+    sg.school_id = #{schoolId,jdbcType=BIGINT}
+    AND
+    sg.period_id = period_id = #{periodId,jdbcType=BIGINT}
+  </select>
+
+  <!--根据年级ID，修改状态（删除）-->
+  <update id="deleteByGradeId">
+    update school_grade
+    <set >
+        state = '0'
+    </set>
+    WHERE grade_id  IN (#{gradeId,jdbcType=BIGINT})
+  </update>
+
+
+
+  <resultMap id="SchoolIdAndPeriodMap" type="com.cj.witcommon.entity.GradeInfo">
+    <result column="grade_id" property="gradeId" />
+    <result column="grade_name" property="gradeName" />
+  </resultMap>
+  <!--根据学校ID和学段ID-->
+  <select id="selectBySchoolIdAndPeriodId" resultMap="SchoolIdAndPeriodMap">
+      SELECT
+      sg.grade_id, sg.grade_name
+      FROM
+      school_grade AS sg
+      where
+      sg.school_id = #{schoolId,jdbcType=BIGINT}
+      AND
+      sg.period_id = #{periodId,jdbcType=BIGINT}
+  </select>
+
+
+  <resultMap id="partMap" type="com.cj.witbasics.entity.SchoolGrade" >
+    <id column="grade_id" property="gradeId" jdbcType="BIGINT" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="grade_name" property="gradeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <!--根据学校ID,查询年级信息-->
+  <select id="selectBySchoolId" parameterType="Long" resultMap="partMap">
+      SELECT
+      sg.grade_id, sg.school_id, sg.grade_name
+      FROM
+      school_grade AS sg
+      where
+      sg.school_id = #{schoolId,jdbcType=BIGINT}
+  </select>
+
+  <!--根据学段id和年级id,查询年级信息-->
+  <select id="selectByPIdAndGrId" resultType="String">
+      SELECT grade_name
+      FROM school_grade
+      WHERE
+      period_id = #{periodId,jdbcType=BIGINT}
+      AND
+      grade_id = #{gradeId,jdbcType=BIGINT}
+  </select>
+
+  <!--批量更新,根据学段ID和年级ID修改信息-->
+  <update id="updateBatchInfo" parameterType="java.util.List" >
+    update school_grade
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="grade_name = case" suffix="end,">
+          <foreach collection="list" item="grade">
+            WHEN
+            (period_id = #{grade.periodId,jdbcType=BIGINT}
+            AND
+            grade_id = #{grade.gradeId,jdbcType=BIGINT})
+            THEN
+            #{grade.gradeName,jdbcType=VARCHAR}
+          </foreach>
+      </trim>
+    </trim>
+    where
+    period_id IN
+    <foreach collection="list" item="grade" separator="," open="(" close=")">
+      #{grade.periodId,jdbcType=BIGINT}
+    </foreach>
+    AND
+    grade_id IN
+    <foreach collection="list" item="grade" separator="," open="(" close=")">
+      #{grade.gradeId,jdbcType=BIGINT}
+    </foreach>
+  </update>
+
+<!--
+    <set >
+      <if test="periodId != null" >
+        period_id = #{periodId,jdbcType=BIGINT},
+      </if>
+      <if test="gradeName != null" >
+        grade_name = #{gradeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+
+
+-->
+</mapper>

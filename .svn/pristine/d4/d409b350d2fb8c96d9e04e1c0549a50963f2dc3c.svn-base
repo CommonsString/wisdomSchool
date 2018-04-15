@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witscorefind.mapper.SchoolExamGradeMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolExamGrade" >
+    <id column="exam_grade_id" property="examGradeId" jdbcType="BIGINT" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="exam_id" property="examId" jdbcType="BIGINT" />
+    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="exam_subject_id" property="examSubjectId" jdbcType="BIGINT" />
+    <result column="grade_type" property="gradeType" jdbcType="CHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    exam_grade_id, school_id, exam_id, class_id, exam_subject_id, grade_type, founder_id,
+    create_time, operator_id, delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from school_exam_grade
+    where exam_grade_id = #{examGradeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from school_exam_grade
+    where exam_grade_id = #{examGradeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolExamGrade" >
+    insert into school_exam_grade (exam_grade_id, school_id, exam_id,
+      class_id, exam_subject_id, grade_type,
+      founder_id, create_time, operator_id,
+      delete_time, state)
+    values (#{examGradeId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{examId,jdbcType=BIGINT},
+      #{classId,jdbcType=BIGINT}, #{examSubjectId,jdbcType=BIGINT}, #{gradeType,jdbcType=CHAR},
+      #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT},
+      #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolExamGrade" >
+    insert into school_exam_grade
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="examGradeId != null" >
+        exam_grade_id,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="examId != null" >
+        exam_id,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="examSubjectId != null" >
+        exam_subject_id,
+      </if>
+      <if test="gradeType != null" >
+        grade_type,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="examGradeId != null" >
+        #{examGradeId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="examId != null" >
+        #{examId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="examSubjectId != null" >
+        #{examSubjectId,jdbcType=BIGINT},
+      </if>
+      <if test="gradeType != null" >
+        #{gradeType,jdbcType=CHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolExamGrade" >
+    update school_exam_grade
+    <set >
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="examId != null" >
+        exam_id = #{examId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="examSubjectId != null" >
+        exam_subject_id = #{examSubjectId,jdbcType=BIGINT},
+      </if>
+      <if test="gradeType != null" >
+        grade_type = #{gradeType,jdbcType=CHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where exam_grade_id = #{examGradeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolExamGrade" >
+    update school_exam_grade
+    set school_id = #{schoolId,jdbcType=BIGINT},
+      exam_id = #{examId,jdbcType=BIGINT},
+      class_id = #{classId,jdbcType=BIGINT},
+      exam_subject_id = #{examSubjectId,jdbcType=BIGINT},
+      grade_type = #{gradeType,jdbcType=CHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where exam_grade_id = #{examGradeId,jdbcType=BIGINT}
+  </update>
+</mapper>

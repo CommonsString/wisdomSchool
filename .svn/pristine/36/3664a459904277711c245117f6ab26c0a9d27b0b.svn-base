@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.RemoteRequestMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.RemoteRequest" >
+    <id column="req_id" property="reqId" jdbcType="BIGINT" />
+    <result column="req_name" property="reqName" jdbcType="VARCHAR" />
+    <result column="req_url" property="reqUrl" jdbcType="VARCHAR" />
+    <result column="req_mode" property="reqMode" jdbcType="VARCHAR" />
+    <result column="req_parameter" property="reqParameter" jdbcType="VARCHAR" />
+    <result column="req_return" property="reqReturn" jdbcType="VARCHAR" />
+    <result column="msg" property="msg" jdbcType="VARCHAR" />
+    <result column="req_state" property="reqState" jdbcType="CHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    req_id, req_name, req_url, req_mode, req_parameter, req_return, msg, req_state, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from remote_request
+    where req_id = #{reqId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from remote_request
+    where req_id = #{reqId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.RemoteRequest" >
+    insert into remote_request (req_id, req_name, req_url, 
+      req_mode, req_parameter, req_return, 
+      msg, req_state, state)
+    values (#{reqId,jdbcType=BIGINT}, #{reqName,jdbcType=VARCHAR}, #{reqUrl,jdbcType=VARCHAR}, 
+      #{reqMode,jdbcType=VARCHAR}, #{reqParameter,jdbcType=VARCHAR}, #{reqReturn,jdbcType=VARCHAR}, 
+      #{msg,jdbcType=VARCHAR}, #{reqState,jdbcType=CHAR}, #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.RemoteRequest" >
+    insert into remote_request
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reqId != null" >
+        req_id,
+      </if>
+      <if test="reqName != null" >
+        req_name,
+      </if>
+      <if test="reqUrl != null" >
+        req_url,
+      </if>
+      <if test="reqMode != null" >
+        req_mode,
+      </if>
+      <if test="reqParameter != null" >
+        req_parameter,
+      </if>
+      <if test="reqReturn != null" >
+        req_return,
+      </if>
+      <if test="msg != null" >
+        msg,
+      </if>
+      <if test="reqState != null" >
+        req_state,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reqId != null" >
+        #{reqId,jdbcType=BIGINT},
+      </if>
+      <if test="reqName != null" >
+        #{reqName,jdbcType=VARCHAR},
+      </if>
+      <if test="reqUrl != null" >
+        #{reqUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="reqMode != null" >
+        #{reqMode,jdbcType=VARCHAR},
+      </if>
+      <if test="reqParameter != null" >
+        #{reqParameter,jdbcType=VARCHAR},
+      </if>
+      <if test="reqReturn != null" >
+        #{reqReturn,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null" >
+        #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="reqState != null" >
+        #{reqState,jdbcType=CHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.RemoteRequest" >
+    update remote_request
+    <set >
+      <if test="reqName != null" >
+        req_name = #{reqName,jdbcType=VARCHAR},
+      </if>
+      <if test="reqUrl != null" >
+        req_url = #{reqUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="reqMode != null" >
+        req_mode = #{reqMode,jdbcType=VARCHAR},
+      </if>
+      <if test="reqParameter != null" >
+        req_parameter = #{reqParameter,jdbcType=VARCHAR},
+      </if>
+      <if test="reqReturn != null" >
+        req_return = #{reqReturn,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null" >
+        msg = #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="reqState != null" >
+        req_state = #{reqState,jdbcType=CHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where req_id = #{reqId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.RemoteRequest" >
+    update remote_request
+    set req_name = #{reqName,jdbcType=VARCHAR},
+      req_url = #{reqUrl,jdbcType=VARCHAR},
+      req_mode = #{reqMode,jdbcType=VARCHAR},
+      req_parameter = #{reqParameter,jdbcType=VARCHAR},
+      req_return = #{reqReturn,jdbcType=VARCHAR},
+      msg = #{msg,jdbcType=VARCHAR},
+      req_state = #{reqState,jdbcType=CHAR},
+      state = #{state,jdbcType=CHAR}
+    where req_id = #{reqId,jdbcType=BIGINT}
+  </update>
+</mapper>

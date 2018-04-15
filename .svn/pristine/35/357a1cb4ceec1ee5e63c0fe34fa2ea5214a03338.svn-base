@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.SchoolClassTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolClassType" >
+    <id column="class_type_id" property="classTypeId" jdbcType="INTEGER" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="classtype_name" property="classtypeName" jdbcType="VARCHAR" />
+    <result column="is_edit" property="isEdit" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    class_type_id, school_id, classtype_name, is_edit
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from school_class_type
+    where class_type_id = #{classTypeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from school_class_type
+    where class_type_id = #{classTypeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolClassType" >
+    insert into school_class_type (class_type_id, school_id, classtype_name
+      )
+    values (#{classTypeId,jdbcType=INTEGER}, #{schoolId,jdbcType=BIGINT}, #{classtypeName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolClassType" >
+    insert into school_class_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classTypeId != null" >
+        class_type_id,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="classtypeName != null" >
+        classtype_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classTypeId != null" >
+        #{classTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="classtypeName != null" >
+        #{classtypeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolClassType" >
+    update school_class_type
+    <set >
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="classtypeName != null" >
+        classtype_name = #{classtypeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where class_type_id = #{classTypeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolClassType" >
+    update school_class_type
+    set school_id = #{schoolId,jdbcType=BIGINT},
+      classtype_name = #{classtypeName,jdbcType=VARCHAR}
+    where class_type_id = #{classTypeId,jdbcType=INTEGER}
+  </update>
+
+  <!--新增班级类型-->
+  <select id="selectByClassType" parameterType="String" resultType="int">
+     SELECT COUNT(classtype_name) FROM school_class_type WHERE classtype_name = #{classLevelName} limit 1
+  </select>
+
+  <select id="selectTypeBySchoolId" parameterType="long" resultMap="BaseResultMap">
+      SELECT
+      *
+      FROM school_class_type AS st
+      WHERE
+      st.school_id = #{schoolId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByClassTypeName" parameterType="String" resultType="int">
+    SELECT
+    sc.class_type_id
+    FROM school_class_type AS sc
+    WHERE sc.classtype_name = #{classTypeName,jdbcType=VARCHAR}
+  </select>
+
+  <!--批量增加-->
+  <insert id="addBathClassType" parameterType="List">
+      insert into school_class_type
+      (class_type_id, school_id, classtype_name, is_edit)
+      values
+      <foreach collection="list" item="type" separator="," index="index">
+        (#{type.classTypeId,jdbcType=INTEGER}, #{type.schoolId,jdbcType=BIGINT},
+        #{type.classtypeName,jdbcType=VARCHAR}
+        , #{type.isEdit,jdbcType=VARCHAR})
+      </foreach>
+  </insert>
+</mapper>

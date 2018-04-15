@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.StudentPunishmentMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.StudentPunishment" >
+    <id column="punishment_id" property="punishmentId" jdbcType="BIGINT" />
+    <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+    <result column="register_number" property="registerNumber" jdbcType="VARCHAR" />
+    <result column="punishment_type" property="punishmentType" jdbcType="VARCHAR" />
+    <result column="punishment_date" property="punishmentDate" jdbcType="TIMESTAMP" />
+    <result column="punishment_number" property="punishmentNumber" jdbcType="VARCHAR" />
+    <result column="punishment_revoke_date" property="punishmentRevokeDate" jdbcType="TIMESTAMP" />
+    <result column="punishment_revoke_number" property="punishmentRevokeNumber" jdbcType="TIMESTAMP" />
+    <result column="punishment_explain" property="punishmentExplain" jdbcType="VARCHAR" />
+    <result column="punishment_enclosure" property="punishmentEnclosure" jdbcType="VARCHAR" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    punishment_id, student_name, register_number, punishment_type, punishment_date, punishment_number, 
+    punishment_revoke_date, punishment_revoke_number, punishment_explain, punishment_enclosure, 
+    founder_id, create_time, operator_id, delete_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_punishment
+    where punishment_id = #{punishmentId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from student_punishment
+    where punishment_id = #{punishmentId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.StudentPunishment" >
+    insert into student_punishment (punishment_id, student_name, register_number, 
+      punishment_type, punishment_date, punishment_number, 
+      punishment_revoke_date, punishment_revoke_number, 
+      punishment_explain, punishment_enclosure, 
+      founder_id, create_time, operator_id, 
+      delete_time, state)
+    values (#{punishmentId,jdbcType=BIGINT}, #{studentName,jdbcType=VARCHAR}, #{registerNumber,jdbcType=VARCHAR}, 
+      #{punishmentType,jdbcType=VARCHAR}, #{punishmentDate,jdbcType=TIMESTAMP}, #{punishmentNumber,jdbcType=VARCHAR}, 
+      #{punishmentRevokeDate,jdbcType=TIMESTAMP}, #{punishmentRevokeNumber,jdbcType=TIMESTAMP}, 
+      #{punishmentExplain,jdbcType=VARCHAR}, #{punishmentEnclosure,jdbcType=VARCHAR}, 
+      #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, 
+      #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.StudentPunishment" >
+    insert into student_punishment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="punishmentId != null" >
+        punishment_id,
+      </if>
+      <if test="studentName != null" >
+        student_name,
+      </if>
+      <if test="registerNumber != null" >
+        register_number,
+      </if>
+      <if test="punishmentType != null" >
+        punishment_type,
+      </if>
+      <if test="punishmentDate != null" >
+        punishment_date,
+      </if>
+      <if test="punishmentNumber != null" >
+        punishment_number,
+      </if>
+      <if test="punishmentRevokeDate != null" >
+        punishment_revoke_date,
+      </if>
+      <if test="punishmentRevokeNumber != null" >
+        punishment_revoke_number,
+      </if>
+      <if test="punishmentExplain != null" >
+        punishment_explain,
+      </if>
+      <if test="punishmentEnclosure != null" >
+        punishment_enclosure,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="punishmentId != null" >
+        #{punishmentId,jdbcType=BIGINT},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerNumber != null" >
+        #{registerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="punishmentType != null" >
+        #{punishmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="punishmentDate != null" >
+        #{punishmentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punishmentNumber != null" >
+        #{punishmentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="punishmentRevokeDate != null" >
+        #{punishmentRevokeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punishmentRevokeNumber != null" >
+        #{punishmentRevokeNumber,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punishmentExplain != null" >
+        #{punishmentExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="punishmentEnclosure != null" >
+        #{punishmentEnclosure,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.StudentPunishment" >
+    update student_punishment
+    <set >
+      <if test="studentName != null" >
+        student_name = #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerNumber != null" >
+        register_number = #{registerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="punishmentType != null" >
+        punishment_type = #{punishmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="punishmentDate != null" >
+        punishment_date = #{punishmentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punishmentNumber != null" >
+        punishment_number = #{punishmentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="punishmentRevokeDate != null" >
+        punishment_revoke_date = #{punishmentRevokeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punishmentRevokeNumber != null" >
+        punishment_revoke_number = #{punishmentRevokeNumber,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punishmentExplain != null" >
+        punishment_explain = #{punishmentExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="punishmentEnclosure != null" >
+        punishment_enclosure = #{punishmentEnclosure,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where punishment_id = #{punishmentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.StudentPunishment" >
+    update student_punishment
+    set student_name = #{studentName,jdbcType=VARCHAR},
+      register_number = #{registerNumber,jdbcType=VARCHAR},
+      punishment_type = #{punishmentType,jdbcType=VARCHAR},
+      punishment_date = #{punishmentDate,jdbcType=TIMESTAMP},
+      punishment_number = #{punishmentNumber,jdbcType=VARCHAR},
+      punishment_revoke_date = #{punishmentRevokeDate,jdbcType=TIMESTAMP},
+      punishment_revoke_number = #{punishmentRevokeNumber,jdbcType=TIMESTAMP},
+      punishment_explain = #{punishmentExplain,jdbcType=VARCHAR},
+      punishment_enclosure = #{punishmentEnclosure,jdbcType=VARCHAR},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where punishment_id = #{punishmentId,jdbcType=BIGINT}
+  </update>
+</mapper>

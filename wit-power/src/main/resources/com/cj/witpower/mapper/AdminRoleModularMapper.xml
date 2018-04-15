@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witpower.mapper.AdminRoleModularMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.AdminRoleModular" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="modular_id" property="modularId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, role_id, modular_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin_role_modular
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from admin_role_modular
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.AdminRoleModular" >
+    insert into admin_role_modular (id, role_id, modular_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{modularId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.AdminRoleModular" >
+    insert into admin_role_modular
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="modularId != null" >
+        modular_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="modularId != null" >
+        #{modularId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.AdminRoleModular" >
+    update admin_role_modular
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="modularId != null" >
+        modular_id = #{modularId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.AdminRoleModular" >
+    update admin_role_modular
+    set role_id = #{roleId,jdbcType=INTEGER},
+      modular_id = #{modularId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--查询所有的角色资源ID-->
+  <select id="findAllAdminRoleModularModularId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    SELECT
+    arm.modular_id
+    FROM
+    admin_role_modular arm
+    WHERE
+    arm.role_id = #{roleId}
+  </select>
+
+  <!--根据RoleId检查角色下是否有管理员存在-->
+  <select id="findRoleModular" parameterType="com.cj.witbasics.entity.AdminRole" resultType="java.lang.Integer">
+    SELECT COUNT(arm.id)
+    FROM admin_role_modular arm
+    WHERE
+    arm.role_id = #{id}
+  </select>
+
+  <!--先删除该角色ID下的所有数据-->
+  <delete id="deleteRoleModular" parameterType="java.util.Map">
+    DELETE FROM admin_role_modular
+    WHERE role_id = #{roleId}
+  </delete>
+
+  <!--再遍历集合新增角色权限-->
+  <insert id="addRoleModular" parameterType="java.util.Map">
+    INSERT INTO admin_role_modular(role_id,modular_id)
+    VALUES
+    <foreach collection="modulars" item="item" index="index" separator=",">
+      (#{roleId},#{item})
+    </foreach>
+  </insert>
+</mapper>

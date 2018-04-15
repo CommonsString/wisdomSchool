@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.witbasics.mapper.SchoolCurriculumMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolCurriculum" >
+    <id column="curriculum_id" property="curriculumId" jdbcType="BIGINT" />
+    <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="curriculum_name" property="curriculumName" jdbcType="VARCHAR" />
+    <result column="curriculum_abbreviation" property="curriculumAbbreviation" jdbcType="VARCHAR" />
+    <result column="curriculum_subject" property="curriculumSubject" jdbcType="VARCHAR" />
+    <result column="curriculum_required" property="curriculumRequired" jdbcType="CHAR" />
+    <result column="curriculum_sort" property="curriculumSort" jdbcType="INTEGER" />
+    <result column="founder_id" property="founderId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    curriculum_id, school_id, curriculum_name, curriculum_abbreviation, curriculum_subject, 
+    curriculum_required, curriculum_sort, founder_id, create_time, operator_id, delete_time, 
+    state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from school_curriculum
+    where curriculum_id = #{curriculumId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from school_curriculum
+    where curriculum_id = #{curriculumId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolCurriculum" >
+    insert into school_curriculum (curriculum_id, school_id, curriculum_name, 
+      curriculum_abbreviation, curriculum_subject, 
+      curriculum_required, curriculum_sort, founder_id, 
+      create_time, operator_id, delete_time, 
+      state)
+    values (#{curriculumId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{curriculumName,jdbcType=VARCHAR}, 
+      #{curriculumAbbreviation,jdbcType=VARCHAR}, #{curriculumSubject,jdbcType=VARCHAR}, 
+      #{curriculumRequired,jdbcType=CHAR}, #{curriculumSort,jdbcType=INTEGER}, #{founderId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolCurriculum" >
+    insert into school_curriculum
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="curriculumId != null" >
+        curriculum_id,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="curriculumName != null" >
+        curriculum_name,
+      </if>
+      <if test="curriculumAbbreviation != null" >
+        curriculum_abbreviation,
+      </if>
+      <if test="curriculumSubject != null" >
+        curriculum_subject,
+      </if>
+      <if test="curriculumRequired != null" >
+        curriculum_required,
+      </if>
+      <if test="curriculumSort != null" >
+        curriculum_sort,
+      </if>
+      <if test="founderId != null" >
+        founder_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="curriculumId != null" >
+        #{curriculumId,jdbcType=BIGINT},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="curriculumName != null" >
+        #{curriculumName,jdbcType=VARCHAR},
+      </if>
+      <if test="curriculumAbbreviation != null" >
+        #{curriculumAbbreviation,jdbcType=VARCHAR},
+      </if>
+      <if test="curriculumSubject != null" >
+        #{curriculumSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="curriculumRequired != null" >
+        #{curriculumRequired,jdbcType=CHAR},
+      </if>
+      <if test="curriculumSort != null" >
+        #{curriculumSort,jdbcType=INTEGER},
+      </if>
+      <if test="founderId != null" >
+        #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolCurriculum" >
+    update school_curriculum
+    <set >
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="curriculumName != null" >
+        curriculum_name = #{curriculumName,jdbcType=VARCHAR},
+      </if>
+      <if test="curriculumAbbreviation != null" >
+        curriculum_abbreviation = #{curriculumAbbreviation,jdbcType=VARCHAR},
+      </if>
+      <if test="curriculumSubject != null" >
+        curriculum_subject = #{curriculumSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="curriculumRequired != null" >
+        curriculum_required = #{curriculumRequired,jdbcType=CHAR},
+      </if>
+      <if test="curriculumSort != null" >
+        curriculum_sort = #{curriculumSort,jdbcType=INTEGER},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where curriculum_id = #{curriculumId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolCurriculum" >
+    update school_curriculum
+    set school_id = #{schoolId,jdbcType=BIGINT},
+      curriculum_name = #{curriculumName,jdbcType=VARCHAR},
+      curriculum_abbreviation = #{curriculumAbbreviation,jdbcType=VARCHAR},
+      curriculum_subject = #{curriculumSubject,jdbcType=VARCHAR},
+      curriculum_required = #{curriculumRequired,jdbcType=CHAR},
+      curriculum_sort = #{curriculumSort,jdbcType=INTEGER},
+      founder_id = #{founderId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR}
+    where curriculum_id = #{curriculumId,jdbcType=BIGINT}
+  </update>
+</mapper>
