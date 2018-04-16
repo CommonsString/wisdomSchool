@@ -6,10 +6,9 @@ import org.apache.xmlbeans.impl.regex.Match;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -90,15 +89,36 @@ System.out.println(str);
     }
 
 
+    /**
+     * 计算毕业时间
+     * 参数：学制,入学年度
+     * @param
+     */
+    public static Date getEndTime(int periodSystem, String yeah){
+        //拼接
+        String tempTime = yeah + "-9-1";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date classYeah = null;
+        try {
 
+            classYeah = format.parse(tempTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar now = Calendar.getInstance();
+        now.setTime(classYeah);
+        now.add(Calendar.YEAR, periodSystem);
+        //毕业时间6月
+        now.add(Calendar.MONTH, -3);
+        return now.getTime();
+    }
 
-//    public static void main(String[] args){
-//        String strTemp = "高一(120)";
-//    String[] strSplit=strTemp.split("(\\s*\\(\\s*|\\s*\\（\\s*|\\s+)");
-//        for(String str : strSplit){
-//        System.out.println(str);
-//        }
-//    }
+    public static void main(String[] args){
+
+        Date time = getEndTime(3, "2016");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(format.format(time));
+    }
 
 
     /**

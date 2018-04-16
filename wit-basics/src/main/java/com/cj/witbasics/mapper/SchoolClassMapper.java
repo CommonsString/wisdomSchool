@@ -91,5 +91,8 @@ public interface SchoolClassMapper {
 
     //获取年级下的班级
     List<SchoolClassInfo> selectByPeriodIdNoPager(Long periodId);
+
+    //根据班级查重
+    int selectCountByClassNumber(int classNumber);
 }
 

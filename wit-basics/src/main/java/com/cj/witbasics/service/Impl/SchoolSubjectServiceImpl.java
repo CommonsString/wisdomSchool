@@ -1,6 +1,7 @@
 package com.cj.witbasics.service.Impl;
 
 import com.cj.witbasics.entity.SchoolSubject;
+import com.cj.witbasics.mapper.ClassSubjectInfoMapper;
 import com.cj.witbasics.mapper.SchoolSubjectMapper;
 import com.cj.witbasics.service.SchoolSubjectService;
 import com.cj.witcommon.entity.ApiCode;
@@ -35,6 +36,9 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
 
     @Autowired(required = false)
     private SchoolSubjectMapper subjectMapper;
+
+    @Autowired(required = false)
+    private ClassSubjectInfoMapper infoMapper;
 
     @Value("${school_id}")
     private String schoolId;
@@ -127,19 +131,33 @@ System.out.println(total);
      */
     @Override
     @Transactional
-    public boolean updataSubjectInfoDel(SchoolSubject subject) {
+    public ApiResult updataSubjectInfoDel(SchoolSubject subject) {
+        ApiResult result = new ApiResult();
         //参数检查
-        if(subject.getSubjectId() == null) return false;
-        //返回标志
-        boolean success = false;
-        //删除标志
-        subject.setState("0");
-        subject.setDeleteTime(new Date());
-        int result = this.subjectMapper.updateByPrimaryKeySelective(subject);
-        if(result > 0){
-            success = true;
+        if(subject.getSubjectId() == null){
+            result.setCode(ApiCode.error_invalid_argument);
+            result.setMsg(ApiCode.error_invalid_argument_MSG);
+            return result;
         }
-        return success;
+        //统计科目,有无使用
+        int isCopy = this.infoMapper.selectCountBySubjectId(subject.getSubjectId());
+        if(isCopy > 0){
+            log.error("数据存在使用");
+            result.setCode(ApiCode.error_duplicated_data);
+            result.setMsg(ApiCode.error_duplicated_data_MSG);
+            return result;
+        }
+        //删除标志
+        subject.setDeleteTime(new Date());
+        int flag_s = this.subjectMapper.updateByPrimaryKeySelective(subject);
+        if(flag_s > 0){
+            result.setCode(ApiCode.SUCCESS);
+            result.setMsg(ApiCode.SUCCESS_MSG);
+        }else{
+            result.setCode(ApiCode.error_delete_failed);
+            result.setMsg(ApiCode.error_delete_failed_MSG);
+        }
+        return result;
     }
 
 

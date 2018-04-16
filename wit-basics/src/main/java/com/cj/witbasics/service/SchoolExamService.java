@@ -6,6 +6,7 @@ import com.cj.witbasics.entity.SchoolSubject;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.entity.ExamParam;
 import com.cj.witcommon.entity.PeriodAndGrade;
+import com.cj.witcommon.utils.entity.other.Pager;
 
 import java.util.List;
 import java.util.Map;
@@ -36,5 +37,14 @@ public interface SchoolExamService {
      */
     ApiResult addSchoolExamInfo(ExamParam examInfo);
 
+    /**
+     * 查询科目名称
+     */
+    List<Map> findExamName(Long schoolId);
+
+    /**
+     * 模糊查询考试信息
+     */
+    Pager findExamOfVague(String examName, String vague, Pager pager);
 
 }

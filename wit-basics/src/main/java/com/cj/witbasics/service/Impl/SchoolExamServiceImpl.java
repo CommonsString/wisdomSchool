@@ -10,6 +10,7 @@ import com.cj.witbasics.mapper.SchoolSubjectMapper;
 import com.cj.witbasics.service.SchoolExamService;
 import com.cj.witcommon.entity.*;
 import com.cj.witcommon.utils.common.StringHandler;
+import com.cj.witcommon.utils.entity.other.Pager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +125,34 @@ public class SchoolExamServiceImpl implements SchoolExamService{
         return result;
     }
 
+
+    /**
+     * 查询考试名称
+     * @param
+     * @return
+     */
+    @Override
+    public List<Map> findExamName(Long schoolId) {
+        List<Map> result = this.examMapper.selectBySchoolId(schoolId);
+        return result;
+    }
+
+
+    /**
+     * 模糊查询,考试类别,考试对象
+     * @param
+     * @param vague
+     * @return
+     */
+    @Override
+    public Pager findExamOfVague(String examName, String vague, Pager pager) {
+        int total = this.examMapper.selectCountIdAndVague(examName, vague);
+        pager.setPageTotal(total);
+        List<SchoolExam> result = this.examMapper.selectByIdAndVague(examName, vague, pager);
+        pager.setContent(result);
+        return pager;
+    }
+
     /**
      * 新增考试
      */
@@ -184,6 +213,8 @@ public class SchoolExamServiceImpl implements SchoolExamService{
         }
         return result;
     }
+
+
 
 
 }

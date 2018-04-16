@@ -3,6 +3,9 @@ package com.cj.witbasics.service.Impl;
 import com.cj.witbasics.entity.*;
 import com.cj.witbasics.mapper.*;
 import com.cj.witbasics.service.SchoolClassService;
+import com.cj.witcommon.entity.ApiCode;
+import com.cj.witcommon.entity.ApiResult;
+import com.cj.witcommon.entity.ApiResultUtil;
 import com.cj.witcommon.entity.SchoolClassInfo;
 import com.cj.witcommon.utils.common.StringHandler;
 import com.cj.witcommon.utils.entity.other.Pager;
@@ -46,6 +49,9 @@ public class SchoolClassServiceImpl implements SchoolClassService{
     @Autowired(required = false)
     private SchoolGradeMapper gradeMapper;
 
+    @Autowired(required = false)
+    private SchoolPeriodClassThetimeMapper scMapper;
+
 
     @Value("${school_id}")
     private String schoolId;
@@ -64,58 +70,69 @@ public class SchoolClassServiceImpl implements SchoolClassService{
      */
     @Override
     @Transactional
-    public boolean bathImportInfo(MultipartFile file, InputStream in, Long operatorId){
+    public ApiResult bathImportInfo(MultipartFile file, InputStream in, Long operatorId){
         int result = 0;
         System.out.println("进入2");
-        //TODO:班级名重名?
+        ApiResult apiResult = new ApiResult();
         try{
+//            //关联表数据-：学校-学段-班级-班主任-届次关系表
+//            List<SchoolSubjectClassThetime> tempTable = new ArrayList<SchoolSubjectClassThetime>();
+//            //班级信息表
+//            List<SchoolClass> classTable = new ArrayList<SchoolClass>();
+
             String fileName = file.getOriginalFilename(); //获取文件名
             Workbook workbook = ImportExeclUtil.chooseWorkbook(fileName, in);
             int sheets = workbook.getNumberOfSheets(); //获取sheet数量
             for(int i = 0; i < sheets; i++){
                 SchoolClass baseInfo = new SchoolClass(); //创建列表信息
                 List<SchoolClass> readBaseInfo = ImportExeclUtil.readDateListT(workbook, baseInfo, 4, 0, i);
-System.out.println(readBaseInfo);
                 Date createTime = new Date();//创建的时间
-System.out.println(readBaseInfo.size() + " 长度");
                 for(SchoolClass info : readBaseInfo){
-//                    System.out.println(info.toString());
-                    //根据校区名称查询校区ID(备注，校区ID需要校区表)
-//                    Long schoolId = this.classMapper.selectByClassName(info.getClassCampus());
+                    //TODO:班级存在
+                    int isCopy = this.classMapper.selectCountByClassNumber(info.getClassNumber());
+                    if(isCopy > 0){
+                        //数据存在,无法导入
+                        apiResult.setCode(ApiCode.error_duplicated_data);
+                        apiResult.setMsg("重复导入,请检查文件");
+                        return apiResult;
+                    }
+                    //班级数据封装
                     Long schoolId = toLong();
-                    //根据班级类型名，查询班级类型Id
-//System.out.println(" 班级类型 " + info.getClassType());
                     Integer classTypeId = this.classTypeMapper.selectByClassTypeName(info.getClassType());
-//System.out.println("班级类型ID  " + classTypeId);
-                    //注入学段
-//System.out.println("学段名称 " + info.getClassPeriod());
-                    Long periodId = this.periodMapper.selectPeriodIdByPeriodName(info.getClassPeriod());
-//System.out.println("学段ID： " + PeriodId);
-//System.out.println("班级类型ID： " + classTypeId/*  + " 学段ID " + PeriodId*/);
+                    SchoolPeriod period = this.periodMapper.selectPeriodIdByPeriodName(info.getClassPeriod());
+                    Long periodId = period.getPeriodId();
                     //注入属性
                     info.setSchoolId(schoolId);
                     info.setClassTypeId(classTypeId);
                     //学段ID
                     info.setClassPeriodId(new Long(periodId).intValue());
+                    info.setClassNumber(info.getClassNumber());
                     //处理时间
-//                    String classYear = info.getClassYear();
-
                     info.setCreateTime(createTime);
                     info.setOperatorId(operatorId);
-                    result = this.classMapper.insertSelective(info);
-System.out.println(info.toString() + "  插入对象");
+                    //插入数据,返回ID
+                    this.classMapper.insertSelective(info);
+                    //关联表数据封装
+                    SchoolPeriodClassThetime tTable = new SchoolPeriodClassThetime();
+                    tTable.setSchoolId(schoolId);
+                    //学段ID
+                    tTable.setPeriodId(periodId);
+                    tTable.setClassId(info.getClassId());
+                    tTable.setFounderId(operatorId);
+                    tTable.setCreateTime(createTime);
+                    tTable.setThetime(StringHandler.getEndTime(period.getPeriodSystem(), info.getClassYear()));
+                    this.scMapper.insertSelective(tTable);
                 }
             }
+            //操作成功
+            ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
         }catch (Exception e){
-            log.error("读取文件失败！");
+            apiResult.setCode(ApiCode.import_failed);
+            apiResult.setMsg(ApiCode.import_failed_MSG);
             e.printStackTrace();
+            return apiResult;
         }
-System.out.println(result + " 标志");
-        if(result > 0){
-            return true;
-        }else{
-            return false;
-        }
+        return apiResult;
     }
 
 

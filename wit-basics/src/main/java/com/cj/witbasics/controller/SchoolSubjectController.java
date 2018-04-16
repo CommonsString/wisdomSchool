@@ -167,18 +167,13 @@ System.out.println(apiResult.toString());
         //TODO:获取操作员ID
         Long operatorId = 1L;
         //返回对象
-        ApiResult apiResult = new ApiResult();
+        ApiResult apiResult = null;
         try{
             //构造对象
             SchoolSubject subject = new SchoolSubject();
             subject.setSubjectId(subjectId);
             subject.setOperatorId(operatorId);
-            boolean result = this.subjectService.updataSubjectInfoDel(subject);
-            if(result){
-                ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
-            }else{
-                ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_delete_failed, ApiCode.FAIL_MSG, null);
-            }
+            apiResult = this.subjectService.updataSubjectInfoDel(subject);
         }catch (Exception e){ //异常处理
             ApiResultUtil.fastResultHandler(apiResult, false,
                     ApiCode.error_delete_failed, ApiCode.error_unknown_database_operation_MSG, null);
@@ -257,7 +252,7 @@ System.out.println("进入！");
         response.setHeader("content-Type", "application/vnd.ms-excel");
         //下载文件的默认名字
         try {
-            response.setHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode("bb", "utf-8"));
+            response.setHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode("subjectInfo", "utf-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

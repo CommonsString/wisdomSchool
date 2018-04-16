@@ -349,15 +349,13 @@
     LEFT JOIN school_subject AS sb ON ss.subject_id = sb.subject_id
     LEFT JOIN admin_info AS ai ON ss.admin_info_id = ai.admin_info_id
     <where>
-      <if test="vague">
+      <if test="vague != null">
         sc.class_number LIKE CONCAT(#{vague}, "%")
         OR sc.class_headmaster LIKE CONCAT(#{vague}, "%")
         OR sc.class_name LIKE CONCAT(#{vague}, "%")
         limit #{minRow},#{pageSize}
       </if>
-
     </where>
-
   </select>
 
   <resultMap id="selectInfoMap" type="com.cj.witcommon.entity.SchoolClassInfo">

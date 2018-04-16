@@ -1,6 +1,7 @@
 package com.cj.witbasics.service;
 
 import com.cj.witbasics.entity.SchoolClass;
+import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.utils.entity.other.Pager;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +23,7 @@ public interface SchoolClassService {
     //返回班级层次
     List findSchoolLevel(Long schoolId);
 
-    public boolean bathImportInfo(MultipartFile file, InputStream in, Long operatorId);
+    public ApiResult bathImportInfo(MultipartFile file, InputStream in, Long operatorId);
 
     //添加班级类型
     public boolean addClassType(Long schoolId, List<String> classType);

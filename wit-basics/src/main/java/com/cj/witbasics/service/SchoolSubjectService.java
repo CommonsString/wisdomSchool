@@ -29,7 +29,7 @@ public interface SchoolSubjectService {
     /**
      * 删除课程信息，非物理删除
      */
-    boolean updataSubjectInfoDel(SchoolSubject subject);
+    ApiResult updataSubjectInfoDel(SchoolSubject subject);
 
 
     /**

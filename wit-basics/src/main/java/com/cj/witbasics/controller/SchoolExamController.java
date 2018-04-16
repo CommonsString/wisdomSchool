@@ -5,6 +5,7 @@ import com.cj.witbasics.entity.SchoolExam;
 import com.cj.witbasics.entity.SchoolSubject;
 import com.cj.witbasics.service.SchoolExamService;
 import com.cj.witcommon.entity.*;
+import com.cj.witcommon.utils.entity.other.Pager;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -129,8 +130,6 @@ public class SchoolExamController {
     }
 
 
-
-
     /**
      *  功能描述：新增考试
      *  参数：
@@ -150,7 +149,7 @@ public class SchoolExamController {
     public ApiResult addSchoolExamInfo(
             @ApiParam(name = "examInfo", value = "最内层,只传递subjectId,subjectName")
             @RequestBody ExamParam examInfo){
-        System.out.println(examInfo.toString());
+System.out.println(examInfo.toString());
         ApiResult apiResult = new ApiResult(); //返回对象
         try{
             apiResult = this.examService.addSchoolExamInfo(examInfo);
@@ -164,17 +163,61 @@ public class SchoolExamController {
 
 
     /**
-     *  功能描述：查询考试信息
-     *  参数：学校ID，考试类别，考试对象(初一，初二.....)
+     *  功能描述：查询考试名称
+     *  参数：
      *  返回：成功/失败
      *  时间：10小时
      */
-    public void findSchoolExamInfo(){
+    @ApiOperation(value = "查询考试名称", notes = "返回成功或失败")
+    @GetMapping("/findExamName")
+    public ApiResult findExamName(){
+        ApiResult apiResult = new ApiResult();
+        try{
+            List<Map> result = this.examService.findExamName(toLong());
+            if(result != null){
+                ApiResultUtil.fastResultHandler(apiResult, true, null, null, result); //数据的封装
+            }else{
+                ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_search_failed, ApiCode.FAIL_MSG, null);
+            }
+        }catch (Exception e){ //异常处理
+            ApiResultUtil.fastResultHandler(apiResult, false,
+                    ApiCode.error_search_failed, ApiCode.error_unknown_database_operation_MSG, null);
+            e.printStackTrace();
+        }
+        return apiResult;
 
     }
 
 
-
+    /**
+     *  功能描述：查询考试信息,模糊条件
+     *  参数：学校ID，考试类别，考试对象(初一，初二.....)
+     *  返回：成功/失败
+     *  时间：10小时
+     */
+    @ApiOperation(value = "查询考试(模糊)", notes = "返回成功或失败")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examName", value = "考试名称", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "vague", value = "模糊条件", dataType = "String"),
+            @ApiImplicitParam(name = "pager",value = "分页参数，初始页码1，初始条数10，可为空",required = false)
+    })
+    @GetMapping("/findExamOfVague")
+    public ApiResult findExamOfVague(String examName, String vague, Pager pager){
+        ApiResult apiResult = new ApiResult();
+        try{
+            Pager result = this.examService.findExamOfVague(examName, vague, pager);
+            if(result != null){
+                ApiResultUtil.fastResultHandler(apiResult, true, null, null, result); //数据的封装
+            }else{
+                ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_search_failed, ApiCode.FAIL_MSG, null);
+            }
+        }catch (Exception e){ //异常处理
+            ApiResultUtil.fastResultHandler(apiResult, false,
+                    ApiCode.error_search_failed, ApiCode.error_unknown_database_operation_MSG, null);
+            e.printStackTrace();
+        }
+        return apiResult;
+    }
 
 
 }

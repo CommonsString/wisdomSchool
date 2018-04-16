@@ -75,7 +75,7 @@ public interface SchoolPeriodMapper {
     /**
      * 根据学段名返回学点ID
      */
-    Long selectPeriodIdByPeriodName(String periodName);
+    SchoolPeriod selectPeriodIdByPeriodName(String periodName);
 
 
 

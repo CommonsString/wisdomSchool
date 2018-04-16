@@ -56,5 +56,9 @@ public interface ClassSubjectInfoMapper {
     int updateBySubjectTest(@Param("classId") Long classId, @Param("list") List list);
 
 
+    /**
+     * 查找科目是否再使用
+     */
+    int selectCountBySubjectId(Long subjectId);
 
 }

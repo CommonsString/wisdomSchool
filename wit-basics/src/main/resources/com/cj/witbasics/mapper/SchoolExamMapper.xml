@@ -308,4 +308,42 @@
     school_id = #{schoolId,jdbcType=BIGINT}
   </select>
 
+
+
+  <!--模糊计数-->
+  <select id="selectCountIdAndVague" resultType="int">
+    SELECT COUNT(exam_id)
+    FROM
+    school_exam AS se
+    <where>
+      <if test="examName != null">
+        se.exam_name LIKE CONCAT(#{examName}, "%")
+      </if>
+      <if test="vague != null">
+        OR
+        se.exam_type_name LIKE CONCAT(#{vague}, "%")
+        OR
+        se.exam_object LIKE CONCAT(#{vague}, "%")
+      </if>
+    </where>
+  </select>
+  <!--模糊查询-->
+  <select id="selectByIdAndVague" resultMap="BaseResultMap">
+    SELECT *
+    FROM
+    school_exam AS se
+    <where>
+      <if test="examName != null">
+        se.exam_name LIKE CONCAT(#{examName}, "%")
+      </if>
+      <if test="vague != null">
+        OR
+        se.exam_type_name LIKE CONCAT(#{vague}, "%")
+        OR
+        se.exam_object LIKE CONCAT(#{vague}, "%")
+      </if>
+    </where>
+  </select>
+
+
 </mapper>

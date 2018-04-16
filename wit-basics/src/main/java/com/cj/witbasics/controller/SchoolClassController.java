@@ -93,7 +93,7 @@ public class SchoolClassController {
         //TODO:获取操作人ID
         Long operatorId = 11L;
         //返回对象
-        ApiResult apiResult = new ApiResult();
+        ApiResult apiResult = null;
         //TODO:校验文件是否为空
         if(file == null) {
             ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.FAIL, ApiCode.FAIL_MSG, null); //处理失败
@@ -102,12 +102,7 @@ public class SchoolClassController {
         try{
             //获取文件流
             InputStream in = file.getInputStream();
-            boolean result = this.schoolClassService.bathImportInfo(file, in, operatorId);
-            if(result){
-                ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
-            }else{
-                ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.FAIL, ApiCode.FAIL_MSG, null); //处理失败
-            }
+            apiResult = this.schoolClassService.bathImportInfo(file, in, operatorId);
         }catch (Exception e){ //异常处理
             ApiResultUtil.fastResultHandler(apiResult, false,
                     ApiCode.FAIL, ApiCode.error_unknown_database_operation_MSG, null);

@@ -4,6 +4,7 @@ import com.cj.witbasics.entity.SchoolExam;
 import com.cj.witcommon.entity.ExamClassSubject;
 import com.cj.witcommon.entity.ExamParam;
 import com.cj.witcommon.entity.PeriodUnderGrade;
+import com.cj.witcommon.utils.entity.other.Pager;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -69,5 +70,23 @@ public interface SchoolExamMapper {
      */
     int insertBatchInfoByU(@Param("list") List<SchoolExam> list);
 
+    /**
+     * 查询考试名称
+     */
+    List<Map> selectBySchoolId(Long schoolId);
+
+
+    /**
+     * 模糊计数
+     */
+    int selectCountIdAndVague(@Param("examName") String examName,
+                              @Param("vague") String vague);
+
+    /**
+     * 模糊查询
+     */
+    List<SchoolExam> selectByIdAndVague(@Param("examName") String examName,
+                                        @Param("vague") String vague,
+                                        @Param("pager") Pager pager);
 
 }
