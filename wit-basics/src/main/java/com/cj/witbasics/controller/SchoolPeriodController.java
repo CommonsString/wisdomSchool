@@ -4,6 +4,7 @@ package com.cj.witbasics.controller;
 import com.cj.witbasics.entity.SchoolGrade;
 import com.cj.witbasics.entity.SchoolPeriod;
 import com.cj.witbasics.service.SchoolPeriodService;
+import com.cj.witcommon.aop.Log;
 import com.cj.witcommon.entity.*;
 import com.cj.witcommon.utils.entity.other.Pager;
 import io.swagger.annotations.*;
@@ -59,6 +60,7 @@ public class SchoolPeriodController {
      *  未完成
      */
     @ApiOperation(value = "查询学段信息(渲染)", notes = "成功/失败")
+    @Log(name = "查询学段信息")
 //    @ApiImplicitParam(name = "schoolId", value = "学校(校区)ID", required = true,dataType = "Long")
     @GetMapping("/findInfo")
     public ApiResult findSchoolPeriodInfo(/*Long schoolId*/){
@@ -87,6 +89,7 @@ System.out.println("schoolId============>>"+schoolId);
      *  返回：成功/失败
      */
     @ApiOperation(value = "修改年级", notes = "成功/失败")
+    @Log(name = "修改年级")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "gradeId", value = "年级ID", required = true, dataType = "Long"),
          @ApiImplicitParam(name = "gradeName", value = "新的年级名称", required = true, dataType = "String"),
@@ -117,6 +120,7 @@ System.out.println("schoolId============>>"+schoolId);
      *  返回：成功/失败
      */
     @ApiOperation(value = "年级删除", notes = "成功/失败")
+    @Log(name = "年级删除")
     @ApiImplicitParam(name = "gradeId", value = "年级ID", required = true, dataType = "Long")
 //    @DeleteMapping("updateGradeDel")
     public ApiResult updateSchoolGradeDel(Long gradeId){

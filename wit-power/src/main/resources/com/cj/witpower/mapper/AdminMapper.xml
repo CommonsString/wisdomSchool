@@ -223,25 +223,22 @@
     a.id,a.admin_name,a.role_id,ar.role_name,a.admin_state,a.admin_type,a.create_time
     FROM admin a
     LEFT JOIN admin_role ar ON a.role_id = ar.id
-    WHERE a.admin_state = '1'
-    <if test="parameters != null">
-      <if test="parameters.id != null">
-        AND
-        a.id = #{parameters.id}
-      </if>
-      <if test="parameters.adminName != null">
-        AND
-        a.admin_name = #{parameters.adminName}
-      </if>
-      <if test="parameters.adminType != null">
-        AND
-        a.admin_type = #{parameters.adminType}
-      </if>
-      <if test="parameters.adminState != null">
-        AND
-        a.admin_state = #{parameters.adminState}
-      </if>
+    WHERE
+    a.admin_state = "-1" OR a.admin_state = "1"
+    <if test="parameters.containsKey('roleId')">
+      AND
+      ar.id = #{parameters.roleId}
     </if>
+
+    <if test="parameters.containsKey('adminName')">
+      AND
+      a.admin_name LIKE concat(concat('%',#{parameters.adminName}),'%')
+    </if>
+    <if test="parameters.containsKey('adminType')">
+      AND
+      a.admin_type = #{parameters.adminType}
+    </if>
+
     ORDER BY a.create_time DESC
     limit #{minRow},#{pageSize}
   </select>

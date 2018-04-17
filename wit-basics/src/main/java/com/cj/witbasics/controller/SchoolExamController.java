@@ -4,6 +4,7 @@ package com.cj.witbasics.controller;
 import com.cj.witbasics.entity.SchoolExam;
 import com.cj.witbasics.entity.SchoolSubject;
 import com.cj.witbasics.service.SchoolExamService;
+import com.cj.witcommon.aop.Log;
 import com.cj.witcommon.entity.*;
 import com.cj.witcommon.utils.entity.other.Pager;
 import io.swagger.annotations.*;
@@ -47,6 +48,7 @@ public class SchoolExamController {
      *  时间：6小时
      */
     @ApiOperation(value = "无参。查询---学段(高中...)--年级(一年级...)", notes = "返回状态")
+    @Log(name = "查询---学段")
     @GetMapping("/findGrade")
     public ApiResult findAllGradeName(){
         //获取学校Id
@@ -78,6 +80,7 @@ public class SchoolExamController {
      *  时间：8小时
      */
     @ApiOperation(value = "查询班级", notes = "返回成功或失败")
+    @Log(name = "查询班级")
     @ApiImplicitParam(name = "param", value = "参数")
     //测试post
 //    @GetMapping("/findAllClass")
@@ -109,6 +112,7 @@ public class SchoolExamController {
      *  时间：6小时
      */
     @ApiOperation(value = "查询科目", notes = "返回成功或失败")
+    @Log(name = "查询科目")
     @ApiImplicitParam(name = "classId", value = "班级Id", required = true, dataType = "Long")
     @GetMapping("/findSubjectInfo")
     public ApiResult findAllSubjectInfo(Long classId){
@@ -145,6 +149,7 @@ public class SchoolExamController {
      *  时间：16小时
      */
     @ApiOperation(value = "新增考试", notes = "成功/失败")
+    @Log(name = "新增考试")
     @PostMapping("/addExamInfo")
     public ApiResult addSchoolExamInfo(
             @ApiParam(name = "examInfo", value = "最内层,只传递subjectId,subjectName")
@@ -169,6 +174,7 @@ System.out.println(examInfo.toString());
      *  时间：10小时
      */
     @ApiOperation(value = "查询考试名称", notes = "返回成功或失败")
+    @Log(name = "查询考试名称")
     @GetMapping("/findExamName")
     public ApiResult findExamName(){
         ApiResult apiResult = new ApiResult();
@@ -196,6 +202,7 @@ System.out.println(examInfo.toString());
      *  时间：10小时
      */
     @ApiOperation(value = "查询考试(模糊)", notes = "返回成功或失败")
+    @Log(name = "查询考试(模糊)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "examName", value = "考试名称", required = true, dataType = "String"),
             @ApiImplicitParam(name = "vague", value = "模糊条件", dataType = "String"),

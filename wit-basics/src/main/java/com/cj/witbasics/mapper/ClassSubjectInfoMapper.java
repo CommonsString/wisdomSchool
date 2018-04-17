@@ -61,4 +61,9 @@ public interface ClassSubjectInfoMapper {
      */
     int selectCountBySubjectId(Long subjectId);
 
+
+    /**
+     * 根据教师ID,科目ID
+     */
+    ClassSubjectInfo selectAdminId(Long teaId);
 }

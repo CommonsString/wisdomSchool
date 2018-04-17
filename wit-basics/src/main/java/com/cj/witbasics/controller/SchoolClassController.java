@@ -4,6 +4,7 @@ import com.cj.witbasics.entity.SchoolClass;
 import com.cj.witbasics.entity.SchoolClassType;
 import com.cj.witbasics.service.SchoolClassService;
 import com.cj.witbasics.service.SchoolPeriodService;
+import com.cj.witcommon.aop.Log;
 import com.cj.witcommon.entity.*;
 import com.cj.witcommon.utils.common.FileUtil;
 import com.cj.witcommon.utils.entity.other.Pager;
@@ -65,6 +66,7 @@ public class SchoolClassController {
      *  时间：2
      */
     @ApiOperation(value = "模版下载", notes = "返回指定路径内的Excel模版文件")
+    @Log(name = "班级导入模版下载")
 //    @ApiImplicitParam(name = "response", value = "响应流")
     @GetMapping("/downLoadExcel")
     public void downLoadExcel(HttpServletResponse response, HttpServletRequest request){
@@ -86,6 +88,7 @@ public class SchoolClassController {
      *  时间：8
      */
     @ApiOperation("导入班级信息")
+    @Log(name = "导入班级信息")
     @ApiParam(value = "班级信息导入（选择文件）",required = true)
     @PostMapping("/bathImportInfo")
     public ApiResult bathImportInfo(MultipartFile file){
@@ -118,6 +121,7 @@ public class SchoolClassController {
      *  时间：2 小时
      */
     @ApiOperation(value = "添加班级类型", notes = "返回成功或失败")
+    @Log(name = "添加班级类型")
     @ApiImplicitParams({
 //            @ApiImplicitParam(name = "schoolId", value = "学校ID", required = true, dataType = "Long"),
 //            @ApiImplicitParam(name = "classTypeName", value = "班级类型名称", dataType = "String")
@@ -158,6 +162,7 @@ System.out.println(schoolId + " 学校ID");
      *  时间：2小时
      */
     @ApiOperation(value = "修改班级类型名称", notes = "返回成功或失败")
+    @Log(name = "修改班级类型名称")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "classTypeId", value = "班级类型Id", required = true, dataType = "int"),
             @ApiImplicitParam(name = "classTypeName", value = "班级类型名称", required = true, dataType = "String"),
@@ -189,6 +194,7 @@ System.out.println(schoolId + " 学校ID");
      */
     @ApiOperation(value = "删除班级类型", notes = "返回成功或失败")
     @ApiImplicitParam(name = "classTypeId", value = "班级类型Id", required = true)
+    @Log(name = "删除班级类型")
     @DeleteMapping ("/updateClassTypeDel")
     public ApiResult updateClassTypeDel(Integer classTypeId){
         ApiResult apiResult = new ApiResult(); //返回对象
@@ -216,6 +222,7 @@ System.out.println(schoolId + " 学校ID");
      *  时间：2 小时
      */
     @ApiOperation(value = "添加班级层次", notes = "返回成功或失败")
+    @Log(name = "添加班级层次")
     @ApiImplicitParams({
 //            @ApiImplicitParam(name = "schoolId", value = "学校Id", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "classLevel", value = "班级层次名")
@@ -248,6 +255,7 @@ System.out.println(schoolId + " 学校ID");
      *  时间：2小时
      */
     @ApiOperation(value = "修改班级层次", notes = "返回成功或失败")
+    @Log(name = "修改班级层次")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "classLevelId", value = "班级层次Id", required = true, dataType = "int"),
             @ApiImplicitParam(name = "classlevelName", value = "新的班级层次名", required = true, dataType = "String")
@@ -278,6 +286,7 @@ System.out.println(schoolId + " 学校ID");
      *  时间：2小时
      */
     @ApiOperation(value = "删除班级层次", notes = "返回成功或失败")
+    @Log(name = "删除班级层次")
     @ApiImplicitParam(name = "classLevelId", value = "班级层次ID", required = true, dataType = "int")
     @DeleteMapping("/deleteClassLevel")
     public ApiResult updateClassLevelDel(Integer classLevelId){
@@ -305,6 +314,7 @@ System.out.println(schoolId + " 学校ID");
      *  未完成
      */
     @ApiOperation(value = "修改班级信息", notes = "返回成功或失败")
+    @Log(name = "修改班级信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "classId", value = "班级ID", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "className", value = "班级名称", required = false, dataType = "String"),
@@ -355,6 +365,7 @@ System.out.println(result + "  控制层结果");
      *  //未完成，SQL语句
      */
     @ApiOperation(value = "学段-年级-模糊条件--->查询班级信息", notes = "班级信息集合")
+    @Log(name = "学段-年级-模糊条件--->查询班级信息")
     @ApiImplicitParams({
 
             @ApiImplicitParam(name = "periodId", value = "学段Id", required = false, dataType = "Long"),
@@ -393,6 +404,7 @@ System.out.println(result + "  控制层结果");
      *  时间：2
      */
     @ApiOperation(value = "查询学段下的年级信息", notes = "成功/失败")
+    @Log(name = "学查询学段下的年级信息")
     @ApiImplicitParam(name = "periodId", value = "学段ID", required = true, dataType = "Long")
     @GetMapping("/findGradeInfo")
     public ApiResult findSchoolGradeInfo(Long periodId){
@@ -422,6 +434,7 @@ System.out.println("进入" + "学段ID " + periodId);
      *  时间：2
      */
     @ApiOperation(value = "返回学段/班级类型/班级层次", notes = "成功/失败")
+    @Log(name = "返回学段/班级类型/班级层次")
     @ApiImplicitParam(name = "schoolId", value = "学校(校区)ID", required = true, dataType = "Long")
 //    @GetMapping("findLevelTypePeriod")
     public ApiResult findSchoolLevelTypePeriod(Long schoolId){

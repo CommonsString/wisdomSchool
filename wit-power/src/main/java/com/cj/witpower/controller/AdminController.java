@@ -341,8 +341,9 @@ public class AdminController {
     //分类查询正常使用的角色列表
     @GetMapping("/findAllRole")
     @ApiOperation("分类查询正常使用的角色列表")
-    @Log(name = "分类查询正常使用的角色列表")
-    @ApiImplicitParam(name = "type",value = "-1,查询所有未删除的角色， 0：系统用户 \t1: 系统管理员 \t2: 学校管理员 \t3: 老师 \t4：学生 \t5：家长 \t6：其他",required = false)
+    @ApiImplicitParam(name = "type",value = "-1,查询所有未删除的角色，不填=查询所有 0：系统用户 \t1: 系统管理员 \t2: 学校管理员 \t3: 老师 \t4：学生 \t5：家长 \t6：其他",required = false)
+
+    @Log(name = "查询角色列表")
     public ApiResult findAllRole(String type){
         AdminRole adminRole = new AdminRole();
         adminRole.setType(type);
@@ -422,7 +423,7 @@ public class AdminController {
     //登陆
     @PostMapping("/ifLogin")
     @ApiOperation("用户登录")
-    @Log(name = "用户登录")
+    @Log(name = "登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "adminName",value = "用户名",required = true),
             @ApiImplicitParam(name = "adminPass",value = "密码",required = true)

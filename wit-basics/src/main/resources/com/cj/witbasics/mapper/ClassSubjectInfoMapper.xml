@@ -104,11 +104,19 @@
 
   <!--查找科目是否再使用-->
   <select id="selectCountBySubjectId" parameterType="Long">
-  SELECT COUNT(cls_sub_id)
-  FROM class_subject_info
-  WHERE
-  subject_id = #{subjectId,jdbcType=BIGINT}
-  LIMIT 1;
+    SELECT COUNT(cls_sub_id)
+    FROM class_subject_info
+    WHERE
+    subject_id = #{subjectId,jdbcType=BIGINT}
+    LIMIT 1;
+  </select>
+  
+  <!--根据教师ID,科目ID-->
+  <select id="selectAdminId" parameterType="long" resultMap="BaseResultMap">
+    SELECT * FROM
+    class_subject_info
+    WHERE
+    admin_info_id = #{teaId,jdbcType=BIGINT}
   </select>
 
 </mapper>

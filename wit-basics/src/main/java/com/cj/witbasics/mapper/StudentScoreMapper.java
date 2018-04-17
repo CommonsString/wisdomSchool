@@ -1,6 +1,7 @@
 package com.cj.witbasics.mapper;
 
 import com.cj.witbasics.entity.StudentScore;
+import com.cj.witcommon.entity.ClassGradeInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -52,5 +53,16 @@ public interface StudentScoreMapper {
      */
     int insertBathInfo(List<StudentScore> list);
 
+    /**
+     * 成绩查询,班主任权限
+     */
+    List<ClassGradeInfo> selectPowerByHeadmaster(Long headmasterId);
+
+    /**
+     * 成绩查询,科目教师权限
+     * @param adminInfoId
+     * @return
+     */
+    List<ClassGradeInfo> selectPowerBySubjectTeacher(Long adminInfoId);
 
 }

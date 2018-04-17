@@ -222,4 +222,55 @@
       )
     </foreach>
   </insert>
+
+
+
+  <resultMap id="sssvMap" type="ccom.cj.witcommon.entity.ClassGradeInfo" >
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="subject_id" property="subjectId" jdbcType="BIGINT" />
+    <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
+    <result column="min_score" property="minScore" jdbcType="DECIMAL" />
+    <result column="max_score" property="maxScore" jdbcType="DECIMAL" />
+    <result column="avg_score" property="avgScore" jdbcType="DECIMAL" />
+    <result column="actually_come" property="actuallyCome" jdbcType="BIGINT" />
+    <result column="not_come" property="notCome" jdbcType="BIGINT" />
+  </resultMap>
+  <!--成绩查询,班主任权限-->
+  <select id="selectPowerByHeadmaster" parameterType="long" resultMap="sssvMap">
+    SELECT sc.class_name, ss.subject_id, ss.subject_name, MIN(st.score) AS min_score,
+    MAX(st.score)AS max_score, AVG(st.score) AS avg_score ,
+    COUNT(st.score) AS actually_come, COUNT(*) - COUNT(st.score)  AS not_come
+    FROM
+    class_subject_info AS cs
+    LEFT JOIN school_class AS sc
+    ON cs.class_id = sc.class_id
+    LEFT JOIN school_subject AS ss
+    ON cs.subject_id = ss.subject_id
+    LEFT JOIN student_score AS st
+    ON ss.subject_id = st.school_subject_id
+    WHERE
+    sc.class_headmaster_id = #{headmasterId,jdbcType=BIGINT}
+    AND
+    sc.state != '0'
+    GROUP BY subject_id;
+  </select>
+  
+  <!--成绩查询,科目教师权限-->
+  <select id="selectPowerBySubjectTeacher" parameterType="Long" resultMap="sssvMap">
+    SELECT sc.class_id, sc.class_name, ss.subject_id, ss.subject_name, MIN(st.score) AS min_score,
+    MAX(st.score)AS max_score, AVG(st.score) AS avg_score,
+    COUNT(st.score) AS actually_come, (COUNT(*) - COUNT(st.score))  AS not_come
+    FROM
+    class_subject_info AS cs
+    LEFT JOIN school_class AS sc
+    ON cs.class_id = sc.class_id
+    LEFT JOIN school_subject AS ss
+    ON cs.subject_id = ss.subject_id
+    LEFT JOIN student_score AS st
+    ON ss.subject_id = st.school_subject_id
+    WHERE
+    cs.admin_info_id = #{adminInfoId,jdbcType=BIGINT}
+    AND sc.state != '0'
+    GROUP BY subject_id;
+  </select>
 </mapper>
