@@ -144,6 +144,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     //查询所有的正常使用的目录及页面及当前角色的权限ID
+    //树形结构封装
     @Override
     public Map findRoleModulars(Long roleId) {
 
@@ -151,14 +152,15 @@ public class AdminServiceImpl implements AdminService {
         List modular = adminRoleModularMapper.findAllAdminRoleModularModularId(roleId);
 
         //查询所有的可使用的权限页面信息
-        List<AdminModular> modulars = adminModularMapper.findAllRoleModulars();
+        AdminModulars modulars = adminModularMapper.findAllRoleModulars();
+
 
         //将目录和权限封装为列表样式
-        List<AdminModulars> catas = encapsulation(modulars);
+//        List<AdminModulars> catas = encapsulation(modulars);
 
         Map map = new HashMap();
         map.put("modular",modular);
-        map.put("catas",catas);
+        map.put("catas",modulars);
         return map;
     }
 
@@ -167,9 +169,6 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public int updateRoleModular(Map map) {
 
-        //处理数据，将id字符串转集合
-        String str = (String)map.get("modulars");
-        map.put("modulars", Arrays.asList(str.split(",")));
 
         //先删除该角色ID下的所有数据
         int i = adminRoleModularMapper.deleteRoleModular(map);
@@ -288,9 +287,12 @@ public class AdminServiceImpl implements AdminService {
         request.getSession().invalidate();
     }
 
-    //主页查询
+    //查询管理员所拥有的权限集合
     @Override
-    public Map loginSuccess(Admin admin,HttpServletRequest request) {
+    public Map loginSuccess(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Long roleId = (Long)session.getAttribute("roleId");
+
 
         //用于封装返回的结果集
         Map map = new HashMap();
@@ -300,40 +302,44 @@ public class AdminServiceImpl implements AdminService {
 //        Admin util2 = new Admin();
 //        util2.setAdminName(adminName);
 
-        //用adminName查询
-        Admin admin1 = adminMapper.findAdmin(admin);
+//        //用adminName查询
+//        Admin admin1 = adminMapper.findAdmin(admin);
 
-        //根据roleId查询adminRole信息
-        AdminRole adminRole = adminRoleMapper.findAdminRoleByAdminRoleId(admin1.getRoleId());
+//        //根据roleId查询adminRole信息
+//        AdminRole adminRole = adminRoleMapper.findAdminRoleByAdminRoleId(roleId);
 
-        //根据角色信息查询管理员权限页面id
-        List roleIds = adminRoleModularMapper.findAllAdminRoleModularModularId(admin1.getRoleId());
+        //根据roleId查询该用户拥有的权限集合
+        List roleIds = adminRoleModularMapper.findAllAdminRoleModularModularId(roleId);
 
+        //根据roleIds查询全新信息，树形结构封装
         if(roleIds.size()==0){
-
             map.put("catas",new ArrayList<>());
         }else {
             //查询权限页面信息
-            List<AdminModular> modulars = adminModularMapper.findAllRoleModular(roleIds);
+            AdminModulars modulars = adminModularMapper.findAllRoleModular(roleIds);
 
-            //将目录和权限封装为列表样式
-            List<AdminModulars> catas = encapsulation(modulars);
+//            //将目录和权限封装为列表样式
+//            List<AdminModulars> catas = encapsulation(modulars);
 
             //将权限列表封装到map
-            map.put("catas",cleanCatas(catas));  //清理无权限的目录
+//            map.put("catas",cleanCatas(catas));  //清理无权限的目录
 
             //提取用户拥有的权限url添加到session
             List<String> list = new ArrayList<>();
-            for (AdminModular adminModular : modulars){
-                list.add(adminModular.getPageUrl());
+            for (AdminModulars adminModulars : modulars.getChildren()){
+                for (AdminModulars adminModulars1 : adminModulars.getChildren()){
+                    list.add(adminModulars1.getPageUrl());
+
+                }
 
             }
             request.getSession().setAttribute("powerList",list);
             System.out.println("权限接口==>>"+list);
+
+            map.put("catas",modulars);
         }
 
 
-        map.put("adminRole",adminRole);
 
         return map;
     }
@@ -344,24 +350,36 @@ public class AdminServiceImpl implements AdminService {
         return adminRoleMapper.findAdminRoleByAdminRoleId(adminRoleId);
     }
 
-    //将目录和权限封装为列表样式
-    public List<AdminModulars> encapsulation(List<AdminModular> modulars){
-        List<AdminModulars> catas = adminModularMapper.findAllCatalog();
-
-        for (AdminModulars adminModulars : catas){
-            List list = new ArrayList<>();
-
-            for (AdminModular adminModular : modulars){
-                if(adminModulars.getId().equals(adminModular.getParentId())){
-                    list.add(adminModular);
-                }
-            }
-
-            adminModulars.setChildren(list);
-
-        }
-        return catas;
-    }
+//    //将目录和权限封装为列表样式
+//    public List<AdminModulars> encapsulation(List<AdminModular> modulars){
+//        List<AdminModulars> catas = adminModularMapper.findAllCatalog();
+//
+////        System.out.println("catas====>"+catas);
+//        for (AdminModulars adminModulars : catas){  //第一层，循环标题栏
+//
+//
+//            for(AdminModulars adminModulars1 : (AdminModulars) adminModulars.getChildren()){  //第二层，循环模块
+//
+//                for (AdminModular adminModular : modulars){  //第三层，循环比对请求的父级目录ID
+//                    List list = new ArrayList<>();
+//
+//                    if(adminModular.getParentId().equals(adminModulars1.getId())){ //如果请求的父ID等于该模块的ID
+//                        //将请求添加到该模块的 children 里面
+//                        list.add(adminModular);
+//
+//                    }
+////                    if(adminModulars.getId().equals(adminModular.getParentId())){
+////                        list.add(adminModular);
+////                    }
+//                    adminModulars1.setChildren(list);
+//                }
+//            }
+//
+//
+//
+//        }
+//        return catas;
+//    }
 
     //清理无权限的目录
     public static List<AdminModulars> cleanCatas(List<AdminModulars> catas){

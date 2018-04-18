@@ -22,7 +22,7 @@ import java.io.InputStream;
 /**
  * 班级信息相关业务
  */
-@Api(tags = "成绩查询相关业务")
+@Api(tags = "成绩导入")
 @RestController
 @RequestMapping("/api/v1/schoolscore")
 public class SchoolScoreController {

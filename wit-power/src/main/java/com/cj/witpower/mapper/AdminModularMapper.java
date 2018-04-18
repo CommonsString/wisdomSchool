@@ -27,8 +27,8 @@ public interface AdminModularMapper {
     public List<AdminModulars> findAllCatalog();
 
     //查询roleIds集合的权限列表
-    public List<AdminModular> findAllRoleModular(List roleIds);
+    public AdminModulars findAllRoleModular(List roleIds);
 
     //查询所有的权限列表
-    public List<AdminModular> findAllRoleModulars();
+    public AdminModulars findAllRoleModulars();
 }

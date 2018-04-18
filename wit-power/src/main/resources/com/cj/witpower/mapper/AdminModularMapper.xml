@@ -16,7 +16,7 @@
     id, page_name, page_url, page_type, page_sort, parent_id, spare1, state, create_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from admin_modular
     where id = #{id,jdbcType=INTEGER}
@@ -140,52 +140,79 @@
   </update>
 
   <resultMap id="BaseResultMap_AdminModulars" type="com.cj.witcommon.utils.entity.other.AdminModulars" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="page_name" property="pageName" jdbcType="VARCHAR" />
-    <result column="page_url" property="pageUrl" jdbcType="VARCHAR" />
-    <result column="page_type" property="pageType" jdbcType="CHAR" />
-    <result column="page_sort" property="pageSort" jdbcType="INTEGER" />
-    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
-    <result column="spare1" property="spare1" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="CHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <collection property="children" ofType="com.cj.witcommon.utils.entity.other.AdminModulars"></collection>
+    <id column="am_id" property="id" jdbcType="INTEGER" />
+    <result column="am_page_name" property="pageName" jdbcType="VARCHAR" />
+    <result column="am_page_url" property="pageUrl" jdbcType="VARCHAR" />
+    <result column="am_page_type" property="pageType" jdbcType="CHAR" />
+    <result column="am_page_sort" property="pageSort" jdbcType="INTEGER" />
+    <result column="am_parent_id" property="parentId" jdbcType="INTEGER" />
+    <!--<result column="am.spare1" property="spare1" jdbcType="VARCHAR" />-->
+    <!--<result column="am.state" property="state" jdbcType="CHAR" />-->
+    <!--<result column="am.create_time" property="createTime" jdbcType="TIMESTAMP" />-->
+    <!--<result column="am.create_time" property="createTime" jdbcType="TIMESTAMP" />-->
+    <collection property="children" ofType="com.cj.witcommon.utils.entity.other.AdminModulars">
+      <id column="an_id" property="id" jdbcType="INTEGER" />
+      <result column="an_page_name" property="pageName" jdbcType="VARCHAR" />
+      <result column="an_page_url" property="pageUrl" jdbcType="VARCHAR" />
+      <result column="an_page_type" property="pageType" jdbcType="CHAR" />
+      <result column="an_page_sort" property="pageSort" jdbcType="INTEGER" />
+      <result column="an_parent_id" property="parentId" jdbcType="INTEGER" />
+      <!--<result column="an.spare1" property="spare1" jdbcType="VARCHAR" />-->
+      <!--<result column="an.state" property="state" jdbcType="CHAR" />-->
+      <!--<result column="an.create_time" property="createTime" jdbcType="TIMESTAMP" />-->
+      <!--<result column="an.create_time" property="createTime" jdbcType="TIMESTAMP" />-->
+      <collection property="children" ofType="com.cj.witcommon.utils.entity.other.AdminModulars">
+        <id column="ao_id" property="id" jdbcType="INTEGER" />
+        <result column="ao_page_name" property="pageName" jdbcType="VARCHAR" />
+        <result column="ao_page_url" property="pageUrl" jdbcType="VARCHAR" />
+        <result column="ao_page_type" property="pageType" jdbcType="CHAR" />
+        <result column="ao_page_sort" property="pageSort" jdbcType="INTEGER" />
+        <result column="ao_parent_id" property="parentId" jdbcType="INTEGER" />
+
+      </collection>
+    </collection>
   </resultMap>
 
 
-  <!--查询系统里所有目录-->
-  <select id="findAllCatalog" resultMap="BaseResultMap_AdminModulars">
+  <!--查询系统里所有权限目录及信息，树形结构封装-->
+  <select id="findAllRoleModulars" resultMap="BaseResultMap_AdminModulars">
     SELECT
-    am.id,am.page_name,am.page_type,am.page_sort,am.parent_id
+    am.id am_id,am.page_name am_page_name,am.page_url am_page_url,am.page_type am_page_type,am.page_sort am_page_sort,am.parent_id am_parent_id,
+    an.id an_id,an.page_name an_page_name,an.page_url an_page_url,an.page_type an_page_type,an.page_sort an_page_sort,an.parent_id an_parent_id,
+    ao.id ao_id,ao.page_name ao_page_name,ao.page_url ao_page_url,ao.page_type ao_page_type,ao.page_sort ao_page_sort,ao.parent_id ao_parent_id
     FROM
-    admin_modular am
-    --      如果是二级目录，可用内连再封装BaseResultMap
-    --     INNER JOIN admin_modular a ON am.`id` = a.`parent_id` AND am.id = 0
+    admin_modular am,admin_modular an,admin_modular ao
     WHERE
-    am.page_type &gt; '0' AND am.state = '1'
+    am.id = an.parent_id AND an.id = ao.parent_id
+    AND
+    ao.state = '1'
   </select>
 
   <!--查询管理员所有的权限资源-->
-  <select id="findAllRoleModular" parameterType="java.util.List" resultMap="BaseResultMap">
+  <select id="findAllRoleModular" parameterType="java.util.List" resultMap="BaseResultMap_AdminModulars">
     SELECT
-    am.id,am.page_name,am.page_url,am.page_type,am.page_sort,am.parent_id
-    FROM admin_modular am
+    am.id am_id,am.page_name am_page_name,am.page_url am_page_url,am.page_type am_page_type,am.page_sort am_page_sort,am.parent_id am_parent_id,
+    an.id an_id,an.page_name an_page_name,an.page_url an_page_url,an.page_type an_page_type,an.page_sort an_page_sort,an.parent_id an_parent_id,
+    ao.id ao_id,ao.page_name ao_page_name,ao.page_url ao_page_url,ao.page_type ao_page_type,ao.page_sort ao_page_sort,ao.parent_id ao_parent_id
+    FROM
+    admin_modular am,admin_modular an,admin_modular ao
     WHERE
-    am.state = '1'
+    am.id = an.parent_id AND an.id = ao.parent_id
     AND
-    am.id IN
+    ao.state = '1'
+    AND
+    ao.id IN
     <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
       #{item}
     </foreach>
   </select>
 
-  <!--查询所有的可使用的权限资源-->
-  <select id="findAllRoleModulars" resultMap="BaseResultMap">
-    SELECT
-    am.id,am.page_name,am.page_url,am.page_type,am.page_sort,am.parent_id
-    FROM admin_modular am
-    WHERE
-    am.state = '1'
-  </select>
+  <!--&lt;!&ndash;查询所有的可使用的权限资源&ndash;&gt;-->
+  <!--<select id="findAllRoleModulars" resultMap="BaseResultMap">-->
+    <!--SELECT-->
+    <!--am.id,am.page_name,am.page_url,am.page_type,am.page_sort,am.parent_id-->
+    <!--FROM admin_modular am-->
+    <!--WHERE-->
+    <!--am.state = '1' AND am.page_type = '0'-->
+  <!--</select>-->
 </mapper>

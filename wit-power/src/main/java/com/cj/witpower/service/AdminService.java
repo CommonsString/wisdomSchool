@@ -63,7 +63,7 @@ public interface AdminService {
     public void ifLogout(HttpServletRequest request);
 
     //主页查询
-    public Map loginSuccess(Admin admin, HttpServletRequest request);
+    public Map loginSuccess(HttpServletRequest request);
 
     //根据 AdminRoleId 查询角色信息
     public AdminRole findAdminRoleByAdminRoleId(Long adminRoleId);

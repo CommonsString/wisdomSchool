@@ -25,7 +25,6 @@ public class ScoreFindController {
 
 
 
-
         return apiResult;
 
     }

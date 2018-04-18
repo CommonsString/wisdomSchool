@@ -392,16 +392,8 @@ public class AdminController {
     @PutMapping("/updateRoleModular")
     @ApiOperation("修改角色权限")
     @Log(name = "修改角色权限")
-    @ApiImplicitParam(name = "map",value = "roleId 要修改的角色ID,modulars 新的权限ID集合",required = true)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "roleId",value = "角色ID",required = true),
-            @ApiImplicitParam(name = "modulars",value = "id字符串，逗号分隔",required = true)
-    })
-    public ApiResult updateRoleModular(Long roleId,String modulars){ //Map包括roleId modularId的集合
+    public ApiResult updateRoleModular(@ApiParam(name = "map",value = "roleId=要修改的角色ID,modulars=新的权限ID集合",required = true)@RequestBody Map map){ //Map包括roleId modularId的集合
 
-        Map map = new HashMap();
-        map.put("roleId",roleId);
-        map.put("modulars",modulars);
 
         int i = adminService.updateRoleModular(map);
         ApiResult a = new ApiResult();
@@ -525,7 +517,7 @@ public class AdminController {
      * @param request
      * @return
      */
-    @PutMapping("updateAdminPass")
+    @PutMapping("/updateAdminPass")
     @ApiOperation("修改密码，不校验旧密码")
     @Log(name = "修改密码，不校验旧密码")
     public ApiResult updateAdminPass(HttpServletRequest request,
@@ -556,14 +548,10 @@ public class AdminController {
     @ApiOperation("登陆成功后查询权限列表")
     @Log(name = "登陆成功后查询权限列表")
     public ApiResult loginSuccess(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        Admin admin = new Admin();
-        String adminName = (String) session.getAttribute("adminName");
-        admin.setAdminName(adminName);
         ApiResult a = new ApiResult();
         a.setCode(ApiCode.SUCCESS);
         a.setMsg(ApiCode.SUCCESS_MSG);
-        a.setData(adminService.loginSuccess(admin,request));
+        a.setData(adminService.loginSuccess(request));
         return a;
     }
 

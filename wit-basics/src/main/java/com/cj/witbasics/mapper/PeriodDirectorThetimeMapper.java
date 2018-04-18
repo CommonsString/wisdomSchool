@@ -38,4 +38,10 @@ public interface PeriodDirectorThetimeMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(PeriodDirectorThetime record);
+
+    /**
+     *  根据管理员ID,获取年级主任表信息
+     * @return
+     */
+    PeriodDirectorThetime selectByDirectorId(Long directorId);
 }

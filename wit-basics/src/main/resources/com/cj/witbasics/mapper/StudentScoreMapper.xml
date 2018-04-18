@@ -225,7 +225,7 @@
 
 
 
-  <resultMap id="sssvMap" type="ccom.cj.witcommon.entity.ClassGradeInfo" >
+  <resultMap id="sssvMap" type="com.cj.witcommon.entity.ClassGradeInfo" >
     <result column="class_name" property="className" jdbcType="VARCHAR" />
     <result column="subject_id" property="subjectId" jdbcType="BIGINT" />
     <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
@@ -273,4 +273,29 @@
     AND sc.state != '0'
     GROUP BY subject_id;
   </select>
+
+  <!-- 年级主任 -->
+  <select id="selectPowerByPeriodIdAndThetime" resultMap="sssvMap">
+    SELECT sc.class_id, sc.class_name, ss.subject_id, ss.subject_name, MIN(st.score) AS min_score,
+    MAX(st.score)AS max_score, AVG(st.score) AS avg_score,
+    COUNT(st.score) AS actually_come, (COUNT(*) - COUNT(st.score))  AS not_come
+    FROM
+    class_subject_info AS cs
+    LEFT JOIN school_class AS sc
+    ON cs.class_id = sc.class_id
+    LEFT JOIN school_subject AS ss
+    ON cs.subject_id = ss.subject_id
+    LEFT JOIN student_score AS st
+    ON ss.subject_id = st.school_subject_id
+    LEFT JOIN school_period_class_thetime AS sp
+    ON cs.class_id = sp.class_id
+    WHERE
+    sc.class_period_id = #{info.periodId,jdbcType=BIGINT}
+    AND
+    sp.thetime = #{info.thetime,jdbcType=TIMESTAMP}
+    AND sc.state != '0'
+    GROUP BY subject_id;
+  </select>
+
+
 </mapper>

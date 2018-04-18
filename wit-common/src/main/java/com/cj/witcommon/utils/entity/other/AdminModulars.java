@@ -34,5 +34,5 @@ public class AdminModulars implements Serializable {
 
     private Date createTime;
 
-    private List<Object> children;
+    private List<AdminModulars> children;
 }

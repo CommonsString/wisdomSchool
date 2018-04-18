@@ -140,4 +140,12 @@
     where sdt_id = #{sdtId,jdbcType=BIGINT}
   </update>
 
+
+  <!---->
+  <select id="selectByDirectorId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from period_director_thetime
+    where director_id = #{directorId,jdbcType=BIGINT}
+  </select>
 </mapper>

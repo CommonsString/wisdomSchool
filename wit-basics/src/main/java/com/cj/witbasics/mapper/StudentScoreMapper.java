@@ -1,5 +1,6 @@
 package com.cj.witbasics.mapper;
 
+import com.cj.witbasics.entity.PeriodDirectorThetime;
 import com.cj.witbasics.entity.StudentScore;
 import com.cj.witcommon.entity.ClassGradeInfo;
 import org.apache.ibatis.annotations.Param;
@@ -64,5 +65,11 @@ public interface StudentScoreMapper {
      * @return
      */
     List<ClassGradeInfo> selectPowerBySubjectTeacher(Long adminInfoId);
+
+
+    /**
+     *根据学段ID,毕业届次查询
+     */
+    List<ClassGradeInfo> selectPowerByPeriodIdAndThetime(@Param("info") PeriodDirectorThetime info);
 
 }
