@@ -3,6 +3,7 @@ package com.cj.witscorefind.controller;
 
 import com.cj.witbasics.entity.SchoolExamGrade;
 import com.cj.witcommon.entity.ApiResult;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/scorefind")
+@Api(tags = "档次设置")
 public class ScoreFindController {
 
     /**

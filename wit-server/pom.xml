@@ -47,6 +47,11 @@
 			<artifactId>wit-basics</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.cj</groupId>
+			<artifactId>wit-scorefind</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 
 	</dependencies>
