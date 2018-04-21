@@ -65,5 +65,5 @@ public interface ClassSubjectInfoMapper {
     /**
      * 根据教师ID,科目ID
      */
-    ClassSubjectInfo selectAdminId(Long teaId);
+    List<ClassSubjectInfo> selectAdminId(Long teaId);
 }

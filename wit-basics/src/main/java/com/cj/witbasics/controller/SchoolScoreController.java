@@ -2,6 +2,7 @@ package com.cj.witbasics.controller;
 
 
 import com.cj.witbasics.service.StudentScoreService;
+import com.cj.witcommon.aop.Log;
 import com.cj.witcommon.entity.ApiCode;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.entity.ApiResultUtil;
@@ -9,6 +10,7 @@ import com.cj.witcommon.utils.common.FileUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +41,9 @@ public class SchoolScoreController {
      *  返回：对应结果集
      *  时间：5小时
      */
+    @ApiOperation(value = "模版下载", notes = "返回指定路径内的Excel模版文件")
+    @Log(name = "班级导入模版下载")
+    @GetMapping("/downLoadExcel")
     public void downLoadExcel(HttpServletResponse response, HttpServletRequest request){
         //TODO:获取文件名
         //TODO:判断文件后缀

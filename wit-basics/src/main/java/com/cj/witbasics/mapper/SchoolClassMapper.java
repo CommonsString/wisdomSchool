@@ -94,5 +94,13 @@ public interface SchoolClassMapper {
 
     //根据班级查重
     int selectCountByClassNumber(int classNumber);
+
+    //返回所有无班主任的班级
+    List<Map> selectAllNoHeadmaster();
+
+    //置空
+    int updateByHeadmasterId(Long classId);
+
+
 }
 

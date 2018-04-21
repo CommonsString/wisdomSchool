@@ -83,6 +83,7 @@ public class SchoolExamServiceImpl implements SchoolExamService{
     public List findAllUnderGradeClass(List<PeriodAndGrade> param) {
         //总list
         List allList = new ArrayList();
+        List<ExamClassInfo> resultList = new ArrayList<ExamClassInfo>();
         //学段年级
         for(PeriodAndGrade item : param){
             //获取学段id
@@ -92,26 +93,46 @@ public class SchoolExamServiceImpl implements SchoolExamService{
             //获取年级
             int gradeAge = StringHandler.getGradeAge(item.getGradeName());
             //二级筛选
-            List<ClassInfoPx> resultList = new ArrayList<ClassInfoPx>();
+//            List<ClassInfoPx> resultList = new ArrayList<ClassInfoPx>();
+//            List<ExamClassInfo> resultList = new ArrayList<ExamClassInfo>();
+
+            ExamClassInfo tem = new ExamClassInfo();
+            tem.setPeriodId(periodId);
+            tem.setPeriodName(item.getPeriodName());
+            tem.setGradeId(item.getGradeId());
+            tem.setGradeName(item.getGradeName());
+
+            List<BaseClass> list = new ArrayList<BaseClass>();
             for(SchoolClassInfo temp : periodUnderClass){
                 SchoolClassInfo classInfo = this.classMapper.findAllClassForYeah(temp, gradeAge);
                 if(classInfo != null){
-                    ClassInfoPx px = new ClassInfoPx();
-                    px.setClassId(classInfo.getClassId());
-                    px.setClassName(classInfo.getClassName());
-                    px.setClassNumber(classInfo.getClassNumber());
-                    px.setClassYear(classInfo.getClassYear());
-                    px.setPeriodId(periodId);
-                    px.setPeriodName(item.getPeriodName());
-                    px.setGradeId(item.getGradeId());
-                    px.setGradeName(item.getGradeName());
+                    System.out.println(classInfo.toString());
+                    System.out.println(tem.toString());
+                    //班级信息
+                    BaseClass base = new BaseClass();
+                    base.setClassId(classInfo.getClassId());
+                    base.setClassName(classInfo.getClassName());
+                    base.setClassNumber(classInfo.getClassNumber());
+                    base.setClassYear(classInfo.getClassYear());
+                    list.add(base);
+                    tem.setClassInfo(list);
+//                    ClassInfoPx px = new ClassInfoPx();
+//                    px.setClassId(classInfo.getClassId());
+//                    px.setClassName(classInfo.getClassName());
+//                    px.setClassNumber(classInfo.getClassNumber());
+//                    px.setClassYear(classInfo.getClassYear());
+//                    px.setPeriodId(periodId);
+//                    px.setPeriodName(item.getPeriodName());
+//                    px.setGradeId(item.getGradeId());
+//                    px.setGradeName(item.getGradeName());
                     //填充
-                    resultList.add(px);
+//                    resultList.add(px);
                 }
             }
-            allList.add(resultList);
+//            allList.add(resultList);
+            resultList.add(tem);
         }
-        return allList;
+        return resultList;
     }
 
 

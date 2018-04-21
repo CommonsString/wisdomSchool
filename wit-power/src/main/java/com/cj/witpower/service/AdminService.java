@@ -30,7 +30,7 @@ public interface AdminService {
     //批量删除账户和学生信息
     public int updateAdminsAndStudents(List<Long> adminIds);
 
-    //查询所有管理员
+    //查询所有用户信息
     public Pager findAllAdmin(Pager p);
 
 
@@ -67,6 +67,15 @@ public interface AdminService {
 
     //根据 AdminRoleId 查询角色信息
     public AdminRole findAdminRoleByAdminRoleId(Long adminRoleId);
+
+
+    /***************************************************************/
+    /***************************************************************/
+    //查询具有班主任权限的角色
+    List<Map> findHasPowerForHeadmaster(String vague);
+
+    //查询具有年级主任权限的角色
+    List<Map> findHasPowerForDirector(String vague);
 
 
 

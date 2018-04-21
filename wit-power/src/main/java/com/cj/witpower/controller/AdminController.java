@@ -218,15 +218,12 @@ public class AdminController {
      * @param p
      * @return
      */
-    @GetMapping("/findAllAdmin")
+    @PostMapping("/findAllAdmin")
     @ApiOperation("分页查询所有用户账户信息")
     @Log(name = "分页查询所有用户账户信息")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "currentPage",value = "页码",required = false,dataType = "Integer"),
-//            @ApiImplicitParam(name = "pageSize",value = "每页大小",required = false,dataType = "Integer")
-//    })
-    @ApiImplicitParam(name = "p",value = "分页参数，currentPage（初始页码1），pageSize（初始条数10），可为空",required = false)
-    public ApiResult findAllAdmin(Pager p){
+    public ApiResult findAllAdmin(@ApiParam(name = "p",value = "分页参数，currentPage（初始页码1），pageSize（初始条数10），可为空，" +
+            "parameters=查询条件（roleId=角色ID,adminName=用户名,adminType=角色类型）",required = false)
+                                              @RequestBody Pager p){
 
         System.out.println("p==>"+p);
 
@@ -317,12 +314,15 @@ public class AdminController {
     @Log(name = "修改用户角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id",value = "用户ID",required = true,dataType = "Long"),
-            @ApiImplicitParam(name = "roleId",value = "角色ID",required = true,dataType = "Long")
+            @ApiImplicitParam(name = "roleId",value = "角色ID",required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "adminState",value = "状态",required = true,dataType = "Long")
     })
-    public ApiResult updateAdminRole(Long id,Long roleId){
+    public ApiResult updateAdminRole(Long id,Long roleId, String adminState){
         Admin admin = new Admin();
         admin.setId(id);
         admin.setRoleId(roleId);
+        //新增
+        admin.setAdminState(adminState);
 
         int i = adminService.updateAdmin(admin);
         ApiResult a = new ApiResult();
@@ -395,6 +395,7 @@ public class AdminController {
     public ApiResult updateRoleModular(@ApiParam(name = "map",value = "roleId=要修改的角色ID,modulars=新的权限ID集合",required = true)@RequestBody Map map){ //Map包括roleId modularId的集合
 
 
+//        System.out.println(map.isEmpty());
         int i = adminService.updateRoleModular(map);
         ApiResult a = new ApiResult();
         if(i==0){
@@ -567,4 +568,43 @@ public class AdminController {
         a.setMsg(ApiCode.SUCCESS_MSG);
         return a;
     }
+
+
+
+
+    /***********************************************************************************************/
+    /**************************************新增逻辑**************************************************/
+    /***********************************************************************************************/
+
+    @ApiOperation("查询角色为班主任,并显示麾下是否有班级")
+    @Log(name = "查询角色为班主任")
+    @GetMapping("/findIsHeadmaster")
+    @ApiImplicitParam(name = "vague",value = "班主任名字",required = false)
+    public ApiResult findHasPowerForHeadmaster(String vague){
+
+        ApiResult a = new ApiResult();
+        a.setCode(ApiCode.SUCCESS);
+        a.setMsg(ApiCode.SUCCESS_MSG);
+        a.setData(adminService.findHasPowerForHeadmaster(vague));
+        return a;
+    }
+
+    @ApiOperation("查询角色为年级主任,并显示是否分管年级")
+    @Log(name = "查询角色为班主任")
+    @GetMapping("/findIsDirector")
+    @ApiImplicitParam(name = "vague",value = "年级主任名字",required = false)
+    public ApiResult findHasPowerForDirector(String vague){
+        ApiResult a = new ApiResult();
+        a.setCode(ApiCode.SUCCESS);
+        a.setMsg(ApiCode.SUCCESS_MSG);
+        a.setData(adminService.findHasPowerForDirector(vague));
+        return a;
+    }
+
+
+
+
+
+
+
 }

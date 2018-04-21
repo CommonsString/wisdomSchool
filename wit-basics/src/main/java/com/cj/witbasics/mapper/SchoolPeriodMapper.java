@@ -2,8 +2,10 @@ package com.cj.witbasics.mapper;
 
 import com.cj.witbasics.entity.SchoolGrade;
 import com.cj.witbasics.entity.SchoolPeriod;
+import com.cj.witbasics.entity.SchoolPeriodClassThetime;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.Period;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +78,15 @@ public interface SchoolPeriodMapper {
      * 根据学段名返回学点ID
      */
     SchoolPeriod selectPeriodIdByPeriodName(String periodName);
+
+
+
+    //查询所有的学段
+    public List<Period> findAllSchoolPeriod(Long schoolId);
+
+
+
+
 
 
 

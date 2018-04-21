@@ -215,4 +215,15 @@
 
 
 -->
+  <!--根据学段ID查询所有年级信息-->
+  <select id="findAllGradeByPeriodId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    school_grade sg
+    WHERE
+    sg.period_id = #{periodId}
+    AND
+    sg.state = '1'
+  </select>
 </mapper>

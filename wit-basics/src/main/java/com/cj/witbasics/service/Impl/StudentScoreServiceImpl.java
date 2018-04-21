@@ -33,7 +33,7 @@ public class StudentScoreServiceImpl implements StudentScoreService {
     @Autowired(required = false)
     protected StudentScoreMapper scoreMapper;
 
-    @Autowired
+    @Autowired(required = false)
     private SchoolSubjectMapper subjectMapper;
 
 

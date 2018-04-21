@@ -330,4 +330,16 @@
       WHERE sp.period_name = #{periodName,jdbcType=VARCHAR}
   </select>
 
+  <select id="findAllSchoolPeriod" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    school_period sp
+    WHERE
+    sp.school_id = #{schoolId}
+    AND
+    sp.state = '1'
+
+  </select>
+
 </mapper>

@@ -3,8 +3,10 @@ package com.cj.witbasics.service.Impl;
 import com.cj.witbasics.entity.SchoolClass;
 import com.cj.witbasics.entity.SchoolGrade;
 import com.cj.witbasics.entity.SchoolPeriod;
+import com.cj.witbasics.entity.SchoolPeriodClassThetime;
 import com.cj.witbasics.mapper.SchoolClassMapper;
 import com.cj.witbasics.mapper.SchoolGradeMapper;
+import com.cj.witbasics.mapper.SchoolPeriodClassThetimeMapper;
 import com.cj.witbasics.mapper.SchoolPeriodMapper;
 import com.cj.witbasics.service.SchoolPeriodService;
 import com.cj.witcommon.entity.*;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.crypto.Data;
+import java.time.Period;
 import java.util.*;
 
 @Service
@@ -28,6 +32,12 @@ public class SchoolPeriodServiceImpl implements SchoolPeriodService {
 
     @Autowired(required = false)
     private SchoolGradeMapper schoolGradeMapper;
+
+    @Autowired
+    private SchoolPeriodClassThetimeMapper schoolPeriodClassThetimeMapper;
+
+    @Autowired
+    private SchoolClassMapper schoolClassMapper;
 
     @Value("${school_id}")
     private String schoolId;
@@ -154,6 +164,29 @@ System.out.println(periodList.size() + "  : 学段集合");
         List<GradeInfo> gradeInfo = this.schoolGradeMapper.selectBySchoolIdAndPeriodId(schoolId, periodId);
         return gradeInfo;
     }
+
+    @Override
+    public List<Period> findAllSchoolPeriod(String schoolId) {
+        return schoolPeriodMapper.findAllSchoolPeriod(Long.parseLong(schoolId));
+    }
+
+    @Override
+    public List<SchoolGrade> findAllGradeByPeriodId(Long periodId) {
+        return schoolGradeMapper.findAllGradeByPeriodId(periodId);
+    }
+
+    @Override
+    public List<SchoolPeriodClassThetime> findAllClassByGradeAndPeriodId(Long periodId) {
+
+        return schoolPeriodClassThetimeMapper.findAllClassByGradeAndPeriodId(periodId);
+    }
+
+    //联查届次下所有班级信息
+    @Override
+    public List<Map> findAllSchoolClassByThetime(Map map) {
+        return schoolPeriodClassThetimeMapper.findAllSchoolClassByThetime(map);
+    }
+
 
     /**
      * 新增学段信息

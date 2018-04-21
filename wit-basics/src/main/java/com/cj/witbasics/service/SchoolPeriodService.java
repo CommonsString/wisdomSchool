@@ -1,11 +1,15 @@
 package com.cj.witbasics.service;
 
+import com.cj.witbasics.entity.SchoolClass;
 import com.cj.witbasics.entity.SchoolGrade;
 import com.cj.witbasics.entity.SchoolPeriod;
+import com.cj.witbasics.entity.SchoolPeriodClassThetime;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.entity.GradeInfo;
 import com.cj.witcommon.entity.SchoolPeriodInfo;
 
+import javax.xml.crypto.Data;
+import java.time.Period;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +44,20 @@ public interface SchoolPeriodService {
 
     //根据学段ID，返回年级信息
     List<GradeInfo> findPeriodGradeInfo(Long schoolId, Long periodId);
+
+    //查询所有的学段
+    public List<Period> findAllSchoolPeriod(String schoolId);
+
+    //查询学段下所有的年级
+    public List<SchoolGrade> findAllGradeByPeriodId(Long periodId);
+
+    //查询学段下所有届次信息
+    public List<SchoolPeriodClassThetime> findAllClassByGradeAndPeriodId(Long periodId);
+
+    //查询届次下所有班级
+    public List<Map> findAllSchoolClassByThetime(Map map);
+
+
 
 
 }

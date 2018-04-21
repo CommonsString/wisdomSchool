@@ -52,6 +52,11 @@ public class SchoolClassServiceImpl implements SchoolClassService{
     @Autowired(required = false)
     private SchoolPeriodClassThetimeMapper scMapper;
 
+    @Autowired(required = false)
+    private PeriodDirectorThetimeMapper directorTimeMapper;
+
+    @Autowired(required = false)
+    private SchoolPeriodClassThetimeMapper classThetimeMapper;
 
     @Value("${school_id}")
     private String schoolId;
@@ -88,9 +93,9 @@ public class SchoolClassServiceImpl implements SchoolClassService{
                 List<SchoolClass> readBaseInfo = ImportExeclUtil.readDateListT(workbook, baseInfo, 4, 0, i);
                 Date createTime = new Date();//创建的时间
                 for(SchoolClass info : readBaseInfo){
-                    //TODO:班级存在
-                    int isCopy = this.classMapper.selectCountByClassNumber(info.getClassNumber());
-                    if(isCopy > 0){
+                        //TODO:班级存在
+                        int isCopy = this.classMapper.selectCountByClassNumber(info.getClassNumber());
+                        if(isCopy > 0){
                         //数据存在,无法导入
                         apiResult.setCode(ApiCode.error_duplicated_data);
                         apiResult.setMsg("重复导入,请检查文件");
@@ -169,6 +174,7 @@ public class SchoolClassServiceImpl implements SchoolClassService{
      * 返回班级层次
      */
     @Override
+    @Transactional
     public List findSchoolLevel(Long schoolId) {
         List<SchoolClassLevel> level = this.classLevelMapper.sselectLevelBySchoolId(schoolId);
         return level;
@@ -378,7 +384,7 @@ System.out.println(periodId + " " + gradeId + " " + vague);
             }
 System.out.println(underPeriodClass.size() + " 数量");
             //查询学段ID下的总条数,测试
-            pager.setPageTotal(underPeriodClass.size());
+            pager.setRecordTotal(underPeriodClass.size());
             //结果集
             pager.setContent(underPeriodClass);
             //年级查询(二层)
@@ -467,10 +473,90 @@ System.out.println(adminId + "员工ID");
     }
 
 
+    /**
+     * 修改班主任
+     * @param classThetime
+     * @return
+     */
+    @Override
+    @Transactional
+    public boolean updateHeadmasterId(SchoolPeriodClassThetime classThetime) {
+        int result = this.classThetimeMapper.updateByClassIdKeySelective(classThetime);
+        if(result > 0) return true;
+        return false;
+    }
 
 
+    /**
+     * 修改年级主任
+     * @param
+     * @return
+     */
+    @Override
+    @Transactional
+    public ApiResult updateDirectorId(PeriodDirectorThetime info) {
+        System.out.println("进入");
+        ApiResult apiResult = new ApiResult();
+        //查重
+        int isCopy = this.directorTimeMapper.selectCountInfo(info);
+System.out.println(isCopy +     " 重复");
+        if(isCopy > 0){
+            log.error("数据重复");
+            //数据已经存在
+            apiResult.setCode(ApiCode.error_duplicated_data);
+            apiResult.setMsg(ApiCode.error_duplicated_data_MSG);
+            return apiResult;
+        }
+        int result = this.directorTimeMapper.updateByPrimaryKeySelective(info);
+        if(result > 0){
+            PeriodDirectorThetime data = this.directorTimeMapper.selectByPrimaryKey(info.getSdtId());
+            ApiResultUtil.fastResultHandler(apiResult, true, null, null, data);
+        }else{
+            ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_update_failed, ApiCode.FAIL_MSG, null);
+        }
+        return apiResult;
+    }
 
 
+    /**
+     * 返回所有无班主任的班级
+     * @return
+     */
+    @Override
+    @Transactional
+    public List<Map> findClassNoHeadmaster() {
+        List<Map> result = this.classMapper.selectAllNoHeadmaster();
+        return result;
+    }
 
+
+    /**
+     * 清空年级主任
+     */
+    @Override
+    @Transactional
+    public boolean updateDirector(Long sdtId) {
+        int result = this.directorTimeMapper.updateByPeriondId(sdtId);
+        if(result > 0){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 置空班主任
+     * @param classId
+     * @return
+     */
+    @Override
+    @Transactional
+    public boolean updateHeadmaster(Long classId) {
+        int flag = this.classMapper.updateByHeadmasterId(classId);
+        System.out.println(flag);
+        if(flag > 0){
+            return true;
+        }
+        return false;
+    }
 
 }

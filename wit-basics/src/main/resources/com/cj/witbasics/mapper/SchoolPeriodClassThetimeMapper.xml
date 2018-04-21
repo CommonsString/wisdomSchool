@@ -175,4 +175,92 @@
     where ssct_id = #{ssctId,jdbcType=BIGINT}
   </update>
 
+  <!--根据学段ID查询所有的届次-->
+  <select id="findAllClassByGradeAndPeriodId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    school_period_class_thetime spct
+    WHERE
+    spct.period_id = #{periodId}
+    AND spct.state = '1'
+
+
+  </select>
+
+    <resultMap id="newMap" type="java.util.LinkedHashMap">
+        <result column="class_id" property="classId"></result>
+        <result column="class_name" property="className"></result>
+
+    </resultMap>
+    <!--联查届次下所有班级-->
+    <select id="findAllSchoolClassByThetime" parameterType="java.util.Map" resultMap="newMap">
+        SELECT
+        sc.class_id,sc.class_name
+        FROM
+        school_class sc,school_period_class_thetime spct
+        WHERE
+        sc.class_period_id = #{periodId}
+        AND sc.state = '1'
+        AND spct.period_id = #{periodId}
+        AND sc.class_id = spct.class_id
+        AND spct.state = '1'
+        AND YEAR(spct.thetime)=date_format(#{thetime},'%Y')
+    </select>
+
+  <!--根据班级ID更改班主任-->
+  <update id="updateByClassIdKeySelective" parameterType="com.cj.witbasics.entity.SchoolPeriodClassThetime">
+    update school_period_class_thetime
+    <set>
+      <if test="schoolId != null">
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="periodId != null">
+        period_id = #{periodId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="adminId != null">
+        admin_id = #{adminId,jdbcType=BIGINT},
+      </if>
+      <if test="headmaster != null">
+        headmaster = #{headmaster,jdbcType=VARCHAR},
+      </if>
+      <if test="thetime != null">
+        thetime = #{thetime,jdbcType=DATE},
+      </if>
+      <if test="founderId != null">
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null">
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where class_id = #{classId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByAdminId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from school_period_class_thetime
+    where admin_id = #{headmasterId,jdbcType=BIGINT}
+  </select>
+
+  <update id="updateByClassId" parameterType="Long">
+    UPDATE school_period_class_thetime
+    SET
+    admin_id = null,
+    headmaster = null
+    WHERE class_id = #{classId,jdbcType=BIGINT}
+  </update>
 </mapper>

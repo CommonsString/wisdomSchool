@@ -3,6 +3,7 @@ package com.cj.witpower.mapper;
 import com.cj.witbasics.entity.Admin;
 import com.cj.witcommon.utils.entity.other.Pager;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,10 +31,10 @@ public interface AdminMapper {
     //批量删除账户和学生信息
     public int updateAdminsAndStudents(List<Long> adminIds);
 
-    //查询总条数
-    public Long findAdminSize();
+    //查询所有用户 总条数
+    public Integer findAdminSize(Pager p);
 
-    //查询所有管理员
+    //查询所有用户
     public List<Map> findAllAdmin(Pager p);
 
     Admin selectByPrimaryKey(Integer id);
@@ -49,6 +50,16 @@ public interface AdminMapper {
 
     //管理员登陆
     public Admin findAdmin(Admin admin);
+
+
+    /*********************************************************/
+    /*********************************************************/
+
+    //查询具有班主任权限的角色
+    List<Map> findHasPowerForHeadmaster(@Param("vague") String vague);
+
+    //查询具有年级主任权限的角色
+    List<Map> findHasPowerForDirector(@Param("vague") String vague);
 
 
 }

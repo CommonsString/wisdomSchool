@@ -1,6 +1,7 @@
 package com.cj.witbasics.mapper;
 
 import com.cj.witbasics.entity.PeriodDirectorThetime;
+import org.apache.ibatis.annotations.Param;
 
 public interface PeriodDirectorThetimeMapper {
     /**
@@ -44,4 +45,18 @@ public interface PeriodDirectorThetimeMapper {
      * @return
      */
     PeriodDirectorThetime selectByDirectorId(Long directorId);
+
+    /**
+     * 清空年级主任
+     */
+//    int updateByDirectorIdDel(Long directorId);
+
+    /**
+     * 年级查重
+     */
+    int selectCountInfo(@Param("info") PeriodDirectorThetime info);
+
+
+    //
+    int updateByPeriondId(Long sdtId);
 }

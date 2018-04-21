@@ -96,4 +96,7 @@ public interface SchoolGradeMapper {
      */
     int updateBatchInfo(List<SchoolGrade> list);
 
+    //查询学段下所有的年级
+    public List<SchoolGrade> findAllGradeByPeriodId(Long periodId);
+
 }

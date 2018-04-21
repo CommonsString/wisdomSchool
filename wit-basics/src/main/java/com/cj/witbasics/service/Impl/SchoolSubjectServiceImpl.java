@@ -80,7 +80,7 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
         if(flag > 0){
             ApiResultUtil.fastResultHandler(result, true, null, null, null);
         }else{
-            ApiResultUtil.fastResultHandler(result, true, null, null, null);
+//            ApiResultUtil.fastResultHandler(result, true, null, null, null);
             ApiResultUtil.fastResultHandler(result, false, ApiCode.error_create_failed, ApiCode.FAIL_MSG, null);
         }
         return result;

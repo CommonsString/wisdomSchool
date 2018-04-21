@@ -742,6 +742,35 @@
       sp.school_id = #{schoolId,jdbcType=BIGINT}
   </select>-->
 
+  <select id="findAllSchoolClassByPeriodId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    school_class sc
+    WHERE
+    sc.class_period_id = #{periodId}
+    AND
+    sc.state = '1'
+  </select>
 
+  <resultMap id="mmsdcMap" type="java.util.Map">
+    <id column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="class_abbreviation" property="classAbbreviation" jdbcType="VARCHAR" />
+    <result column="class_number" property="classNumber" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectAllNoHeadmaster" resultMap="mmsdcMap">
+    SELECT class_id, class_name, class_abbreviation, class_number
+    FROM school_class
+    WHERE class_headmaster_id is NULL
+  </select>
+
+  <update id="updateByHeadmasterId" parameterType="Long">
+    update school_class
+    SET
+    class_headmaster_id = null,
+    class_headmaster = null
+    where class_id = #{classId,jdbcType=BIGINT}
+  </update>
 
 </mapper>

@@ -1,7 +1,10 @@
 package com.cj.witbasics.entity;
 
+import lombok.ToString;
+
 import java.util.Date;
 
+@ToString
 public class PeriodDirectorThetime {
     /**
      * 学段-年级主任-班级届次 关联表

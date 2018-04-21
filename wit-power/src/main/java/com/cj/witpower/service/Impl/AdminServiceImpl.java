@@ -94,13 +94,11 @@ public class AdminServiceImpl implements AdminService {
         return adminMapper.updateAdminsAndStudents(adminIds);
     }
 
-    //查询所有管理员
+    //查询所有用户
     @Override
     public Pager findAllAdmin(Pager p) {
         //查询总条数
-        p.setRecordTotal(adminMapper.findAdminSize().intValue());
-
-
+        p.setRecordTotal(adminMapper.findAdminSize(p));
         //查询符合条件的集合
         p.setContent(adminMapper.findAllAdmin(p));
 
@@ -392,6 +390,30 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         return catas;
+    }
+
+
+
+    /***************************************************/
+    /**************************************************/
+    /**
+     * 查询具有班主任权限的角色
+     * @return
+     */
+    @Override
+    public List<Map> findHasPowerForHeadmaster(String vague) {
+        List<Map> result = this.adminMapper.findHasPowerForHeadmaster(vague);
+        return result;
+    }
+
+    /**
+     * 查询具有年级主任权限的角色
+     * @return
+     */
+    @Override
+    public List<Map> findHasPowerForDirector(String vague) {
+        List<Map> result = this.adminMapper.findHasPowerForDirector(vague);
+        return result;
     }
 }
 

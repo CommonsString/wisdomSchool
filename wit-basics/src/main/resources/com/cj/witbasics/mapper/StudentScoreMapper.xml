@@ -237,29 +237,81 @@
   </resultMap>
   <!--成绩查询,班主任权限-->
   <select id="selectPowerByHeadmaster" parameterType="long" resultMap="sssvMap">
-    SELECT sc.class_name, ss.subject_id, ss.subject_name, MIN(st.score) AS min_score,
-    MAX(st.score)AS max_score, AVG(st.score) AS avg_score ,
-    COUNT(st.score) AS actually_come, COUNT(*) - COUNT(st.score)  AS not_come
-    FROM
-    class_subject_info AS cs
+    SELECT sc.class_id, sc.class_name, su.subject_id, su.subject_name, MIN(ss.score) AS min_score,
+    MAX(ss.score)AS max_score, AVG(ss.score) AS avg_score,
+    COUNT(ss.score) AS actually_come, (COUNT(*) - COUNT(ss.score))  AS not_come
+    FROM student_osaas AS so
+    LEFT JOIN student_score AS ss
+    ON so.register_number = ss.register_number
     LEFT JOIN school_class AS sc
-    ON cs.class_id = sc.class_id
-    LEFT JOIN school_subject AS ss
-    ON cs.subject_id = ss.subject_id
-    LEFT JOIN student_score AS st
-    ON ss.subject_id = st.school_subject_id
+    ON so.class_id = sc.class_id
+    LEFT JOIN school_subject AS su
+    ON ss.school_subject_id = su.subject_id
     WHERE
-    sc.class_headmaster_id = #{headmasterId,jdbcType=BIGINT}
+    sc.class_id = #{headmasterId,jdbcType=BIGINT}
     AND
     sc.state != '0'
-    GROUP BY subject_id;
+    GROUP BY subject_id
   </select>
   
   <!--成绩查询,科目教师权限-->
   <select id="selectPowerBySubjectTeacher" parameterType="Long" resultMap="sssvMap">
-    SELECT sc.class_id, sc.class_name, ss.subject_id, ss.subject_name, MIN(st.score) AS min_score,
-    MAX(st.score)AS max_score, AVG(st.score) AS avg_score,
-    COUNT(st.score) AS actually_come, (COUNT(*) - COUNT(st.score))  AS not_come
+    SELECT sc.class_id, sc.class_name, su.subject_id, su.subject_name, MIN(ss.score) AS min_score,
+    MAX(ss.score)AS max_score, AVG(ss.score) AS avg_score,
+    COUNT(ss.score) AS actually_come, (COUNT(*) - COUNT(ss.score))  AS not_come
+    FROM student_osaas AS so
+    LEFT JOIN student_score AS ss
+    ON so.register_number = ss.register_number
+    LEFT JOIN school_class AS sc
+    ON so.class_id = sc.class_id
+    LEFT JOIN school_subject AS su
+    ON ss.school_subject_id = su.subject_id
+    WHERE
+    sc.state != '0'
+    AND
+    sc.class_id = #{adminInfoId,jdbcType=BIGINT}
+    AND
+    ss.school_subject_id IN
+    <foreach collection="list" item="info" open="(" separator="," close=")">
+      #{info.subjectId,jdbcType=BIGINT}
+    </foreach>
+    GROUP BY subject_id
+  </select>
+
+  <!-- 年级主任 -->
+  <select id="selectPowerByPeriodIdAndThetime" resultMap="sssvMap">
+    SELECT sc.class_id, sc.class_name, su.subject_id, su.subject_name, MIN(ss.score) AS min_score,
+    MAX(ss.score)AS max_score, AVG(ss.score) AS avg_score,
+    COUNT(ss.score) AS actually_come, (COUNT(*) - COUNT(ss.score))  AS not_come
+    FROM student_osaas AS so
+    LEFT JOIN student_score AS ss
+    ON so.register_number = ss.register_number
+    LEFT JOIN school_class AS sc
+    ON so.class_id = sc.class_id
+    LEFT JOIN school_subject AS su
+    ON ss.school_subject_id = su.subject_id
+    WHERE
+    sc.class_period_id = #{info.periodId,jdbcType=BIGINT}
+    AND
+    sp.thetime = #{info.thetime,jdbcType=TIMESTAMP}
+    AND sc.state != '0'
+    GROUP BY subject_id
+  </select>
+
+
+
+  <!--查看分数-->
+  <resultMap id="superBea" type="java.util.Map">
+    <id column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="subject_id" property="subjectId" jdbcType="BIGINT" />
+    <result column="subjectName" property="subject_name" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="DECIMAL" />
+  </resultMap>
+  <select id="selectByClassIdAndSubjectId" resultMap="superBea">
+    SELECT
+    sc.class_id, st.student_name, sc.class_name, ss.subject_id, ss.subject_name, st.score
     FROM
     class_subject_info AS cs
     LEFT JOIN school_class AS sc
@@ -268,15 +320,20 @@
     ON cs.subject_id = ss.subject_id
     LEFT JOIN student_score AS st
     ON ss.subject_id = st.school_subject_id
+    LEFT JOIN school_period_class_thetime AS sp
+    ON cs.class_id = sp.class_id
     WHERE
-    cs.admin_info_id = #{adminInfoId,jdbcType=BIGINT}
-    AND sc.state != '0'
-    GROUP BY subject_id;
+    sc.class_id = #{classId,jdbcType=BIGINT}
+    AND
+    ss.subject_id = #{subjectId,jdbcType=BIGINT}
+    AND
+    sc.state != '0'
   </select>
 
-  <!-- 年级主任 -->
-  <select id="selectPowerByPeriodIdAndThetime" resultMap="sssvMap">
-    SELECT sc.class_id, sc.class_name, ss.subject_id, ss.subject_name, MIN(st.score) AS min_score,
+
+  <!--导出-->
+  <select id="selectBathInfo" resultMap="sssvMap">
+    SELECT sc.class_name, MIN(st.score) AS min_score,
     MAX(st.score)AS max_score, AVG(st.score) AS avg_score,
     COUNT(st.score) AS actually_come, (COUNT(*) - COUNT(st.score))  AS not_come
     FROM
@@ -290,12 +347,12 @@
     LEFT JOIN school_period_class_thetime AS sp
     ON cs.class_id = sp.class_id
     WHERE
-    sc.class_period_id = #{info.periodId,jdbcType=BIGINT}
+    sc.state != '0'
     AND
-    sp.thetime = #{info.thetime,jdbcType=TIMESTAMP}
-    AND sc.state != '0'
-    GROUP BY subject_id;
+    sc.class_id IN
+    <foreach collection="list" item="class" open="(" close=")" separator=",">
+      #{class, jdbcType=BIGINT}
+    </foreach>
+    GROUP BY cs.subject_id
   </select>
-
-
 </mapper>
