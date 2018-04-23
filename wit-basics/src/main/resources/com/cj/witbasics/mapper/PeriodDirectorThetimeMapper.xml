@@ -147,5 +147,7 @@
     <include refid="Base_Column_List" />
     from period_director_thetime
     where director_id = #{directorId,jdbcType=BIGINT}
+    AND
+    state != '0'
   </select>
 </mapper>

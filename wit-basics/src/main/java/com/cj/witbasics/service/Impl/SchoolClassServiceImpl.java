@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.*;
 
@@ -474,47 +475,80 @@ System.out.println(adminId + "员工ID");
 
 
     /**
-     * 修改班主任
+     * 编辑班主任
      * @param classThetime
      * @return
      */
     @Override
     @Transactional
     public boolean updateHeadmasterId(SchoolPeriodClassThetime classThetime) {
-        int result = this.classThetimeMapper.updateByClassIdKeySelective(classThetime);
-        if(result > 0) return true;
+        //查重
+        System.out.println(classThetime.toString());
+        SchoolPeriodClassThetime obj = this.classThetimeMapper.selectByAdminId(classThetime.getAdminId());
+        if(obj == null){
+            //查询班级
+            SchoolClass temp = this.classMapper.selectByPrimaryKey(classThetime.getClassId());
+            if(temp == null) return false;
+            //基本信息
+            classThetime.setSchoolId(temp.getSchoolId());
+            classThetime.setPeriodId(temp.getClassPeriodId().longValue());
+            classThetime.setOperatorId(classThetime.getOperatorId());
+            classThetime.setFounderId(classThetime.getOperatorId());
+            classThetime.setCreateTime(new Date());
+            int flag_t = this.classThetimeMapper.insertSelective(classThetime);
+            if(flag_t > 0){
+                SchoolClass scClass = new SchoolClass();
+                scClass.setClassId(classThetime.getClassId());
+                scClass.setClassHeadmasterId(classThetime.getAdminId().intValue());
+                scClass.setClassHeadmaster(classThetime.getHeadmaster());
+                System.out.println(scClass.toString());
+                int result = this.classMapper.updateByPrimaryKeySelective(scClass);
+                if(result > 0) return true;
+            }
+        }else{
+            //存在
+            System.out.println("数据存在");
+            //更新关联表
+            obj.setAdminId(classThetime.getAdminId());
+            obj.setClassId(classThetime.getClassId());
+            int flag_a = this.classThetimeMapper.updateByClassIdKeySelective(obj);
+            if(flag_a > 0) return true;
+        }
         return false;
     }
 
 
     /**
-     * 修改年级主任
+     * 编辑年级主任
      * @param
      * @return
      */
     @Override
     @Transactional
-    public ApiResult updateDirectorId(PeriodDirectorThetime info) {
-        System.out.println("进入");
-        ApiResult apiResult = new ApiResult();
+    public boolean updateDirectorId(PeriodDirectorThetime info, Long adminId) {
         //查重
-        int isCopy = this.directorTimeMapper.selectCountInfo(info);
-System.out.println(isCopy +     " 重复");
-        if(isCopy > 0){
-            log.error("数据重复");
-            //数据已经存在
-            apiResult.setCode(ApiCode.error_duplicated_data);
-            apiResult.setMsg(ApiCode.error_duplicated_data_MSG);
-            return apiResult;
-        }
-        int result = this.directorTimeMapper.updateByPrimaryKeySelective(info);
-        if(result > 0){
-            PeriodDirectorThetime data = this.directorTimeMapper.selectByPrimaryKey(info.getSdtId());
-            ApiResultUtil.fastResultHandler(apiResult, true, null, null, data);
+        PeriodDirectorThetime isCopy = this.directorTimeMapper.selectByDirectorId(info.getDirectorId());
+        if(isCopy == null){
+            //不存在插入
+            info.setFounderId(adminId);
+            info.setOperatorId(adminId);
+            info.setCreateTime(new Date());
+            int flag_c = this.directorTimeMapper.insertSelective(info);
+            if(flag_c > 0) return true;
         }else{
-            ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_update_failed, ApiCode.FAIL_MSG, null);
+            //存在,删除后，新增数据
+            PeriodDirectorThetime temp = new PeriodDirectorThetime();
+            temp.setSdtId(isCopy.getSdtId());
+            temp.setState("0");
+            int flag_a = this.directorTimeMapper.updateByPrimaryKeySelective(temp);
+            //新增
+            info.setOperatorId(adminId);
+            info.setFounderId(adminId);
+            info.setCreateTime(new Date());
+            int flag_b = this.directorTimeMapper.insertSelective(info);
+            if(flag_a > 0 && flag_b > 0) return true;
         }
-        return apiResult;
+        return false;
     }
 
 
@@ -550,10 +584,16 @@ System.out.println(isCopy +     " 重复");
      */
     @Override
     @Transactional
-    public boolean updateHeadmaster(Long classId) {
-        int flag = this.classMapper.updateByHeadmasterId(classId);
-        System.out.println(flag);
-        if(flag > 0){
+    public boolean updateHeadmaster(Long classId, Long adminId) {
+        //置空班级
+        int flag_a = this.classMapper.updateByHeadmasterId(classId);
+        //删除关联表
+        SchoolPeriodClassThetime temp = new SchoolPeriodClassThetime();
+        temp.setOperatorId(adminId);
+        temp.setUpdateTime(new Date());
+        temp.setState("0");
+        int flag_b = this.classThetimeMapper.updateByClassId(temp);
+        if(flag_a > 0 && flag_b > 0){
             return true;
         }
         return false;

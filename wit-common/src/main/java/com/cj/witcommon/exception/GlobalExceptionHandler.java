@@ -48,37 +48,37 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
-    //可以返回自定义的错误页面
-    @ExceptionHandler(Exception.class)  //这里根据报的异常可以写不同的方法，分别捕捉
-    @ResponseBody
-    public ApiResult jsonHandler(HttpServletRequest request, Exception e) throws Exception {
-
-        ApiResult apiResult = new ApiResult();
-        apiResult.setCode(ApiCode.http_status_internal_server_error);
-        apiResult.setMsg(ApiCode.http_status_internal_server_error_MSG);
-        log(e, request);
-
-
-        return apiResult;
-    }
-
-    private void log(Exception ex, HttpServletRequest request) {
-        logger.error("************************异常开始*******************************");
-//        if(getUser() != null)
-//            logger.error("当前用户id是" + getUser().getUserId());
-        logger.error(ex);
-        logger.error("请求地址：" + request.getRequestURL());
-        Enumeration enumeration = request.getParameterNames();
-        logger.error("请求参数");
-        while (enumeration.hasMoreElements()) {
-            String name = enumeration.nextElement().toString();
-            logger.error(name + "---" + request.getParameter(name));
-        }
-
-        StackTraceElement[] error = ex.getStackTrace();
-        for (StackTraceElement stackTraceElement : error) {
-            logger.error(stackTraceElement.toString());
-        }
-        logger.error("************************异常结束*******************************");
-    }
+//    //可以返回自定义的错误页面
+//    @ExceptionHandler(Exception.class)  //这里根据报的异常可以写不同的方法，分别捕捉
+//    @ResponseBody
+//    public ApiResult jsonHandler(HttpServletRequest request, Exception e) throws Exception {
+//
+//        ApiResult apiResult = new ApiResult();
+//        apiResult.setCode(ApiCode.http_status_internal_server_error);
+//        apiResult.setMsg(ApiCode.http_status_internal_server_error_MSG);
+//        log(e, request);
+//
+//
+//        return apiResult;
+//    }
+//
+//    private void log(Exception ex, HttpServletRequest request) {
+//        logger.error("************************异常开始*******************************");
+////        if(getUser() != null)
+////            logger.error("当前用户id是" + getUser().getUserId());
+//        logger.error(ex);
+//        logger.error("请求地址：" + request.getRequestURL());
+//        Enumeration enumeration = request.getParameterNames();
+//        logger.error("请求参数");
+//        while (enumeration.hasMoreElements()) {
+//            String name = enumeration.nextElement().toString();
+//            logger.error(name + "---" + request.getParameter(name));
+//        }
+//
+//        StackTraceElement[] error = ex.getStackTrace();
+//        for (StackTraceElement stackTraceElement : error) {
+//            logger.error(stackTraceElement.toString());
+//        }
+//        logger.error("************************异常结束*******************************");
+//    }
 }

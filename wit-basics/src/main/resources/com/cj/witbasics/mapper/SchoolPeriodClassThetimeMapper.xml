@@ -252,15 +252,52 @@
   <select id="selectByAdminId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from school_period_class_thetime
-    where admin_id = #{headmasterId,jdbcType=BIGINT}
+    from school_period_class_thetime AS st
+    where
+    admin_id = #{headmasterId,jdbcType=BIGINT}
+    AND
+    st.state != '0'
   </select>
 
-  <update id="updateByClassId" parameterType="Long">
-    UPDATE school_period_class_thetime
-    SET
-    admin_id = null,
-    headmaster = null
+  <update id="updateByClassId" parameterType="com.cj.witbasics.entity.SchoolPeriodClassThetime">
+    update school_period_class_thetime
+    <set>
+      <if test="schoolId != null">
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="periodId != null">
+        period_id = #{periodId,jdbcType=BIGINT},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="adminId != null">
+        admin_id = #{adminId,jdbcType=BIGINT},
+      </if>
+      <if test="headmaster != null">
+        headmaster = #{headmaster,jdbcType=VARCHAR},
+      </if>
+      <if test="thetime != null">
+        thetime = #{thetime,jdbcType=DATE},
+      </if>
+      <if test="founderId != null">
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null">
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
     WHERE class_id = #{classId,jdbcType=BIGINT}
   </update>
 </mapper>
+<!--    admin_id = null,
+    headmaster = null-->

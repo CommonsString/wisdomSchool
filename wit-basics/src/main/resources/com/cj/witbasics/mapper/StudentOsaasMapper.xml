@@ -769,14 +769,28 @@
     where osaas_id = #{osaasId,jdbcType=BIGINT}
   </update>
 
+  <!-- 模糊查询学生信息 总条数 -->
+  <select id="findStudentsByConditionTotal" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultType="java.lang.Integer">
+    SELECT
+    count(so.osaas_id)
+    FROM student_osaas so
+    WHERE
+    so.state = '1'
+    AND
+    (so.full_name OR so.gender OR so.register_number
+    LIKE concat(concat('%',#{parameter}),'%'))
+  </select>
 
   <!--模糊查询学生信息-->
   <select id="findStudentsByCondition" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
     FROM student_osaas so
-    WHERE so.full_name OR so.gender OR so.register_number
-    LIKE concat(concat('%',#{parameter}),'%')
+    WHERE
+    so.state = '1'
+    AND
+    (so.full_name OR so.gender OR so.register_number
+    LIKE concat(concat('%',#{parameter}),'%'))
     limit #{minRow},#{pageSize}
   </select>
 

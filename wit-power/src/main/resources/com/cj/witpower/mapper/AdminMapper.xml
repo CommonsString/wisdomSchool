@@ -374,7 +374,7 @@
   <resultMap id="sscaxsd" type="java.util.HashMap">
     <result column="id" property="directorId" jdbcType="BIGINT" />
     <result column="full_name" property="fullName" jdbcType="VARCHAR" />
-<!--    <result column="period_id" property="periodId" jdbcType="BIGINT" />-->
+    <result column="period_id" property="periodId" jdbcType="BIGINT" />
     <result column="period_name" property="periodName" jdbcType="VARCHAR" />
 <!--    <result column="class_id" property="classId" jdbcType="BIGINT" />-->
     <result column="thetime" property="thetime" jdbcType="TIMESTAMP"/>
@@ -383,7 +383,7 @@
   <select id="findHasPowerForDirector" resultMap="sscaxsd">
     SELECT
     a.id, IFNULL(ifo.full_name, -1) AS full_name, IFNULL(sp.period_name, '空')
-    AS period_name	, IFNULL(pt.thetime, '空') AS thetime
+    AS period_name	, IFNULL(sp.period_id, -1) AS period_id ,IFNULL(pt.thetime, '空') AS thetime
     FROM
     admin AS a
     LEFT JOIN admin_role AS ar

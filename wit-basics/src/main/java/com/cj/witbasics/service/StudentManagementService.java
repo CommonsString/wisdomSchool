@@ -22,7 +22,7 @@ public interface StudentManagementService{
     public  int addStudentOsaasinfo(StudentOsaas record,HttpServletRequest request);
 
     //模糊查询学生信息
-    public List<StudentOsaas> findStudentsByCondition(Pager p);
+    public Pager findStudentsByCondition(Pager p);
 
     //下载学生信息模板
     public void downloadStudengTemplate(HttpServletRequest request, HttpServletResponse response) throws Exception;

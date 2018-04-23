@@ -24,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -522,21 +525,23 @@ System.out.println("进入" + "学段ID " + periodId);
      */
     @ApiOperation("编辑班主任")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "classId", value = "班级ID"),
-            @ApiImplicitParam(name = "headmasterId", value = "班主任ID")
+            @ApiImplicitParam(name = "classId", value = "班级ID", required = true),
+            @ApiImplicitParam(name = "adminId", value = "班主任ID" , required = true),
+            @ApiImplicitParam(name = "fullName", value = "班主任名字", required = true)
     })
     @Log(name = "编辑班主任")
     @PutMapping("/updateHeadmaster")
-    public ApiResult updateHeadmasterId(Long classId, Long headmasterId, HttpServletRequest request){
+    public ApiResult updateHeadmasterId(Long classId, Long adminId, String fullName, HttpServletRequest request){
         ApiResult apiResult = new ApiResult(); //返回对象
-
         try{
-            Long adminId = (Long) request.getSession().getAttribute("adminId");
+            Long adminId_ = (Long) request.getSession().getAttribute("adminId");
             SchoolPeriodClassThetime classThetime = new SchoolPeriodClassThetime();
-            //填充
-            classThetime.setAdminId(adminId);
+//            //填充
+            classThetime.setOperatorId(adminId_);
             classThetime.setClassId(classId);
-            classThetime.setAdminId(headmasterId);
+            classThetime.setAdminId(adminId);
+            classThetime.setHeadmaster(fullName);
+            System.out.println(fullName);
             boolean result = this.schoolClassService.updateHeadmasterId(classThetime);
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
@@ -558,22 +563,34 @@ System.out.println("进入" + "学段ID " + periodId);
      */
     @ApiOperation("编辑年级主任")
     @PutMapping("/updateDirector")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "directorId", value = "年级主任ID", required = true),
+            @ApiImplicitParam(name = "periodId", value = "学段ID" , required = true),
+            @ApiImplicitParam(name = "theTime", value = "届次", required = false)
+    })
     @Log(name = "编辑年级主任")
-    public ApiResult updateDirectorId(@ApiParam(name = "info", value = "关联表ID:sdtId,学段ID:periodId,年级主任ID:directorId,班级届次(2018届毕业时间):thetime(格式2018-6-1)--------------》  {\n" +
-            "  \"directorId\": 0,\n" +
-            "  \"periodId\": 0,\n" +
-            "  \"sdtId\": 5,\n" +
-            "  \"thetime\": \"2018-6-1\"\n" +
-            "}")
-                                      @RequestBody PeriodDirectorThetime info, HttpServletRequest request){
-        ApiResult apiResult = null; //返回对象
-        System.out.println(info.toString());
+    public ApiResult updateDirectorId(Long directorId, Long periodId, String theTime, HttpServletRequest request){
+        ApiResult apiResult = new ApiResult(); //返回对象
         try{
 //            Long adminId = (Long) request.getSession().getAttribute("adminId");
             Long adminId = 1L;
             //填充
-            info.setOperatorId(adminId);
-            apiResult = this.schoolClassService.updateDirectorId(info);
+            PeriodDirectorThetime param = new PeriodDirectorThetime();
+            param.setPeriodId(periodId);
+            param.setDirectorId(directorId);
+            //日期转换
+            theTime += "-6-1";
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = format.parse(theTime);
+            param.setThetime(date);
+            System.out.println(param.toString());
+            boolean result = this.schoolClassService.updateDirectorId(param, adminId);
+            System.out.println(result);
+            if(result){
+                ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
+            }else{
+                ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_update_failed, ApiCode.FAIL_MSG, null);
+            }
         }catch (Exception e){ //异常处理
             ApiResultUtil.fastResultHandler(apiResult, false,
                     ApiCode.error_update_failed, ApiCode.error_unknown_database_operation_MSG, null);
@@ -621,6 +638,8 @@ System.out.println("进入" + "学段ID " + periodId);
     @DeleteMapping ("/updateDirector")
     public ApiResult updateDirector(Long sdtId){
         ApiResult apiResult = new ApiResult(); //返回对象
+        //            Long adminId = (Long) request.getSession().getAttribute("adminId");
+        Long adminId = 1L;
         try{
             boolean result = this.schoolClassService.updateDirector(sdtId);
             if(result){
@@ -648,8 +667,10 @@ System.out.println("进入" + "学段ID " + periodId);
     @DeleteMapping ("/updateHeadmaster")
     public ApiResult updateHeadmaster(Long classId){
         ApiResult apiResult = new ApiResult();//返回对象
+        //            Long adminId = (Long) request.getSession().getAttribute("adminId");
+        Long adminId = 1L;
         try{
-            boolean result = this.schoolClassService.updateHeadmaster(classId);
+            boolean result = this.schoolClassService.updateHeadmaster(classId, adminId);
             System.out.println(result + " haha ");
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);

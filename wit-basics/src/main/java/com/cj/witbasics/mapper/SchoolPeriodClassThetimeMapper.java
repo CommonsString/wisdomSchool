@@ -58,6 +58,6 @@ public interface SchoolPeriodClassThetimeMapper {
     int updateByClassIdKeySelective(SchoolPeriodClassThetime record);
 
     //清除班主任
-    int updateByClassId(Long classId);
+    int updateByClassId(SchoolPeriodClassThetime theTime);
 
 }

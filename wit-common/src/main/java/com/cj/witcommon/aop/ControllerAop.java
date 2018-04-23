@@ -112,7 +112,7 @@ public class ControllerAop {
     public void  doAfterReturning(JoinPoint joinPoint,Object obj){
         ApiResult apiResult = (ApiResult) obj;
         // 处理完请求，返回内容
-//        logger.info("返回信息: "+obj);
+        logger.info("返回信息: "+obj);
         logger.info("执行结果: "+apiResult.getMsg());
         long endTime = System.currentTimeMillis();
         logger.info("执行耗时: "+(endTime-startTime) + "毫秒");

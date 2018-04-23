@@ -54,7 +54,7 @@ public class StudentManagementController {
     public ApiResult selectsStudentInfo(Pager p){
 
         ApiResult apiResult=new ApiResult();
-        p.setContent(studentManagementService.findStudentsByCondition(p));
+        p = studentManagementService.findStudentsByCondition(p);
 
         return ApiResultUtil.fastResult(apiResult,p);
     }

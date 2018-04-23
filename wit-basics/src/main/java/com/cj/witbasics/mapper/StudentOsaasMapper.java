@@ -49,6 +49,11 @@ public interface StudentOsaasMapper {
     int updateByPrimaryKey(StudentOsaas record);
 
     /**
+     * 模糊查询学生信息 总条数
+     */
+    public int findStudentsByConditionTotal(Pager p);
+
+    /**
      * 模糊查询学生信息
      */
     public List<StudentOsaas> findStudentsByCondition(Pager p);

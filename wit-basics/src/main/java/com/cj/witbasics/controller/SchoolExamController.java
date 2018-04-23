@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -92,10 +93,10 @@ public class SchoolExamController {
         ApiResult apiResult = new ApiResult();
         try{
             List result = this.examService.findAllUnderGradeClass(param);
-            if(result != null){
+            if(!result.isEmpty()){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, result); //数据的封装
             }else{
-                ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_search_failed, ApiCode.FAIL_MSG, null);
+                ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_search_failed, ApiCode.FAIL_MSG, result);
             }
         }catch (Exception e){ //异常处理
             ApiResultUtil.fastResultHandler(apiResult, false,

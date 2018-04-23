@@ -62,9 +62,12 @@ public class StudentManagementServiceImpl implements StudentManagementService {
     String defaultAdminPass;
 
     @Override
-    public List<StudentOsaas> findStudentsByCondition(Pager p) {
+    public Pager findStudentsByCondition(Pager p) {
 
-        return studentOsaasMapper.findStudentsByCondition(p);
+        p.setRecordTotal(studentOsaasMapper.findStudentsByConditionTotal(p));
+        p.setContent(studentOsaasMapper.findStudentsByCondition(p));
+
+        return p;
     }
 
     @Override

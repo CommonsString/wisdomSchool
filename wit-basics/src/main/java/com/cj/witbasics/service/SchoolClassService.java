@@ -7,6 +7,7 @@ import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.utils.entity.other.Pager;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public interface SchoolClassService {
     /**
      * 修改年级主任ID
      */
-    ApiResult updateDirectorId(PeriodDirectorThetime info);
+    boolean updateDirectorId(PeriodDirectorThetime info, Long adminId);
 
 
     /**
@@ -79,5 +80,5 @@ public interface SchoolClassService {
     /**
      * 清空班主任
      */
-    boolean updateHeadmaster(Long classId);
+    boolean updateHeadmaster(Long classId, Long adminId);
 }
