@@ -32,7 +32,7 @@ public interface AdminMapper {
     public int updateAdminsAndStudents(List<Long> adminIds);
 
     //查询所有用户 总条数
-    public Integer findAdminSize(Pager p);
+    public Integer findAllAdminSize(Pager p);
 
     //查询所有用户
     public List<Map> findAllAdmin(Pager p);

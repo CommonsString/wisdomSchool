@@ -17,7 +17,7 @@
     update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from admin
     where id = #{id,jdbcType=BIGINT}
@@ -213,7 +213,7 @@
     <result column="create_time" property="createTime"></result>
   </resultMap>
   <!--查询用户账户列表 总条数-->
-  <select id="findAdminSize" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultType="java.lang.Integer">
+  <select id="findAllAdminSize" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultType="java.lang.Integer">
     SELECT
     COUNT(a.id)
     FROM admin a
@@ -221,8 +221,10 @@
     WHERE
     a.admin_state IN (-1,1)
     <if test="parameters.containsKey('roleId')">
-      AND
-      ar.id = #{parameters.roleId}
+      <if test="parameters.roleId != '' ">
+        AND
+        ar.id = #{parameters.roleId}
+      </if>
     </if>
 
     <if test="parameters.containsKey('adminName')">
@@ -269,10 +271,13 @@
     LEFT JOIN admin_role ar ON a.role_id = ar.id
     LEFT JOIN admin_info ai ON a.id = ai.admin_id
     WHERE
-    a.admin_state = "-1" OR a.admin_state = "1"
+    (a.admin_state = "-1" OR a.admin_state = "1")
     <if test="parameters.containsKey('roleId')">
-      AND
-      ar.id = #{parameters.roleId}
+      <if test="parameters.roleId != '' ">
+        AND
+        ar.id = #{parameters.roleId}
+
+      </if>
     </if>
 
     <if test="parameters.containsKey('adminName')">
@@ -376,9 +381,9 @@
     <result column="full_name" property="fullName" jdbcType="VARCHAR" />
     <result column="period_id" property="periodId" jdbcType="BIGINT" />
     <result column="period_name" property="periodName" jdbcType="VARCHAR" />
-<!--    <result column="class_id" property="classId" jdbcType="BIGINT" />-->
+    <!--    <result column="class_id" property="classId" jdbcType="BIGINT" />-->
     <result column="thetime" property="thetime" jdbcType="TIMESTAMP"/>
-<!--    <result column="sdt_id" property="sdtId" jdbcType="BIGINT"/>-->
+    <!--    <result column="sdt_id" property="sdtId" jdbcType="BIGINT"/>-->
   </resultMap>
   <select id="findHasPowerForDirector" resultMap="sscaxsd">
     SELECT

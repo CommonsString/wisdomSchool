@@ -7,6 +7,7 @@ import com.cj.witcommon.entity.PeriodUnderGrade;
 import com.cj.witcommon.utils.entity.other.Pager;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +64,9 @@ public interface SchoolExamMapper {
     /**
      * 根据班级id,科目名,查重记录
      */
-    int selectCountBySubjectNameAndClassId(@Param("classId") int classId, @Param("subjectName") String subjectName);
+    int selectCountBySubjectNameAndClassId(@Param("classId") int classId,
+                                           @Param("subjectName") String subjectName,
+                                           @Param("examTime") Date examTime);
 
     /**
      * 批量插入

@@ -140,14 +140,40 @@
     where sdt_id = #{sdtId,jdbcType=BIGINT}
   </update>
 
-
-  <!---->
+  <!--查询模块-->
   <select id="selectByDirectorId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from period_director_thetime
-    where director_id = #{directorId,jdbcType=BIGINT}
+    where
+    director_id = #{directorId,jdbcType=BIGINT}
     AND
     state != '0'
   </select>
+
+  <!--查重-->
+  <select id="selectByCountDirectorId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from period_director_thetime
+    where
+    director_id = #{directorId,jdbcType=BIGINT}
+    AND
+    thetime = #{thetime,jdbcType=DATE}
+    AND
+    state != '0'
+  </select>
+  
+  <update id="updateByDirectorId">
+   update period_director_thetime
+    set
+    state = '0'
+    where
+    director_id = #{directorId,jdbcType=BIGINT}
+    AND
+    state != '0'
+  </update>
+
+
+
 </mapper>

@@ -278,34 +278,47 @@
 	SELECT COUNT(exam_id)
 	FROM school_exam
 	WHERE
+	state != '0'
+	AND
 	class_id = #{classId,jdbcType=INTEGER}
 	AND
 	exam_subject = #{subjectName,jdbcType=VARCHAR}
+    AND
+    exam_time = #{examTime,jdbcType=TIMESTAMP}
 	limit 1
   </select>
 
   <!--批量插入-->
   <insert id="insertBatchInfoByU" parameterType="java.util.List">
-     insert into school_exam (exam_type_name,
-      exam_time, exam_name, exam_subject,
-      class_id, founder_id, create_time
-      )
+    insert into school_exam (school_id,
+    exam_type, exam_type_name,
+    exam_time, exam_name, exam_subject_id,
+    exam_subject, class_id, founder_id,
+    create_time)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.examTypeName,jdbcType=VARCHAR},
-      #{item.examTime,jdbcType=TIMESTAMP}, #{item.examName,jdbcType=VARCHAR}, #{item.examSubject,jdbcType=VARCHAR},
-      #{item.classId,jdbcType=INTEGER}, #{item.founderId,jdbcType=BIGINT}, #{item.createTime,jdbcType=TIMESTAMP}
+      (
+      #{item.schoolId,jdbcType=BIGINT},
+       #{item.examType,jdbcType=CHAR}, #{item.examTypeName,jdbcType=VARCHAR},
+      #{item.examTime,jdbcType=TIMESTAMP}, #{item.examName,jdbcType=VARCHAR}, #{item.examSubjectId,jdbcType=BIGINT},
+      #{item.examSubject,jdbcType=VARCHAR}, #{item.classId,jdbcType=INTEGER}, #{item.founderId,jdbcType=BIGINT},
+      #{item.createTime,jdbcType=TIMESTAMP}
       )
     </foreach>
   </insert>
 
 
+  <resultMap id="asdasCas" type="java.util.Map">
+    <result column="exam_name" property="examName" jdbcType="VARCHAR" />
+  </resultMap>
   <!--查询考试名称-->
-  <select id="selectBySchoolId" parameterType="Long" resultMap="BaseResultMap">
-    SELECT exam_id, exam_type_name
+  <select id="selectBySchoolId" parameterType="Long" resultMap="asdasCas">
+    SELECT IFNULL(exam_name, "空") AS exam_name
     FROM school_exam
     WHERE
     school_id = #{schoolId,jdbcType=BIGINT}
+    GROUP BY
+    exam_type_name
   </select>
 
 
@@ -315,35 +328,49 @@
     SELECT COUNT(exam_id)
     FROM
     school_exam AS se
-    <where>
-      <if test="examName != null">
-        se.exam_name LIKE CONCAT(#{examName}, "%")
-      </if>
-      <if test="vague != null">
-        OR
-        se.exam_type_name LIKE CONCAT(#{vague}, "%")
-        OR
-        se.exam_object LIKE CONCAT(#{vague}, "%")
-      </if>
-    </where>
-  </select>
-  <!--模糊查询-->
-  <select id="selectByIdAndVague" resultMap="BaseResultMap">
-    SELECT *
-    FROM
-    school_exam AS se
-    <where>
-      <if test="examName != null">
-        se.exam_name LIKE CONCAT(#{examName}, "%")
-      </if>
-      <if test="vague != null">
-        OR
-        se.exam_type_name LIKE CONCAT(#{vague}, "%")
-        OR
-        se.exam_object LIKE CONCAT(#{vague}, "%")
-      </if>
-    </where>
+    <choose>
+      <when test="examName != null">
+        <where>
+          se.exam_name LIKE CONCAT(#{examName}, "%")
+          <if test="vague != null">
+            AND
+            se.exam_type_name LIKE CONCAT(#{vague}, "%")
+          </if>
+        </where>
+      </when>
+    </choose>
   </select>
 
+
+  <sql id="sql_emm">
+    exam_id, exam_type, exam_type_name, exam_time, exam_name
+  </sql>
+  <resultMap id="asaonMap" type="java.util.Map">
+    <result column="exam_id" property="examId" jdbcType="BIGINT" />
+    <result column="exam_type" property="examType" jdbcType="VARCHAR" />
+    <result column="exam_type_name" property="examTypeName" jdbcType="VARCHAR" />
+    <result column="exam_time" property="examTime" jdbcType="TIMESTAMP" />
+    <result column="exam_name" property="examName" jdbcType="VARCHAR" />
+  </resultMap>
+  <!--模糊查询-->
+  <select id="selectByIdAndVague" resultMap="asaonMap">
+    SELECT
+    <include refid="sql_emm" />
+    FROM
+    school_exam AS se
+    <choose>
+      <when test="examName != null">
+        <where>
+          se.exam_name LIKE CONCAT(#{examName}, "%")
+          <if test="vague != null">
+            AND
+            se.exam_type_name LIKE CONCAT(#{vague}, "%")
+          </if>
+        </where>
+      </when>
+    </choose>
+    GROUP BY
+    exam_type_name
+  </select>
 
 </mapper>

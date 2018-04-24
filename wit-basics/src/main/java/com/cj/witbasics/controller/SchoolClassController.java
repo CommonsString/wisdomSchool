@@ -518,6 +518,35 @@ System.out.println("进入" + "学段ID " + periodId);
 
 
     /**************************************************************************/
+
+
+
+
+    @ApiOperation(value = "返回届次", notes = "成功/失败")
+    @ApiImplicitParam(name = "periodId", value = "学段ID", required = true, dataType = "Long")
+    @Log(name = "返回届次")
+    @GetMapping("findTheTime")
+    public ApiResult findTheTime(Long periodId){
+        ApiResult apiResult = new ApiResult(); //返回对象
+        try{
+            List result = this.schoolClassService.findTheTime(periodId);
+System.out.println(result.size());
+            if(!result.isEmpty()){
+                ApiResultUtil.fastResultHandler(apiResult, true, null, null, result); //数据的封装
+            }else{
+                ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_search_failed, ApiCode.FAIL_MSG, null);
+            }
+        }catch (Exception e){ //异常处理
+            ApiResultUtil.fastResultHandler(apiResult, false,
+                    ApiCode.error_search_failed, ApiCode.error_unknown_database_operation_MSG, null);
+            e.printStackTrace();
+        }
+        return apiResult;
+    }
+
+
+
+
     /**
      *  功能描述：修改班主任ID
      *  参数：班级ID, 班主任ID
@@ -633,15 +662,15 @@ System.out.println("进入" + "学段ID " + periodId);
      *  返回：
      */
     @ApiOperation(value = "清空年级主任", notes = "返回成功或失败")
-    @ApiImplicitParam(name = "sdtId", value = "sdtId", required = true)
+    @ApiImplicitParam(name = "directorId", value = "年级主任ID", required = true)
     @Log(name = "清空年级主任")
     @DeleteMapping ("/updateDirector")
-    public ApiResult updateDirector(Long sdtId){
+    public ApiResult updateDirector(Long directorId){
         ApiResult apiResult = new ApiResult(); //返回对象
         //            Long adminId = (Long) request.getSession().getAttribute("adminId");
         Long adminId = 1L;
         try{
-            boolean result = this.schoolClassService.updateDirector(sdtId);
+            boolean result = this.schoolClassService.updateDirector(directorId, adminId);
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
             }else{

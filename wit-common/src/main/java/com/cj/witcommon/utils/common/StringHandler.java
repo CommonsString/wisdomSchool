@@ -4,8 +4,10 @@ import com.cj.witcommon.utils.excle.StudentScoreInfo;
 import org.apache.xmlbeans.impl.regex.Match;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -213,6 +215,14 @@ System.out.println(str);
             if(artScore > bigArtScore) return true;
         }
         return false;
+    }
+
+
+    /**
+     * 时间戳转时间
+     */
+    public Data toDateS(Date time){
+        return null;
     }
 
 //

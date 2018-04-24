@@ -526,8 +526,9 @@ System.out.println(adminId + "员工ID");
     @Override
     @Transactional
     public boolean updateDirectorId(PeriodDirectorThetime info, Long adminId) {
+        System.out.println(info.toString());
         //查重
-        PeriodDirectorThetime isCopy = this.directorTimeMapper.selectByDirectorId(info.getDirectorId());
+        PeriodDirectorThetime isCopy = this.directorTimeMapper.selectByCountDirectorId(info.getDirectorId(), info.getThetime());
         if(isCopy == null){
             //不存在插入
             info.setFounderId(adminId);
@@ -565,15 +566,24 @@ System.out.println(adminId + "员工ID");
 
 
     /**
+     * 返回届次
+     */
+    @Override
+    @Transactional
+    public List<Map> findTheTime(Long periodId) {
+        List result = this.classThetimeMapper.selectByPeriodId(periodId);
+        return result;
+    }
+
+    /**
      * 清空年级主任
      */
     @Override
     @Transactional
-    public boolean updateDirector(Long sdtId) {
-        int result = this.directorTimeMapper.updateByPeriondId(sdtId);
-        if(result > 0){
-            return true;
-        }
+    public boolean updateDirector(Long directorId, Long adminId) {
+        //非物理删除
+        int result = this.directorTimeMapper.updateByDirectorId(directorId);
+        if(result > 0) return true;
         return false;
     }
 
@@ -590,6 +600,7 @@ System.out.println(adminId + "员工ID");
         //删除关联表
         SchoolPeriodClassThetime temp = new SchoolPeriodClassThetime();
         temp.setOperatorId(adminId);
+        temp.setClassId(classId);
         temp.setUpdateTime(new Date());
         temp.setState("0");
         int flag_b = this.classThetimeMapper.updateByClassId(temp);

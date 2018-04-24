@@ -116,7 +116,7 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
 
 
         //账户分类
-        if(adminType == null && adminType.length()==0){
+        if(adminType == null || adminType.length()==0){
             //默认为2
             admin.setAdminType("2");
         }else {

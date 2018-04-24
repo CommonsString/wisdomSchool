@@ -98,7 +98,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Pager findAllAdmin(Pager p) {
         //查询总条数
-        p.setRecordTotal(adminMapper.findAdminSize(p));
+        p.setRecordTotal(adminMapper.findAllAdminSize(p));
         //查询符合条件的集合
         p.setContent(adminMapper.findAllAdmin(p));
 

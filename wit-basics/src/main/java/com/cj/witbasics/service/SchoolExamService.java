@@ -35,7 +35,7 @@ public interface SchoolExamService {
     /**
      * 新增考试
      */
-    ApiResult addSchoolExamInfo(ExamParam examInfo);
+    ApiResult addSchoolExamInfo(ExamParam examInfo, Long adminId);
 
     /**
      * 查询科目名称

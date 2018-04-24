@@ -17,7 +17,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
 //        registry.addViewController("/").setViewName("redirect:/static/main.html");
-        registry.addViewController("/").setViewName("redirect:/swagger-ui.html");
+        registry.addViewController("/").setViewName("redirect:/static/index.html");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         super.addViewControllers(registry);
     }

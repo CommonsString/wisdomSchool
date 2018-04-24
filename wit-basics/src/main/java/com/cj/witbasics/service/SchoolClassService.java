@@ -74,11 +74,17 @@ public interface SchoolClassService {
     /**
      * 清空年级主任,学段，届次
      */
-    boolean updateDirector(Long classId);
+    boolean updateDirector(Long directorId, Long adminId);
 
 
     /**
      * 清空班主任
      */
     boolean updateHeadmaster(Long classId, Long adminId);
+
+    /**
+     *  返回所有届次
+     */
+    List<Map> findTheTime(Long periodId);
+
 }

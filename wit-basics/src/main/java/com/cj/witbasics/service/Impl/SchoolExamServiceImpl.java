@@ -14,6 +14,7 @@ import com.cj.witcommon.utils.entity.other.Pager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,19 @@ public class SchoolExamServiceImpl implements SchoolExamService{
 
     @Autowired(required = false)
     private SchoolSubjectMapper subjectMapper;
+
+
+    @Value("${school_id}")
+    private String schoolId;
+
+    /**
+     * 转为Long
+     * @return
+     */
+    private Long toLong(){
+        return Long.valueOf(this.schoolId);
+    }
+
 
 
     /**
@@ -167,9 +181,9 @@ public class SchoolExamServiceImpl implements SchoolExamService{
      */
     @Override
     public Pager findExamOfVague(String examName, String vague, Pager pager) {
-        int total = this.examMapper.selectCountIdAndVague(examName, vague);
-        pager.setPageTotal(total);
+//        int total = this.examMapper.selectCountIdAndVague(examName, vague);
         List<SchoolExam> result = this.examMapper.selectByIdAndVague(examName, vague, pager);
+        pager.setRecordTotal(result.size());
         pager.setContent(result);
         return pager;
     }
@@ -179,9 +193,8 @@ public class SchoolExamServiceImpl implements SchoolExamService{
      */
     @Override
     @Transactional
-    public ApiResult addSchoolExamInfo(ExamParam examInfo) {
+    public ApiResult addSchoolExamInfo(ExamParam examInfo, Long adminId) {
         //TODO:获取操作员ID
-        Long operatorId = 1L;
         ApiResult result = new ApiResult();
         //插入集合
         List<SchoolExam> examList = new ArrayList<SchoolExam>();
@@ -197,8 +210,9 @@ public class SchoolExamServiceImpl implements SchoolExamService{
             for(SubjectForTea s : subject){
                 //考试科目
                 String examSubject = s.getSubjectName();
-                //根据考试科目,班级ID,查重
-                int isCopy = this.examMapper.selectCountBySubjectNameAndClassId(classId, examSubject);
+                Date start = examInfo.getExamTime();
+                //根据考试科目,班级ID,查重,增加时间
+                int isCopy = this.examMapper.selectCountBySubjectNameAndClassId(classId, examSubject, start);
                 if(isCopy > 0){
                     //存在记录
                     log.error("数据已存在");
@@ -211,9 +225,11 @@ public class SchoolExamServiceImpl implements SchoolExamService{
                 exam.setExamTypeName(examInfo.getExamTypeName());
                 exam.setExamTime(examInfo.getExamTime());
                 exam.setExamName(examInfo.getExamName());
+                exam.setSchoolId(toLong());
                 //设置考试年级
                 exam.setCreateTime(time);
-                exam.setFounderId(operatorId);
+                exam.setFounderId(adminId);
+                exam.setOperatorId(adminId);
                 //数据
                 exam.setExamObject(examInfo.getExamObject());
                 exam.setClassId(classId);

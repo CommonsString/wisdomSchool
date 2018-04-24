@@ -157,8 +157,9 @@ public class SchoolExamController {
             @RequestBody ExamParam examInfo){
 System.out.println(examInfo.toString());
         ApiResult apiResult = new ApiResult(); //返回对象
+        Long adminId = 1L;
         try{
-            apiResult = this.examService.addSchoolExamInfo(examInfo);
+            apiResult = this.examService.addSchoolExamInfo(examInfo, adminId);
         }catch (Exception e){ //异常处理
             ApiResultUtil.fastResultHandler(apiResult, false,
                     ApiCode.error_create_failed, ApiCode.error_unknown_database_operation_MSG, null);
@@ -202,11 +203,11 @@ System.out.println(examInfo.toString());
      *  返回：成功/失败
      *  时间：10小时
      */
-    @ApiOperation(value = "查询考试(模糊)", notes = "返回成功或失败")
+    @ApiOperation(value = "查询考试", notes = "返回成功或失败")
     @Log(name = "查询考试(模糊)")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "examName", value = "考试名称", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "vague", value = "模糊条件", dataType = "String"),
+            @ApiImplicitParam(name = "examName", value = "考试名称", required = false, dataType = "String"),
+            @ApiImplicitParam(name = "vague", value = "模糊条件", required = false, dataType = "String"),
             @ApiImplicitParam(name = "pager",value = "分页参数，初始页码1，初始条数10，可为空",required = false)
     })
     @GetMapping("/findExamOfVague")
@@ -226,6 +227,9 @@ System.out.println(examInfo.toString());
         }
         return apiResult;
     }
+
+
+
 
 
 }

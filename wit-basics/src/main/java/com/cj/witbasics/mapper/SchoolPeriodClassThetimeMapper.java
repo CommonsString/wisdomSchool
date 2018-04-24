@@ -60,4 +60,6 @@ public interface SchoolPeriodClassThetimeMapper {
     //清除班主任
     int updateByClassId(SchoolPeriodClassThetime theTime);
 
+    //返回所有届次
+    List<Map> selectByPeriodId(Long periodId);
 }

@@ -188,6 +188,21 @@
 
   </select>
 
+
+  <resultMap id="asacMap" type="java.util.Map">
+    <result column="class_id" jdbcType="BIGINT" property="classId" />
+    <result column="thetime" jdbcType="DATE" property="thetime" />
+  </resultMap>
+  <select id="selectByPeriodId" parameterType="long" resultMap="asacMap">
+    select
+    class_id, thetime
+    from school_period_class_thetime
+    where
+    period_id = #{periodId,jdbcType=BIGINT}
+    AND
+    state != '0'
+  </select>
+
     <resultMap id="newMap" type="java.util.LinkedHashMap">
         <result column="class_id" property="classId"></result>
         <result column="class_name" property="className"></result>
