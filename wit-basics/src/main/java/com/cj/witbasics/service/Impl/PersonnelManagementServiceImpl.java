@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
+@Transactional
 public class PersonnelManagementServiceImpl implements PersonnelManagementService {
     @Autowired
     private AdminInfoMapper adminInfoMapper;
@@ -72,15 +73,16 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
      * 创建管理员Admin
      * 以员工编号为账号，
      */
-    @Transactional
     public Long createAdmin(Admin admin){
         return adminInfoMapper.insertAdminSelective(admin);
     }
     /**
      * 创建人事信息详情
      */
-    @Transactional
     public Integer createAdminInfo(AdminInfo adminInfo,HttpServletRequest request,String adminType) {
+        System.out.println("===============================================================");
+        System.out.println(adminInfo);
+        System.out.println("===============================================================");
 
         //当前时间
         Date date=new Date();
@@ -165,7 +167,8 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
                     System.out.println("============>>"+adminInfo);
                     nums=adminInfoMapper.insertSelective(adminInfo);
 
-                    if(adminInfo.getTheDepartmentId() > 0 ){
+                    //批量导入时，部门ID不存在
+                    if(adminInfo.getTheDepartmentId() != null && adminInfo.getTheDepartmentId() > 0 ){
 
                         //添加人事-部门-关联表信息
                         DepartmentAdmin departmentAdmin = new DepartmentAdmin();
@@ -186,7 +189,7 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
 
     //批量处理adminInfo数据导入
     @Override
-    public Integer createAdminInfos(MultipartFile multipartFile, HttpServletRequest request) throws Exception {
+    public Map createAdminInfos(MultipartFile multipartFile, HttpServletRequest request) throws Exception {
 
         String fileName = multipartFile.getOriginalFilename();
         InputStream in = multipartFile.getInputStream();
@@ -212,15 +215,28 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
         }
 
         int nums = 0;  //学生信息导入成功数量
+        int i = 0;
+        List msgList = new ArrayList();
+        Map map = new HashMap();
         for (AdminInfo adminInfo : adminInfoList) {
 
             //调用创建人事信息接口
-            nums += createAdminInfo(adminInfo,request,"");
+            i = createAdminInfo(adminInfo,request,"");
+            if(i > 0){
+                msgList.add(adminInfo.getStaffNumber()+"导入成功。");
+            }else {
+                msgList.add(adminInfo.getStaffNumber()+"导入失败。");
+
+            }
+            nums += i;
 
         }
 
+        map.put("nums",nums);
+        map.put("msgList",msgList);
 
-        return nums;
+
+        return map;
 
 
 

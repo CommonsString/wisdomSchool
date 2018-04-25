@@ -1,8 +1,8 @@
 package com.cj.witpower.service.Impl;
 
-import com.cj.witbasics.entity.Admin;
-import com.cj.witbasics.entity.AdminModular;
-import com.cj.witbasics.entity.AdminRole;
+import com.cj.witbasics.entity.*;
+import com.cj.witbasics.mapper.PeriodDirectorThetimeMapper;
+import com.cj.witbasics.mapper.SchoolPeriodMapper;
 import com.cj.witcommon.entity.ApiCode;
 import com.cj.witcommon.entity.MemoryData;
 import com.cj.witcommon.utils.common.QueryBase;
@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -44,6 +46,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminRoleMapper adminRoleMapper;
+
+    @Autowired(required = false)
+    private PeriodDirectorThetimeMapper directorThetimeMapper;
+
+    @Autowired(required = false)
+    private SchoolPeriodMapper periodMapper;
 
     //检查用户名是否已存在
     @Override
@@ -393,28 +401,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
 
-
-    /***************************************************/
-    /**************************************************/
-    /**
-     * 查询具有班主任权限的角色
-     * @return
-     */
-    @Override
-    public List<Map> findHasPowerForHeadmaster(String vague) {
-        List<Map> result = this.adminMapper.findHasPowerForHeadmaster(vague);
-        return result;
-    }
-
-    /**
-     * 查询具有年级主任权限的角色
-     * @return
-     */
-    @Override
-    public List<Map> findHasPowerForDirector(String vague) {
-        List<Map> result = this.adminMapper.findHasPowerForDirector(vague);
-        return result;
-    }
 }
 
 

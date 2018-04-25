@@ -248,7 +248,7 @@
     LEFT JOIN school_subject AS su
     ON ss.school_subject_id = su.subject_id
     WHERE
-    sc.class_id = #{headmasterId,jdbcType=BIGINT}
+    sc.class_id = #{classId,jdbcType=BIGINT}
     AND
     sc.state != '0'
     GROUP BY subject_id
@@ -298,6 +298,12 @@
     GROUP BY subject_id
   </select>
 
+
+  <!--系统管理员-->
+  <select id="">
+
+
+  </select>
 
 
   <!--查看分数-->

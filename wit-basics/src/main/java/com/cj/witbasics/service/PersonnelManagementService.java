@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface PersonnelManagementService {
     /**
@@ -32,7 +33,7 @@ public interface PersonnelManagementService {
     /**
      * 创建人事信息详情
      */
-    public Integer createAdminInfos(MultipartFile multipartFile,HttpServletRequest request) throws Exception;
+    public Map createAdminInfos(MultipartFile multipartFile, HttpServletRequest request) throws Exception;
     /**
      * 删除教职工信息
      */

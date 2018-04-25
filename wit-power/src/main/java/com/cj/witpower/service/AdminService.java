@@ -69,14 +69,6 @@ public interface AdminService {
     public AdminRole findAdminRoleByAdminRoleId(Long adminRoleId);
 
 
-    /***************************************************************/
-    /***************************************************************/
-    //查询具有班主任权限的角色
-    List<Map> findHasPowerForHeadmaster(String vague);
-
-    //查询具有年级主任权限的角色
-    List<Map> findHasPowerForDirector(String vague);
-
 
 
 

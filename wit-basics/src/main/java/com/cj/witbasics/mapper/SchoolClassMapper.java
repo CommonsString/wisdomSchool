@@ -102,5 +102,15 @@ public interface SchoolClassMapper {
     int updateByHeadmasterId(Long classId);
 
 
+    /*********************************************************/
+    /*********************************************************/
+
+    //查询具有班主任权限的角色
+    List<Map> findHasPowerForHeadmaster(@Param("vague") String vague);
+
+    //查询具有年级主任权限的角色
+    List<Map> findHasPowerForDirector(@Param("vague") String vague);
+
+
 }
 

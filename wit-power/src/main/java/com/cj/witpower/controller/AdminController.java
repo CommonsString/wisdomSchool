@@ -139,7 +139,7 @@ public class AdminController {
      */
 
     @ApiOperation("批量删除账户及教职工详情及人员-部门关系")
-    @Log(name = "批量删除账户及教职工详情及人员-部门关系")
+    @Log(name = "权限 ==> 批量删除账户及教职工详情及人员-部门关系")
     @DeleteMapping("/updateAdminsAndInfo")
     public ApiResult updateAdminsAndInfo(
             @ApiParam(name = "adminIds",value = "账户ID集合",required = true) @RequestBody Map map){
@@ -159,7 +159,7 @@ public class AdminController {
         return a;
     }
     @ApiOperation("批量删除学生及详情表信息")
-    @Log(name = "批量删除学生及详情表信息")
+    @Log(name = "权限 ==> 批量删除学生及详情表信息")
     @DeleteMapping("/updateAdminsAndStudents")
     public ApiResult updateAdminsAndStudents(
             @ApiParam(name = "adminIds",value = "账户ID集合",required = true) @RequestBody Map map){
@@ -182,7 +182,7 @@ public class AdminController {
 
     @PutMapping("/updateAdmin")
     @ApiOperation("禁用(adminState=-1)、取消禁用用户")
-    @Log(name = "锁定、取消锁定用户")
+    @Log(name = "权限 ==> 锁定、取消锁定用户")
     public ApiResult updateAdmin(
             @ApiParam(name = "id",value = "用户ID",required = true) @Validated Long id,
             @ApiParam(name = "roleId",value = "用户角色ID",required = false) @Validated Long roleId,
@@ -220,7 +220,7 @@ public class AdminController {
      */
     @PostMapping("/findAllAdmin")
     @ApiOperation("分页查询所有用户账户信息")
-    @Log(name = "分页查询所有用户账户信息")
+    @Log(name = "权限 ==> 分页查询所有用户账户信息")
     public ApiResult findAllAdmin(@ApiParam(name = "p",value = "分页参数，currentPage（初始页码1），pageSize（初始条数10），可为空，" +
             "parameters=查询条件（roleId=角色ID,adminName=用户名,adminType=角色类型）",required = false)
                                               @RequestBody Pager p){
@@ -244,7 +244,7 @@ public class AdminController {
     //添加角色
     @PostMapping("/addRole")
     @ApiOperation("添加角色")
-    @Log(name = "添加角色")
+    @Log(name = "角色 ==> 添加角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleName",value = "角色名称",required = true),
             @ApiImplicitParam(name = "type",value = "角色分类,角色分类，0：系统用户\n" +
@@ -283,7 +283,7 @@ public class AdminController {
     //删除角色
     @DeleteMapping("/deleteRole")
     @ApiOperation("删除角色")
-    @Log(name = "删除角色")
+    @Log(name = "角色 ==> 删除角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id",value = "角色ID",required = true)
     })
@@ -311,7 +311,7 @@ public class AdminController {
     //修改用户角色
     @PutMapping("/updateAdminRole")
     @ApiOperation("修改用户角色,此处角色ID调用接口查询")
-    @Log(name = "修改用户角色")
+    @Log(name = "角色 ==> 修改用户角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id",value = "用户ID",required = true,dataType = "Long"),
             @ApiImplicitParam(name = "roleId",value = "角色ID",required = true,dataType = "Long"),
@@ -343,7 +343,7 @@ public class AdminController {
     @ApiOperation("分类查询正常使用的角色列表")
     @ApiImplicitParam(name = "type",value = "-1,查询所有未删除的角色，不填=查询所有 0：系统用户 \t1: 系统管理员 \t2: 学校管理员 \t3: 老师 \t4：学生 \t5：家长 \t6：其他",required = false)
 
-    @Log(name = "查询角色列表")
+    @Log(name = "角色 ==> 查询角色列表")
     public ApiResult findAllRole(String type){
         AdminRole adminRole = new AdminRole();
         adminRole.setType(type);
@@ -370,7 +370,7 @@ public class AdminController {
     //查询所有的正常使用的目录及页面及当前角色的权限ID集合
     @GetMapping("/findRoleModulars")
     @ApiOperation("角色权限管理,查询所有的正常使用的目录及页面及当前角色的权限ID集合")
-    @Log(name = "查询所有的正常使用的目录及页面及当前角色的权限ID集合")
+    @Log(name = "角色 ==> 查询所有的正常使用的目录及页面及当前角色的权限ID集合")
     @ApiImplicitParam(name = "roleId",value = "角色ID",required = true,dataType = "Long")
     public ApiResult findRoleModulars(Long roleId){
 
@@ -391,7 +391,7 @@ public class AdminController {
     //修改角色权限
     @PutMapping("/updateRoleModular")
     @ApiOperation("修改角色权限")
-    @Log(name = "修改角色权限")
+    @Log(name = "角色 ==> 修改角色权限")
     public ApiResult updateRoleModular(@ApiParam(name = "map",value = "roleId=要修改的角色ID,modulars=新的权限ID集合",required = true)@RequestBody Map map){ //Map包括roleId modularId的集合
 
 
@@ -416,7 +416,7 @@ public class AdminController {
     //登陆
     @PostMapping("/ifLogin")
     @ApiOperation("用户登录")
-    @Log(name = "登录")
+    @Log(name = "账户 ==> 登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "adminName",value = "用户名",required = true),
             @ApiImplicitParam(name = "adminPass",value = "密码",required = true)
@@ -520,7 +520,7 @@ public class AdminController {
      */
     @PutMapping("/updateAdminPass")
     @ApiOperation("修改密码，不校验旧密码")
-    @Log(name = "修改密码，不校验旧密码")
+    @Log(name = "账户 ==> 修改密码，不校验旧密码")
     public ApiResult updateAdminPass(HttpServletRequest request,
                                   @ApiParam(name = "adminId",value = "账号ID",required = true) Long adminId,
                                   @ApiParam(name = "newPass",value = "新密码",required = true) String newPass){
@@ -547,7 +547,7 @@ public class AdminController {
     //登陆成功后查询权限列表
     @GetMapping("/loginSuccess")
     @ApiOperation("登陆成功后查询权限列表")
-    @Log(name = "登陆成功后查询权限列表")
+    @Log(name = "账户 ==> 登陆成功后查询权限列表")
     public ApiResult loginSuccess(HttpServletRequest request){
         ApiResult a = new ApiResult();
         a.setCode(ApiCode.SUCCESS);
@@ -559,7 +559,7 @@ public class AdminController {
     //用户注销
     @DeleteMapping("/ifLogout")
     @ApiOperation("用户注销")
-    @Log(name = "注销")
+    @Log(name = "账户 ==> 注销")
     public ApiResult ifLogout(HttpServletRequest request){
 
         adminService.ifLogout(request);
@@ -575,31 +575,31 @@ public class AdminController {
     /***********************************************************************************************/
     /**************************************新增逻辑**************************************************/
     /***********************************************************************************************/
-
-    @ApiOperation("查询角色为班主任,并显示麾下是否有班级")
-    @Log(name = "查询角色为班主任")
-    @GetMapping("/findIsHeadmaster")
-    @ApiImplicitParam(name = "vague",value = "班主任名字",required = false)
-    public ApiResult findHasPowerForHeadmaster(String vague){
-
-        ApiResult a = new ApiResult();
-        a.setCode(ApiCode.SUCCESS);
-        a.setMsg(ApiCode.SUCCESS_MSG);
-        a.setData(adminService.findHasPowerForHeadmaster(vague));
-        return a;
-    }
-
-    @ApiOperation("查询角色为年级主任,并显示是否分管年级")
-    @Log(name = "查询角色为班主任")
-    @GetMapping("/findIsDirector")
-    @ApiImplicitParam(name = "vague",value = "年级主任名字",required = false)
-    public ApiResult findHasPowerForDirector(String vague){
-        ApiResult a = new ApiResult();
-        a.setCode(ApiCode.SUCCESS);
-        a.setMsg(ApiCode.SUCCESS_MSG);
-        a.setData(adminService.findHasPowerForDirector(vague));
-        return a;
-    }
+//
+//    @ApiOperation("查询角色为班主任,并显示麾下是否有班级")
+//    @Log(name = "权限 ==> 查询角色为班主任")
+//    @GetMapping("/findIsHeadmaster")
+//    @ApiImplicitParam(name = "vague",value = "班主任名字",required = false)
+//    public ApiResult findHasPowerForHeadmaster(String vague){
+//
+//        ApiResult a = new ApiResult();
+//        a.setCode(ApiCode.SUCCESS);
+//        a.setMsg(ApiCode.SUCCESS_MSG);
+//        a.setData(adminService.findHasPowerForHeadmaster(vague));
+//        return a;
+//    }
+//
+//    @ApiOperation("查询角色为年级主任,并显示是否分管年级")
+//    @Log(name = "权限 ==> 查询角色为班主任")
+//    @GetMapping("/findIsDirector")
+//    @ApiImplicitParam(name = "vague",value = "年级主任名字",required = false)
+//    public ApiResult findHasPowerForDirector(String vague){
+//        ApiResult a = new ApiResult();
+//        a.setCode(ApiCode.SUCCESS);
+//        a.setMsg(ApiCode.SUCCESS_MSG);
+//        a.setData(adminService.findHasPowerForDirector(vague));
+//        return a;
+//    }
 
 
 

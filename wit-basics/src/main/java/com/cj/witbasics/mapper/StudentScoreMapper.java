@@ -59,7 +59,7 @@ public interface StudentScoreMapper {
     /**
      * 成绩查询,班主任权限
      */
-    List<ClassGradeInfo> selectPowerByHeadmaster(Long headmasterId);
+    List<ClassGradeInfo> selectPowerByHeadmaster(Long classId);
 
     /**
      * 成绩查询,科目教师权限

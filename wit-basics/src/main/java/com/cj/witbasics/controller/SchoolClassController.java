@@ -664,7 +664,7 @@ System.out.println(result.size());
     @ApiOperation(value = "清空年级主任", notes = "返回成功或失败")
     @ApiImplicitParam(name = "directorId", value = "年级主任ID", required = true)
     @Log(name = "清空年级主任")
-    @DeleteMapping ("/updateDirector")
+    @DeleteMapping ("/updateDirectorDel")
     public ApiResult updateDirector(Long directorId){
         ApiResult apiResult = new ApiResult(); //返回对象
         //            Long adminId = (Long) request.getSession().getAttribute("adminId");
@@ -693,7 +693,7 @@ System.out.println(result.size());
     @ApiOperation(value = "清空班主任", notes = "返回成功或失败")
     @ApiImplicitParam(name = "classId", value = "班级Id", required = true)
     @Log(name = "清空班主任")
-    @DeleteMapping ("/updateHeadmaster")
+    @DeleteMapping ("/updateHeadmasterDel")
     public ApiResult updateHeadmaster(Long classId){
         ApiResult apiResult = new ApiResult();//返回对象
         //            Long adminId = (Long) request.getSession().getAttribute("adminId");
@@ -715,7 +715,34 @@ System.out.println(result.size());
     }
 
 
+    /***********************************************************************************************/
+    /**************************************新增逻辑**************************************************/
+    /***********************************************************************************************/
 
+    @ApiOperation("查询角色为班主任,并显示麾下是否有班级")
+    @Log(name = "查询角色为班主任")
+    @GetMapping("/findIsHeadmaster")
+    @ApiImplicitParam(name = "vague",value = "班主任名字",required = false)
+    public ApiResult findHasPowerForHeadmaster(String vague){
+
+        ApiResult a = new ApiResult();
+        a.setCode(ApiCode.SUCCESS);
+        a.setMsg(ApiCode.SUCCESS_MSG);
+        a.setData(this.schoolClassService.findHasPowerForHeadmaster(vague));
+        return a;
+    }
+
+    @ApiOperation("查询角色为年级主任,并显示是否分管年级")
+    @Log(name = "查询角色为年级主任")
+    @GetMapping("/findIsDirector")
+    @ApiImplicitParam(name = "vague",value = "年级主任名字",required = false)
+    public ApiResult findHasPowerForDirector(String vague){
+        ApiResult a = new ApiResult();
+        a.setCode(ApiCode.SUCCESS);
+        a.setMsg(ApiCode.SUCCESS_MSG);
+        a.setData(this.schoolClassService.findHasPowerForDirector(vague));
+        return a;
+    }
 
 
 

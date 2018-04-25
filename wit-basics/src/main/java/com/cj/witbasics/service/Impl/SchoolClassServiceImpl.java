@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -609,5 +611,47 @@ System.out.println(adminId + "员工ID");
         }
         return false;
     }
+    /***************************************************/
+    /**************************************************/
+    /**
+     * 查询具有班主任权限的角色
+     * @return
+     */
+    @Override
+    public List<Map> findHasPowerForHeadmaster(String vague) {
+        List<Map> result = this.classMapper.findHasPowerForHeadmaster(vague);
+        return result;
+    }
 
+    /**
+     * 查询具有年级主任权限的角色
+     * @return
+     */
+    @Override
+    public List<Map> findHasPowerForDirector(String vague) {
+        List<Map> result = this.classMapper.findHasPowerForDirector(vague);
+        System.out.println("哈哈");
+        for(Map item : result){
+            HashMap map = (HashMap)item;
+            System.out.println((Long)map.get("directorId") + "   id");
+            PeriodDirectorThetime count = this.directorTimeMapper.selectByDirectorId((Long)map.get("directorId"));
+            if(count != null){ //年级权限下，存在年级
+                System.out.println("进入1");
+                SchoolPeriod period = this.periodMapper.selectByPrimaryKey(count.getPeriodId());
+                ((HashMap) item).put("periodId", count.getPeriodId());
+                ((HashMap) item).put("periodName", period.getPeriodName());
+
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String time = format.format(count.getThetime());
+                ((HashMap) item).put("thetime", time);
+                System.out.println(count.getThetime() + "时间");
+            }else{
+                System.out.println("进入2");
+                ((HashMap) item).put("periodId", -1);
+                ((HashMap) item).put("thetime", "空");
+                ((HashMap) item).put("periodName", "空");
+            }
+        }
+        return result;
+    }
 }

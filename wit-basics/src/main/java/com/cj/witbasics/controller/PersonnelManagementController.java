@@ -7,6 +7,7 @@ import com.cj.witbasics.service.CloudService;
 import com.cj.witbasics.service.PersonnelManagementService;
 import com.cj.witbasics.service.RemoteRequestService;
 
+import com.cj.witcommon.aop.Log;
 import com.cj.witcommon.entity.ApiCode;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.entity.ApiResultUtil;
@@ -103,6 +104,7 @@ public class PersonnelManagementController {
      */
     @ApiOperation("生成教职工编号")
     @GetMapping("/createIdentifier")
+    @Log(name = "人事 ==> 生成教职工编号")
     public ApiResult createIdentifier(){
         ApiResult<String> apiResult=new ApiResult<>();
         apiResult.setData(personnelManagementService.productMaxStaffNumber());
@@ -121,6 +123,7 @@ public class PersonnelManagementController {
      */
     @ApiOperation("新增教职工信息(同时生成账号)")
     @PostMapping("/addStaff")
+    @Log(name = "人事 ==> 新增教职工信息(同时生成账号)")
     public ApiResult addStaff(
             @ApiParam(name = "adminInfo",value = "教职工详情,封装为adminInfo,账号分类，1-管理员，2-用户（老师、学生、家长、其他）",required = true) @RequestBody AdminInfo adminInfo,
             HttpServletRequest request)  {
@@ -149,6 +152,7 @@ public class PersonnelManagementController {
      */
     @ApiOperation("人事信息模板下载")
     @GetMapping("/downloadTeacherTemplate")
+    @Log(name = "人事 ==> 人事信息模板下载")
     public void downloadTeacherTemplate(HttpServletRequest request, HttpServletResponse response) throws Exception {
         personnelManagementService.downloadTeacherTemplate(request,response);
 
@@ -163,16 +167,19 @@ public class PersonnelManagementController {
      */
     @ApiOperation("批量导入教职工信息")
     @PostMapping("/loadingInStaffs")
+    @Log(name = "人事 ==> 批量导入教职工信息")
     public ApiResult loadingInStaffs(@ApiParam(value = "教师导入（选择文件）",required = true) MultipartFile file,
                                      HttpServletRequest request) throws Exception {
 
-        int nums = personnelManagementService.createAdminInfos(file,request);
+        Map map = personnelManagementService.createAdminInfos(file,request);
         ApiResult apiResult=new ApiResult();
 
+        int nums = (Integer) map.get("nums");
+        List msgList = (ArrayList)map.get("msgList");
         if(nums > 0){
             apiResult.setCode(ApiCode.import_success);
             apiResult.setMsg(ApiCode.import_success_MSG+nums+"条数据");
-            System.out.println();
+            apiResult.setData(msgList);
         }else {
             apiResult.setCode(ApiCode.import_failed);
             apiResult.setMsg(ApiCode.import_failed_MSG);
@@ -212,6 +219,7 @@ public class PersonnelManagementController {
             @ApiImplicitParam(name ="adminId",value = "用户ID"),
     })
     @GetMapping("/selectAdminInfo")
+    @Log(name = "人事 ==> 查询人事详情")
     public ApiResult selectAdminInfo(Long adminId){
 
         ApiResult<AdminInfo> apiResult=new ApiResult<>();
@@ -229,6 +237,7 @@ public class PersonnelManagementController {
      */
     @ApiOperation("更新教职工信息，根据adminId")
     @PutMapping("/updateStaffInfo")
+    @Log(name = "人事 ==> 更新教职工信息")
     public ApiResult updateStaffInfo(
             @ApiParam(name ="AdminInfo",value = "教职工详情表") @RequestBody AdminInfo adminInfo,
             HttpServletRequest request){
@@ -263,6 +272,7 @@ public class PersonnelManagementController {
      */
     @ApiOperation("分页、模糊、条件查询教职工信息，vague=姓名、教职工编号、theDepartment=部门，封装到parameters（map）里面")
     @PostMapping("/selectAdminInfoByVague")
+    @Log(name = "人事 ==> 查询教职工信息")
     public ApiResult selectAdminInfoByVague(
             @ApiParam(name = "p",value = "vague=姓名、教职工编号、theDepartment=部门，封装到 parameters（map）里面",required = false) @RequestBody Pager p){
         ApiResult apiResult=new ApiResult();
@@ -322,6 +332,7 @@ public class PersonnelManagementController {
      */
     @ApiOperation("新增部门")
     @PostMapping("/addDepartment")
+    @Log(name = "部门 ==> 新增部门")
     public ApiResult addDepartment(HttpServletRequest request,
                                    @ApiParam(name ="DepartmentInfo",value = "部门名称=dName,部门编号=dNumber，" +
                                            "有效性，0-无效，1-有效=dEffectiveness，部门排序=dSort，部门领导ID=dLeaderId，部门领导=dLeader，" +
@@ -345,6 +356,7 @@ public class PersonnelManagementController {
      */
     @ApiOperation("根据部门ID，姓名 分页、条件查询 部门人员信息（部门下所有人）//currentPage（初始页码1），pageSize（初始条数10），(parameters k-v 方式存储多个参数)部门ID,姓名,可为空")
     @PostMapping("/selectAdminInfoByDepartment")
+    @Log(name = "部门 ==> 查询部门人员信息")
     public ApiResult selectAdminInfoByDepartment(
             @ApiParam(name = "p",value = "分页参数",required = false) @RequestBody  Pager p){
         ApiResult apiResult =new ApiResult();
@@ -361,6 +373,7 @@ public class PersonnelManagementController {
      */
     @ApiOperation("根据部门ID，姓名 分页、条件查询 人员信息（所有人,不管有没有部门）//currentPage（初始页码1），pageSize（初始条数10），(parameter 可为)部门ID=id,姓名=fullName,可为空")
     @PostMapping("/selectAdminInfoAndDepartment")
+    @Log(name = "部门 ==> 查询人员信息")
     public ApiResult selectAdminInfoAndDepartment(
             @ApiParam(name = "p",value = "分页参数",required = false) Pager p){
         ApiResult apiResult =new ApiResult();
@@ -383,7 +396,7 @@ public class PersonnelManagementController {
      * 返回:成功/失败
      * 完成时间:
      */
-    @ApiOperation("(批量)修改职工所在部门")
+    @ApiOperation("批量修改职工所在部门")
     @PutMapping("/updateStaffDepartment")
     @ApiImplicitParams({
             @ApiImplicitParam(name ="adminIds",value = "adminId集合"),
@@ -391,6 +404,7 @@ public class PersonnelManagementController {
             @ApiImplicitParam(name ="theDepartment",value = "新部门名称")
 
     })
+    @Log(name = "部门 ==> 批量修改职工所在部门")
     public ApiResult updateStaffDepartment( @RequestBody Map map,
 
             HttpServletRequest request){
@@ -422,6 +436,7 @@ public class PersonnelManagementController {
             @ApiImplicitParam(name ="id",value = "部门ID")
     })
     @GetMapping("/selectDepartmentById")
+    @Log(name = "部门 ==> 根据部门ID查询部门信息")
     public ApiResult selectDepartmentByDname(Long id){
         ApiResult apiResult=new ApiResult();
         DepartmentInfo departmentInfo=personnelManagementService.selectDepartmentInfoById(id);
@@ -437,6 +452,7 @@ public class PersonnelManagementController {
      */
     @ApiOperation("获取部门编号")
     @GetMapping("/getDNumber")
+    @Log(name = "部门 ==> 获取部门编号")
     public ApiResult getDNumber(){
         return ApiResultUtil.fastResult(new ApiResult(),personnelManagementService.getDNumber());
     }
@@ -447,6 +463,7 @@ public class PersonnelManagementController {
      */
     @ApiOperation("获取所有部门信息")
     @GetMapping("/findAllDepartmentInfo")
+    @Log(name = "部门 ==> 获取所有部门信息")
     public ApiResult findAllDepartmentInfo(){
 
         return ApiResultUtil.fastResult(new ApiResult(),personnelManagementService.findAllDepartmentInfo());
@@ -460,6 +477,7 @@ public class PersonnelManagementController {
      */
     @PutMapping("/updateDepartmentInfo")
     @ApiOperation("修改部门信息")
+    @Log(name = "部门 ==> 修改部门信息")
     public ApiResult updateDepartmentInfo(
             @ApiParam(name = "departmentInfo",value = "部门信息，ID必传",required = true) DepartmentInfo departmentInfo){
 
@@ -492,6 +510,7 @@ public class PersonnelManagementController {
     @ApiOperation("删除部门")
     @DeleteMapping("/deleteDepartmentInfo")
     @ApiImplicitParam(name = "id",value = "部门ID",required = true)
+    @Log(name = "部门 ==> 删除部门")
     public ApiResult deleteDepartmentInfo( Long id ){
         ApiResult apiResult = new ApiResult();
         int i = personnelManagementService.deleteDepartmentInfo(id);

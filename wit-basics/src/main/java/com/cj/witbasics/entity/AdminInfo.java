@@ -76,6 +76,13 @@ public class AdminInfo {
      */
     @IsNeeded
     private String primaryEducation;
+
+    /**
+     * 原毕业时间
+     */
+    @IsNeeded
+    private String primaryGraduateInstitutionsDate;
+
     /**
      * 原毕业院校
      */
@@ -174,6 +181,7 @@ public class AdminInfo {
     /**
      * 计算机等级(前端单选）
      */
+    @IsNeeded
     private String computerLevel;
     /**
      * 计算机等级证书编号
@@ -233,7 +241,7 @@ public class AdminInfo {
     private String startOfThe;
 
     /**
-     * 岗位工资
+     * 工资岗位
      */
     @IsNeeded
     private String postWage;
@@ -315,6 +323,7 @@ public class AdminInfo {
     /**
      * 最高学制（前端单选）
      */
+    @IsNeeded
     private String highestSchoolSystem;
     /**
      * 最高学位(前端单选）
@@ -485,10 +494,7 @@ public class AdminInfo {
      */
     private String highestMajor;
 
-    /**
-     * 原毕业时间
-     */
-    private String primaryGraduateInstitutionsDate;
+
 
     /**
      * 是否婚配(0-否，1-是)
