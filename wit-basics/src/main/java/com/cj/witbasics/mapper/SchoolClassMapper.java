@@ -93,7 +93,7 @@ public interface SchoolClassMapper {
     List<SchoolClassInfo> selectByPeriodIdNoPager(Long periodId);
 
     //根据班级查重
-    int selectCountByClassNumber(int classNumber);
+    long selectCountByClassNumber(int classNumber);
 
     //返回所有无班主任的班级
     List<Map> selectAllNoHeadmaster();
@@ -111,6 +111,21 @@ public interface SchoolClassMapper {
     //查询具有年级主任权限的角色
     List<Map> findHasPowerForDirector(@Param("vague") String vague);
 
+    //根据学段计数
+    String selectInfoByPeriodInfo(String periodName);
+
+    //查重，根据班级号s
+    int selectByCountClassNumber(int classNumber);
+
+    /////////////////////////////////////////////////////////
+    //根据学段筛选
+    List<SchoolClassInfo> selectByPeriodIdUBW(@Param("classPeriodId") Long classPeriodId, @Param("pager") Pager pager);
+
+    //根据届次筛选
+    SchoolClassInfo selectByPrimaryKeyByPeriodAndThetime(SchoolClassInfo item);
+
+    //根据模糊查询
+    SchoolClassInfo selectByVagueParamUBW(SchoolClassInfo sClass, String vague,  Pager pager);
 
 }
 

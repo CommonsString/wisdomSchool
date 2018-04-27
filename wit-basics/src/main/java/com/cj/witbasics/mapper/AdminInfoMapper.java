@@ -122,6 +122,19 @@ public interface AdminInfoMapper {
     int selectAdminInfoByVagueTotal(Pager p);
 
     /**
+     * 根据姓名模糊查询没有担任部门领导的人 总条数
+     */
+    public Integer findAllDepartmentalLeadershipTotal(Pager p);
+
+
+    /**
+     * 根据姓名模糊查询没有担任部门领导的人
+     */
+    public List<Map> findAllDepartmentalLeadership(Pager p);
+
+
+
+    /**
      * 更新员工所在部门
      */
     int updateStaffDepartment(Map map);

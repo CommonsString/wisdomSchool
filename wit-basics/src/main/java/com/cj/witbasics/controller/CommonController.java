@@ -50,7 +50,7 @@ public class CommonController {
     //单文件上传
     @ApiOperation("上传头像（file）")
     @PostMapping("/uploadFile")
-    @Log(name = "上传头像")
+    @Log(name = "公用方法 ==> File上传头像")
     public ApiResult uploadFile(HttpServletRequest request,
             @ApiParam(name = "file",value = "头像",required = true) MultipartFile file) throws Exception {
         String imgUrl1 = "";  //本地头像地址
@@ -90,7 +90,7 @@ public class CommonController {
 
     @PostMapping(value="/uploadBase64")
     @ApiOperation("上传图片，base64")
-    @Log(name = "上传头像")
+    @Log(name = "公用方法 ==> BASE64上传头像")
     public ApiResult base64UpLoad(@RequestParam @ApiParam(name = "base64Data",value = "Base64格式图片",required = true) String base64Data,
                                HttpServletRequest request,
                                HttpServletResponse response) throws FileNotFoundException {
@@ -127,7 +127,8 @@ public class CommonController {
 
 
     @GetMapping("/getUserInfo")
-    @Log(name = "从云端查询用户信息")
+    @ApiOperation("从云端查询用户信息")
+    @Log(name = "公用方法 ==> 从云端查询用户信息")
     public void getUserInfo(HttpServletRequest request){
         cloudService.cloudGet(request);
 
@@ -138,7 +139,7 @@ public class CommonController {
      */
     @GetMapping("/findAllSchoolPeriod")
     @ApiOperation("查询学校的所有学段")
-    @Log(name = "查询学校的所有学段")
+    @Log(name = "公用方法 ==> 查询学校的所有学段")
     public ApiResult findAllSchoolPeriod(){
 
         ApiResult apiResult = new ApiResult();
@@ -172,7 +173,7 @@ public class CommonController {
      */
     @GetMapping("/findAllClassByGradeAndPeriodId")
     @ApiOperation("根据学段ID、查询所有的届次")
-    @Log(name = "根据学段ID、查询所有的届次")
+    @Log(name = "公用方法 ==> 根据学段ID、查询所有的届次")
     @ApiImplicitParam(name = "periodId",value = "学段ID",required = true)
     public ApiResult findAllClassByGradeAndPeriodId(String periodId){
 
@@ -189,7 +190,7 @@ public class CommonController {
      */
     @PostMapping("/findAllSchoolClassByThetime")
     @ApiOperation("根据届次和学段ID查询所有的班级信息")
-    @Log(name = "根据届次和学段ID查询所有的班级信息")
+    @Log(name = "公用方法 ==> 根据届次和学段ID查询所有的班级信息")
     public ApiResult findAllSchoolClassByThetime(
             @ApiParam(name = "map",value = "thetime=毕业时间-届次，periodId=学段ID")
                     @RequestBody Map map){

@@ -2,6 +2,7 @@ package com.cj.witbasics.mapper;
 
 import com.cj.witbasics.entity.SchoolClass;
 import com.cj.witbasics.entity.SchoolPeriodClassThetime;
+import org.apache.ibatis.annotations.Param;
 
 import javax.xml.crypto.Data;
 import java.util.List;
@@ -62,4 +63,8 @@ public interface SchoolPeriodClassThetimeMapper {
 
     //返回所有届次
     List<Map> selectByPeriodId(Long periodId);
+
+    //查重
+    SchoolPeriodClassThetime selectByAdminIdUbw(@Param("headmasterId") Long headmasterId,
+                                                @Param("classId") Long classId);
 }

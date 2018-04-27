@@ -97,7 +97,7 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
         int total = this.subjectMapper.selectCountByAll(schoolId, pager);
         //limit #{pager.minRow},#{pager.pageSize}
 System.out.println(total);
-        pager.setPageTotal(total);
+        pager.setRecordTotal(total);
         // 查询集合
         List<SchoolSubject> result = this.subjectMapper.selectByScholId(schoolId, pager);
         if(result.size() > 0){
@@ -141,6 +141,7 @@ System.out.println(total);
         }
         //统计科目,有无使用
         int isCopy = this.infoMapper.selectCountBySubjectId(subject.getSubjectId());
+System.out.println("重复" + isCopy);
         if(isCopy > 0){
             log.error("数据存在使用");
             result.setCode(ApiCode.error_duplicated_data);
@@ -149,7 +150,9 @@ System.out.println(total);
         }
         //删除标志
         subject.setDeleteTime(new Date());
+        subject.setState("0");
         int flag_s = this.subjectMapper.updateByPrimaryKeySelective(subject);
+System.out.println(flag_s + " 成功");
         if(flag_s > 0){
             result.setCode(ApiCode.SUCCESS);
             result.setMsg(ApiCode.SUCCESS_MSG);

@@ -103,7 +103,7 @@
   </update>
 
   <!--查找科目是否再使用-->
-  <select id="selectCountBySubjectId" parameterType="Long">
+  <select id="selectCountBySubjectId" parameterType="Long" resultType="int">
     SELECT COUNT(cls_sub_id)
     FROM class_subject_info
     WHERE

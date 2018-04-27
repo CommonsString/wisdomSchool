@@ -101,7 +101,7 @@ public class SchoolClassController {
         //TODO:获取操作人ID
         Long operatorId = 11L;
         //返回对象
-        ApiResult apiResult = null;
+        ApiResult apiResult = new ApiResult();
         //TODO:校验文件是否为空
         if(file == null) {
             ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.FAIL, ApiCode.FAIL_MSG, null); //处理失败
@@ -337,7 +337,7 @@ System.out.println(schoolId + " 学校ID");
             @ApiImplicitParam(name = "mathId", value = "数学科目ID", required = false, dataType = "Long"),
             @ApiImplicitParam(name = "mathTea", value = "教师名称/教师编号", required = false, dataType = "String")
     })
-    @PutMapping("/updateClassInfo")
+//    @PutMapping("/updateClassInfo")
     public ApiResult updateSchoolClassInfo(/*@ApiParam(name = "schoolClass", value = "班级信息实体类", required = true) @RequestBody */
             /*@RequestParam(name = "schoolClass",value = "班级实体" )*/
                                         SchoolClass schoolClass,
@@ -396,7 +396,39 @@ System.out.println(result + "  控制层结果");
         return apiResult;
     }
 
-
+    /**
+     *  功能描述：根据输入条件，查询对应班级信息（模糊条件查询）
+     *  参数：班级名称，班主任名，班级号
+     *  返回：班级信息集合
+     *  时间：(2, 3) 小时
+     *  //未完成，SQL语句
+     */
+    @ApiOperation(value = "学段-届次-模糊条件--->查询班级信息", notes = "班级信息集合")
+    @Log(name = "学段-届次-模糊条件--->查询班级信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "periodId", value = "学段Id", required = false, dataType = "Long"),
+            @ApiImplicitParam(name = "thetime", value = "届次", required = false, dataType = "Long"),
+            @ApiImplicitParam(name = "vague", value = "模糊条件", required = false, dataType = "String"),
+            @ApiImplicitParam(name = "pager",value = "分页参数，初始页码1，初始条数10，可为空")
+    })
+    @GetMapping("/findSchoolClassInfoUBW")
+    public ApiResult findSchoolClassInfoUBW(Long periodId, Date thetime, String vague, Pager pager){
+        ApiResult apiResult = new ApiResult(); //返回对象
+        //String className, String classHeadmaster, Integer classNumber
+        try{
+            Pager result = this.schoolClassService.findSchoolClassInfoUBW(periodId, thetime, vague, pager); //处理
+            if(result != null){
+                ApiResultUtil.fastResultHandler(apiResult, true, null, null, result); //数据的封装
+            }else{
+                ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_search_failed, ApiCode.FAIL_MSG, null);
+            }
+        }catch (Exception e){ //异常处理
+            ApiResultUtil.fastResultHandler(apiResult, false,
+                    ApiCode.error_search_failed, ApiCode.error_unknown_database_operation_MSG, null);
+            e.printStackTrace();
+        }
+        return apiResult;
+    }
 
 
 
@@ -563,10 +595,11 @@ System.out.println(result.size());
     public ApiResult updateHeadmasterId(Long classId, Long adminId, String fullName, HttpServletRequest request){
         ApiResult apiResult = new ApiResult(); //返回对象
         try{
-            Long adminId_ = (Long) request.getSession().getAttribute("adminId");
+//            Long operatorId_ = (Long) request.getSession().getAttribute("adminId");
+            Long operatorId_ = 1L;
             SchoolPeriodClassThetime classThetime = new SchoolPeriodClassThetime();
 //            //填充
-            classThetime.setOperatorId(adminId_);
+            classThetime.setOperatorId(operatorId_);
             classThetime.setClassId(classId);
             classThetime.setAdminId(adminId);
             classThetime.setHeadmaster(fullName);
@@ -614,7 +647,6 @@ System.out.println(result.size());
             param.setThetime(date);
             System.out.println(param.toString());
             boolean result = this.schoolClassService.updateDirectorId(param, adminId);
-            System.out.println(result);
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
             }else{
@@ -662,15 +694,24 @@ System.out.println(result.size());
      *  返回：
      */
     @ApiOperation(value = "清空年级主任", notes = "返回成功或失败")
-    @ApiImplicitParam(name = "directorId", value = "年级主任ID", required = true)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "directorId", value = "年级主任ID", required = true),
+            @ApiImplicitParam(name = "periodId", value = "学段ID" , required = true),
+            @ApiImplicitParam(name = "theTime", value = "届次", required = false)
+    })
     @Log(name = "清空年级主任")
     @DeleteMapping ("/updateDirectorDel")
-    public ApiResult updateDirector(Long directorId){
+    public ApiResult updateDirector(Long directorId, Long periodId, String theTime){
         ApiResult apiResult = new ApiResult(); //返回对象
         //            Long adminId = (Long) request.getSession().getAttribute("adminId");
         Long adminId = 1L;
+        //填充
         try{
-            boolean result = this.schoolClassService.updateDirector(directorId, adminId);
+            //日期转换
+            theTime += "-6-1";
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = format.parse(theTime);
+            boolean result = this.schoolClassService.updateDirector(directorId, adminId, periodId, date);
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
             }else{
@@ -722,30 +763,87 @@ System.out.println(result.size());
     @ApiOperation("查询角色为班主任,并显示麾下是否有班级")
     @Log(name = "查询角色为班主任")
     @GetMapping("/findIsHeadmaster")
-    @ApiImplicitParam(name = "vague",value = "班主任名字",required = false)
-    public ApiResult findHasPowerForHeadmaster(String vague){
+    @ApiImplicitParam(name = "vague",value = "班主任名字/编号",required = false)
+    public ApiResult findHasPowerForHeadmaster(String vague, Pager pager){
 
         ApiResult a = new ApiResult();
         a.setCode(ApiCode.SUCCESS);
         a.setMsg(ApiCode.SUCCESS_MSG);
-        a.setData(this.schoolClassService.findHasPowerForHeadmaster(vague));
+        Pager pager2 = this.schoolClassService.findHasPowerForHeadmaster(vague, pager);
+        a.setData(pager2);
         return a;
     }
 
     @ApiOperation("查询角色为年级主任,并显示是否分管年级")
     @Log(name = "查询角色为年级主任")
     @GetMapping("/findIsDirector")
-    @ApiImplicitParam(name = "vague",value = "年级主任名字",required = false)
-    public ApiResult findHasPowerForDirector(String vague){
+    @ApiImplicitParam(name = "vague",value = "年级主任名字/编号",required = false)
+    public ApiResult findHasPowerForDirector(String vague, Pager pager){
         ApiResult a = new ApiResult();
         a.setCode(ApiCode.SUCCESS);
         a.setMsg(ApiCode.SUCCESS_MSG);
-        a.setData(this.schoolClassService.findHasPowerForDirector(vague));
+        Pager p = this.schoolClassService.findHasPowerForDirector(vague, pager);
+        a.setData(p);
         return a;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    @ApiOperation(value = "添加班级", notes = "返回成功或失败")
+    @Log(name = "添加班级")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "className", value = "班级名称"),
+            @ApiImplicitParam(name = "classAbbreviation", value = "班级简称"),
+            @ApiImplicitParam(name = "classNumber", value = "班级号"),
+            @ApiImplicitParam(name = "classCampus", value = "校区"),
+            @ApiImplicitParam(name = "classTypeId", value = "班级类型ID"),
+            @ApiImplicitParam(name = "classType", value = "班级类型"),
+            @ApiImplicitParam(name = "classYear", value = "入学年度"),
+            @ApiImplicitParam(name = "classPeriodId", value = "学段Id"),
+            @ApiImplicitParam(name = "classPeriod", value = "学段名称")
+    })
+    @PostMapping("/addClassInfo")
+    public ApiResult addClassInfo(SchoolClass info){
+        //TODO:session里面获取学校ID
+        Long schoolId = toLong();
+        info.setSchoolId(schoolId);
+        Long adminId = 1L;
+        info.setOperatorId(adminId);
+        info.setFounderId(adminId);
+System.out.println(info.toString());
+        ApiResult apiResult = null; //返回对象
+        try{
+            apiResult = this.schoolClassService.addClassInfo(info);
+            return apiResult;
+        }catch (Exception e){ //异常处理
+            ApiResultUtil.fastResultHandler(apiResult, false,
+                    ApiCode.error_create_failed, ApiCode.error_unknown_database_operation_MSG, null);
+            e.printStackTrace();
+        }
+        return apiResult;
+    }
 
 
+    @ApiOperation(value = "删除班级", notes = "返回成功或失败")
+    @Log(name = "删除班级")
+    @ApiImplicitParam(name = "classId", value = "班级ID", required = true)
+    @DeleteMapping("/updateClassInfoDel")
+    public ApiResult updateClassInfoDel(Long classId){
+        ApiResult apiResult = new ApiResult(); //返回对象
+        try{
+            boolean result = this.schoolClassService.updateClassInfoDel(classId);
+            if(result){
+                ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
+            }else{
+                ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.error_delete_failed, ApiCode.FAIL_MSG, null);
+            }
+        }catch (Exception e){ //异常处理
+            ApiResultUtil.fastResultHandler(apiResult, false,
+                    ApiCode.error_delete_failed, ApiCode.error_unknown_database_operation_MSG, null);
+            e.printStackTrace();
+        }
+        return apiResult;
+    }
 
 
 }

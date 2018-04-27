@@ -91,6 +91,9 @@
       <if test="classYear != null" >
         class_year,
       </if>
+      <if test="thetime != null" >
+        thetime,
+      </if>
       <if test="classPeriodId != null" >
         class_period_id,
       </if>
@@ -153,6 +156,9 @@
       <if test="classYear != null" >
         str_to_date(CONCAT(#{classYear}, '-9-1'), '%Y-%m-%d %H'),
       </if>
+      <if test="thetime != null" >
+        #{thetime,jdbcType=TIMESTAMP},
+      </if>
       <if test="classPeriodId != null" >
         #{classPeriodId,jdbcType=INTEGER},
       </if>
@@ -213,7 +219,7 @@
         class_level = #{classLevel,jdbcType=VARCHAR},
       </if>
       <if test="classYear != null" >
-        class_year = #{classYear,jdbcType=VARCHAR},
+        class_year = str_to_date(CONCAT(#{classYear}, '-9-1'), '%Y-%m-%d %H'),
       </if>
       <if test="classPeriodId != null" >
         class_period_id = #{classPeriodId,jdbcType=INTEGER},
@@ -339,6 +345,10 @@
     SELECT class_id FROM school_class WHERE class_number = #{classNumber}
   </select>
 
+  <!--根据班级号classNumber 查重-->
+  <select id="selectByCountClassNumber" parameterType="int" resultType="int">
+    SELECT count(class_id) FROM school_class WHERE class_number = #{classNumber}
+  </select>
 
   <!--查询记录总数-->
   <select id="selectCountClassInfo" resultType="int" parameterType="Map">
@@ -368,11 +378,8 @@
     <result property="classLevel" column="class_level" />
     <result column="class_period" property="classPeriod" jdbcType="VARCHAR" />
     <result column="class_year" property="classYear" jdbcType="TIMESTAMP" />
+    <!--<result column="thetime" property="thetime" jdbcType="TIMESTAMP" />-->
     <collection property="subject" ofType="com.cj.witcommon.entity.SubjectForTea" select="getSubjectInfo" column="class_id">
-      <!--<result property="adminInfoId" column="admin_info_id" />-->
-      <!--<result property="fullName" column="full_name" />-->
-      <!--<result property="subjectId" column="subject_id" />-->
-      <!--<result property="subjectName" column="subject_name" />-->
     </collection>
   </resultMap>
 
@@ -433,26 +440,6 @@
     limit #{minRow},#{pageSize}
   </select>
 
-
-  <!--
-      SELECT
-    sc.class_name, sc.class_headmaster,
-    sc.class_number, sc.class_type, sc.class_level,
-    sb.subject_name, ai.full_name
-    FROM
-    class_subject_info ss
-    LEFT JOIN school_class AS sc
-    ON sc.class_id = ss.class_id
-    LEFT JOIN school_subject AS sb
-    ON ss.subject_id = sb.subject_id
-    LEFT JOIN admin_info AS ai
-    ON ss.admin_info_id = ai.admin_info_id
-    WHERE (sc.class_number LIKE CONCAT(#{classNumber}, "%")
-    OR sc.class_headmaster LIKE CONCAT(#{classHeadmaster}, "%")
-    OR sc.class_name LIKE CONCAT(#{className}, "%")) AND sc.state != '0'
-    limit #{minRow},#{pageSize}
-  -->
-
   <!--判断学段下是否有班级-->
   <select id="selectCountPeriodId" parameterType="Long" resultType="int">
       SELECT COUNT(class_id) FROM school_class WHERE class_period_id IN (#{periodId})
@@ -508,7 +495,7 @@
       SELECT
       sc.class_id, sc.class_period,
       sc.class_name, sc.class_headmaster, sc.class_headmaster_id, sc.class_headmaster,
-      sc.class_number, sc.class_type, sc.class_level, sc.class_year
+      sc.class_number, sc.class_type, sc.class_level, sc.class_year, sc.thetime
       FROM
       school_class AS sc
       WHERE
@@ -517,6 +504,12 @@
       sc.state != '0'
       limit #{pager.minRow},#{pager.pageSize}
   </select>
+
+
+
+
+
+
 
   <!--根据入学年度筛选-->
   <select id="selectByPeriodAndGrade" resultMap="selectInfoMap">
@@ -550,9 +543,7 @@
   <!--第三层查询,连表筛选-->
   <select id="selectByVagueParam" resultMap="selectInfoMap">
     SELECT
-    sc.class_id, sc.class_period,
-    sc.class_name, sc.class_headmaster, sc.class_headmaster_id, sc.class_headmaster,
-    sc.class_number, sc.class_type, sc.class_level, sc.class_year
+    *
     FROM
     school_class AS sc
     WHERE
@@ -608,139 +599,16 @@
   </select>
 
   <!--查重-->
-  <select id="selectCountByClassNumber" parameterType="int" resultType="int">
-    SELECT COUNT(class_id)
+  <select id="selectCountByClassNumber" parameterType="int" resultType="long">
+    SELECT class_id
     FROM school_class
     WHERE
     class_number = #{classNumber,jdbcType=INTEGER}
+    AND
+    state != '0'
     LIMIT 1
   </select>
 
-
-<!--
-  <if test="param.classYear != null">
-    <if test="gradeAge == 1">
-      BETWEEN 0 AND 366
-    </if>
-    <if test="gradeAge == 2">
-      BETWEEN 367 AND 732
-    </if>
-    <if test="gradeAge == 3">
-      BETWEEN 733 AND 1098
-    </if>
-  </if>
-  -->
-<!--  &lt;!&ndash;根据实体类列表，批量插入信息&ndash;&gt;
-  <insert id="insertBathInfo" parameterType="com.cj.witbasics.entity.SchoolClass">
-    insert into school_class
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="classId != null" >
-        class_id,
-      </if>
-      <if test="className != null" >
-        class_name,
-      </if>
-      <if test="classAbbreviation != null" >
-        class_abbreviation,
-      </if>
-      <if test="schoolId != null" >
-        school_id,
-      </if>
-      <if test="classTypeId != null" >
-        class_type_id,
-      </if>
-      <if test="classType != null" >
-        class_type,
-      </if>
-      <if test="classYear != null" >
-        class_year,
-      </if>
-      <if test="classPeriodId != null" >
-        class_period_id,
-      </if>
-      <if test="classPeriod != null" >
-        class_period,
-      </if>
-      <if test="founderId != null" >
-        founder_id,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="operatorId != null" >
-        operator_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="classId != null" >
-        #{classId,jdbcType=BIGINT},
-      </if>
-      <if test="className != null" >
-        #{className,jdbcType=VARCHAR},
-      </if>
-      <if test="classAbbreviation != null" >
-        #{classAbbreviation,jdbcType=VARCHAR},
-      </if>
-      <if test="schoolId != null" >
-        #{schoolId,jdbcType=BIGINT},
-      </if>
-      <if test="classTypeId != null" >
-        #{classTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="classType != null" >
-        #{classType,jdbcType=VARCHAR},
-      </if>
-      <if test="classYear != null" >
-        #{classYear,jdbcType=VARCHAR},
-      </if>
-      <if test="classPeriodId != null" >
-        #{classPeriodId,jdbcType=INTEGER},
-      </if>
-      <if test="classPeriod != null" >
-        #{classPeriod,jdbcType=VARCHAR},
-      </if>
-      <if test="founderId != null" >
-        #{founderId,jdbcType=BIGINT},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="operatorId != null" >
-        #{operatorId,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>-->
-
-
-<!--  <resultMap id="periodGradeInfoMap" type="com.cj.witcommon.entity.SchoolPeriodInfo">
-      <id column="period_id" property="periodId" jdbcType="BIGINT"/>
-      <result column="school_id" property="schoolId" jdbcType="BIGINT" />
-      <result column="period_name" property="periodId" jdbcType="BIGINT" />
-      <collection property="" ofType="com.cj.witcommon.entity.GradeInfo" select="returnGradeInfo">
-          <id column="grade_id" property="gradeId" javaType="BIGINT" />
-          <result column="grade_name" property="gradeName" javaType="VARCHAR"/>
-      </collection>
-  </resultMap>
-  <select id="returnGradeInfo">
-		SELECT
-		sg.grade_id, sg.grade_name
-		FROM
-		school_grade AS sg
-		where
-		sg.school_id = #{schoolId,jdbcType=BIGINT}
-		AND
-		sg.period_id = #{periodId,jdbcType=BIGINT}
-  </select>
-
-  &lt;!&ndash;班级信息中，返回学段和年级信息&ndash;&gt;
-  <select id="findPeriodAndGradeInfo" parameterType="Long" resultMap="periodGradeInfoMap">
-      SELECT
-      sp.period_id, sp.school_id, sp.period_name
-      FROM
-      school_period AS sp
-      WHERE
-      sp.school_id = #{schoolId,jdbcType=BIGINT}
-  </select>-->
 
   <select id="findAllSchoolClassByPeriodId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
@@ -781,7 +649,7 @@
     <result column="id" property="adminId" jdbcType="BIGINT" />
     <result column="full_name" property="fullName" jdbcType="VARCHAR" />
     <result column="period_id" property="periodId" jdbcType="BIGINT" />
-    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
     <result column="class_id" property="classId" jdbcType="BIGINT" />
     <result column="class_name" property="className" jdbcType="VARCHAR" />
     <result column="class_number" property="classNumber" jdbcType="VARCHAR" />
@@ -789,7 +657,7 @@
   <!--查询有班主任权限的角色-->
   <select id="findHasPowerForHeadmaster" resultMap="commonssa">
     SELECT
-    a.id, IFNULL(ifo.full_name,null) AS full_name, IFNULL(sc.class_period_id, -1) as period_id
+    a.id, IFNULL(ifo.staff_number,-1) AS staff_number,  IFNULL(ifo.full_name,null) AS full_name, IFNULL(sc.class_period_id, -1) as period_id
     ,IFNULL(sc.class_id, -1) AS class_id, IFNULL(sc.class_name, "空") AS class_name, sc.class_number
     FROM
     admin AS a
@@ -805,7 +673,11 @@
     a.role_id = '4'
     <if test="vague != null">
       AND
-      (ifo.full_name LIKE CONCAT(#{vague}, "%"))
+      (
+      ifo.full_name LIKE CONCAT("%", #{vague}, "%")
+      OR
+      ifo.staff_number LIKE CONCAT("%", #{vague}, "%")
+      )
     </if>
   </select>
 
@@ -813,12 +685,13 @@
   <!--查询具有年级主任资质的角色-->
   <resultMap id="sscaxsd" type="java.util.HashMap">
     <result column="id" property="directorId" jdbcType="BIGINT" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
     <result column="full_name" property="fullName" jdbcType="VARCHAR" />
     <result column="thetime" property="thetime" jdbcType="TIMESTAMP"/>
   </resultMap>
   <select id="findHasPowerForDirector" resultMap="sscaxsd">
     SELECT
-    a.id, IFNULL(ifo.full_name, -1) AS full_name
+    a.id, IFNULL(ifo.full_name, -1) AS full_name, IFNULL(ifo.staff_number, -1) AS staff_number
     FROM
     admin AS a
     LEFT JOIN admin_role AS ar
@@ -829,15 +702,64 @@
     a.role_id = '21'
     <if test="vague != null">
       AND
-      (ifo.full_name LIKE CONCAT(#{vague}, "%"))
+      (
+      ifo.full_name LIKE CONCAT("%", #{vague}, "%")
+      OR
+      ifo.staff_number LIKE CONCAT("%", #{vague}, "%")
+      )
     </if>
   </select>
 
+  <select id="selectInfoByPeriodInfo" parameterType="String" resultType="String">
+      SELECT period_name FROM school_period WHERE period_name = #{periodName,jdbcType=VARCHAR}
+  </select>
 
 
+ <!--重构-->
+  <!--根据学段筛选-->
+  <select id="selectByPeriodIdUBW" parameterType="Long" resultMap="BaseResultMap">
+      SELECT
+      *
+      FROM
+      school_class AS sc
+      WHERE
+      sc.class_period_id = #{classPeriodId,jdbcType=INTEGER}
+      AND
+      sc.state != '0'
+      limit #{pager.minRow},#{pager.pageSize}
+  </select>
+  <!--根据届次筛选-->
+  <select id="selectByPrimaryKeyByPeriodAndThetime" parameterType="com.cj.witbasics.entity.SchoolClass" resultMap="BaseResultMap">
+      SELECT
+      *
+      FROM
+      school_class AS sc
+      WHERE
+      sc.class_id = #{item.classId,jdbcType=BIGINT}
+      AND
+      sc.class_period_id = #{item.classPeriodId,jdbcType=INTEGER}
+      AND
+      thetime = #{item.thetime,jdbcType=TIMESTAMP},
+      AND
+      sc.state != '0'
+  </select>
 
-
-
+  <!--模糊查询-->
+  <select id="">
+    SELECT
+    *
+    FROM
+    school_class AS sc
+    WHERE
+    sc.class_id = #{sClass.classId,jdbcType=BIGINT}
+    AND
+    (sc.class_number LIKE CONCAT(#{vague}, "%")
+    OR sc.class_headmaster LIKE CONCAT(#{vague}, "%")
+    OR sc.class_name LIKE CONCAT(#{vague}, "%"))
+    AND
+    sc.state != '0'
+    limit #{pager.minRow},#{pager.pageSize}
+  </select>
 
 
 </mapper>

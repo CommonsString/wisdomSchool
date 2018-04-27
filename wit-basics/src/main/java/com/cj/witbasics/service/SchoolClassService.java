@@ -5,10 +5,12 @@ import com.cj.witbasics.entity.SchoolClass;
 import com.cj.witbasics.entity.SchoolPeriodClassThetime;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.utils.entity.other.Pager;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +76,7 @@ public interface SchoolClassService {
     /**
      * 清空年级主任,学段，届次
      */
-    boolean updateDirector(Long directorId, Long adminId);
+    boolean updateDirector(Long directorId, Long adminId, Long periodId, Date thetime);
 
 
     /**
@@ -90,9 +92,18 @@ public interface SchoolClassService {
     /***************************************************************/
     /***************************************************************/
     //查询具有班主任权限的角色
-    List<Map> findHasPowerForHeadmaster(String vague);
+    Pager findHasPowerForHeadmaster(String vague, Pager pager);
 
     //查询具有年级主任权限的角色
-    List<Map> findHasPowerForDirector(String vague);
+    Pager findHasPowerForDirector(String vague, Pager pager);
+
+    //添加班级
+    ApiResult addClassInfo(SchoolClass info);
+
+    //删除班级
+    boolean updateClassInfoDel(Long classId);
+
+    //重构
+    Pager findSchoolClassInfoUBW(Long periodId, Date thetime, String vague, Pager pager);
 
 }

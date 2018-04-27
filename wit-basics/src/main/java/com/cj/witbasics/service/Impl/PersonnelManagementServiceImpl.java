@@ -402,6 +402,18 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
 
         return p;
     }
+
+    /**
+     * 根据姓名模糊查询没有担任部门领导的人
+     */
+    @Override
+    public Pager findAllDepartmentalLeadership(Pager pager) {
+        pager.setRecordTotal(adminInfoMapper.findAllDepartmentalLeadershipTotal(pager));
+        pager.setContent(adminInfoMapper.findAllDepartmentalLeadership(pager));
+
+        return pager;
+    }
+
     /**
      * 根据姓名进行模糊查询
      */

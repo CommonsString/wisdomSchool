@@ -49,7 +49,7 @@ public interface PeriodDirectorThetimeMapper {
      * @return
      */
     PeriodDirectorThetime selectByDirectorId(@Param("directorId") Long directorId);
-
+    List<PeriodDirectorThetime> selectByDirectorIdUbw(@Param("directorId") Long directorId);
     /**
      * 查重
      */
@@ -67,6 +67,8 @@ public interface PeriodDirectorThetimeMapper {
 
 
     //清空年级主任
-    int updateByDirectorId(Long directorId);
+    int updateByDirectorId(@Param("directorId") Long directorId,
+                           @Param("periodId") Long periodId,
+                           @Param("thetime") Date thetime);
 
 }

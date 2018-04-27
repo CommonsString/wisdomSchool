@@ -46,6 +46,7 @@ public class FindScoreServiceImpl implements FindScoreService {
     @Autowired(required = false)
     private SchoolClassMapper classMapper;
 
+    @Autowired(required = false)
 
     /**
      * 选择导出
@@ -103,7 +104,7 @@ public class FindScoreServiceImpl implements FindScoreService {
 System.out.println("进入逻辑！");
         ApiResult result = new ApiResult();
         //获取管理员ID
-        Long adminId = (Long) request.getSession().getAttribute("adminId");
+//        Long adminId = (Long) request.getSession().getAttribute("adminId");
         //根据管理员角色ID,查询管理员表
         //TODO:GG
 //        Admin admin = null;
@@ -119,43 +120,20 @@ System.out.println(role.toString());
 //        AdminRole role = null;
         switch (role.getType()){
             //待定
-            case "0" : break;
-            case "1" : break;
-            case "2" : break;
+            case "0" :
+            case "1" :
+            case "2" :
+    System.out.println("各种管理员");
+//                result = allAdmin();
+                break;
 
             case "3" :
-                System.out.println("班主任逻辑");
-//                result = caseThree(result, role, admin);
+System.out.println("班主任/科目教师/年级主任逻辑");
+                result = caseThree(result, role, admin);
                 break;
             default : break;
         }
         return result;
-    }
-
-
-    /**
-     * 修改班主任
-     * @param classThetime
-     * @return
-     */
-    @Override
-    public boolean updateHeadmasterId(SchoolPeriodClassThetime classThetime) {
-        int result = this.classThetimeMapper.updateByClassIdKeySelective(classThetime);
-        if(result > 0) return true;
-        return false;
-    }
-
-
-    /**
-     * 修改年级主任
-     * @param
-     * @return
-     */
-    @Override
-    public boolean updateDirectorId(PeriodDirectorThetime info) {
-        int result = this.directorTimeMapper.updateByPrimaryKeySelective(info);
-        if(result > 0) return true;
-        return false;
     }
 
 
@@ -238,6 +216,15 @@ System.out.println("角色ID: " + id);
         }
         return result;
     }
+    //角色类型 -- 包含(各种系统管理员)
+    private ApiResult allAdmin(ApiResult result, AdminRole role, Admin admin){
+
+        return null;
+    }
+
+
+
+
 
 
     /**

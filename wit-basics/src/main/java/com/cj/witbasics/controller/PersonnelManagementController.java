@@ -260,8 +260,22 @@ public class PersonnelManagementController {
     }
 
     /**
-     * 查询能够担任部门领导的人员信息（ID/name)
+     * 模糊查询能够担任部门领导的人员信息（ID/name)
      */
+    @ApiOperation("模糊查询能够担任部门领导的人")
+    @Log(name = "人事 ==> 模糊查询能够担任部门领导的人")
+    @PostMapping("/findAllDepartmentalLeadership")
+    public ApiResult findAllDepartmentalLeadership(@ApiParam(name = "p",value = "parameter=模糊查询需要的姓名",required = false)
+                                                   @RequestBody Pager p){
+        ApiResult apiResult = new ApiResult();
+        apiResult.setCode(ApiCode.SUCCESS);
+        apiResult.setMsg(ApiCode.SUCCESS_MSG);
+        apiResult.setData(personnelManagementService.findAllDepartmentalLeadership(p));
+
+        return apiResult;
+
+    }
+
 
     /**
      * 功能:分页、模糊（parameters.vague=姓名、教职工编号）、条件（parameters.theDepartment=部门）
@@ -336,7 +350,8 @@ public class PersonnelManagementController {
     public ApiResult addDepartment(HttpServletRequest request,
                                    @ApiParam(name ="DepartmentInfo",value = "部门名称=dName,部门编号=dNumber，" +
                                            "有效性，0-无效，1-有效=dEffectiveness，部门排序=dSort，部门领导ID=dLeaderId，部门领导=dLeader，" +
-                                           "所属部门=iddAttribute 如无则为0，学校id=schoolId",required = true) DepartmentInfo departmentInfo){
+                                           "所属部门=iddAttribute 如无则为0，学校id=schoolId",required = true)
+                                           @RequestBody DepartmentInfo departmentInfo){
         System.out.println(departmentInfo.getdName());
 
 

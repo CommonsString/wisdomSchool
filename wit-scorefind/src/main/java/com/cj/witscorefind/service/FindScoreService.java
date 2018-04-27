@@ -21,17 +21,6 @@ public interface FindScoreService {
 
 
     /**
-     *修改班主任ID
-     */
-    boolean updateHeadmasterId(SchoolPeriodClassThetime classThetime);
-
-
-    /**
-     * 修改年级主任ID
-     */
-    boolean updateDirectorId(PeriodDirectorThetime info);
-
-    /**
      * 档次添加
      */
     ApiResult addGradeLevelInfo(Grade info);

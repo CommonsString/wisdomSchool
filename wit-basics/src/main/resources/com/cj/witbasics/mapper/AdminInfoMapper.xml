@@ -1628,12 +1628,12 @@ substantiveLevel,jdbcType=VARCHAR},
     ai.admin_id = da.admin_id
 
 
-      <if test="parameters.containsKey('did')">
-        AND  da.d_id = #{parameters.did}
-      </if>
-      <if test="parameters.containsKey('fullName')">
-        AND  ai.full_name LIKE  concat(concat('%',#{parameters.fullName}),'%')
-      </if>
+    <if test="parameters.containsKey('did')">
+      AND  da.d_id = #{parameters.did}
+    </if>
+    <if test="parameters.containsKey('fullName')">
+      AND  ai.full_name LIKE  concat(concat('%',#{parameters.fullName}),'%')
+    </if>
 
 
 
@@ -1814,6 +1814,46 @@ substantiveLevel,jdbcType=VARCHAR},
     WHERE
     a.id = #{adminId}
   </select>
-  
+
+
+  <resultMap id="DepartmentalLeadershi" type="java.util.LinkedHashMap">
+    <result column="admin_id" property="adminId"></result>
+    <result column="full_name" property="fullName"></result>
+    <result column="staff_number" property="staffNumber"></result>
+  </resultMap>
+  <select id="findAllDepartmentalLeadershipTotal" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultType="java.lang.Integer">
+    SELECT
+    COUNT(ai.admin_id)
+    FROM
+    admin_info ai
+    WHERE
+    ai.state = '1'
+    AND
+    ai.admin_id  NOT IN (SELECT di.d_leader_id FROM department_info di)
+    <if test="parameter != null">
+      AND
+      ai.full_name LIKE concat(concat('%',#{parameter}),'%')
+    </if>
+  </select>
+
+
+  <!--查询可以担任部门领导的人-->
+  <select id="findAllDepartmentalLeadership" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultMap="DepartmentalLeadershi">
+    SELECT
+    ai.admin_id,ai.full_name,ai.staff_number
+    FROM
+    admin_info ai
+    WHERE
+    ai.state = '1'
+    AND
+    ai.admin_id  NOT IN (SELECT di.d_leader_id FROM department_info di)
+    <if test="parameter != null">
+      AND
+      ai.full_name LIKE concat(concat('%',#{parameter}),'%')
+    </if>
+    limit #{minRow},#{pageSize}
+
+
+  </select>
 
 </mapper>

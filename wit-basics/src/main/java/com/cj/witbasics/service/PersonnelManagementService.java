@@ -72,6 +72,11 @@ public interface PersonnelManagementService {
     Pager selectAdminInfoAndDepartment(Pager p);
 
     /**
+     * 根据姓名模糊查询没有担任部门领导的人
+     */
+    public Pager findAllDepartmentalLeadership(Pager p);
+
+    /**
      * 根据姓名进行模糊查询
      */
     Pager selectAdminInfoByVague(Pager p);

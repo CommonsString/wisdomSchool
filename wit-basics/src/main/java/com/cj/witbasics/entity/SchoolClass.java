@@ -1,6 +1,7 @@
 package com.cj.witbasics.entity;
 
 import com.cj.witcommon.utils.excle.IsNeeded;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Date;
@@ -68,6 +69,11 @@ public class SchoolClass {
      */
     @IsNeeded
     private String classYear;
+
+    /**
+     * 毕业届次
+     */
+    private Date thetime;
 
     /**
      * 学段ID
@@ -417,6 +423,20 @@ public class SchoolClass {
      */
     public void setDeleteTime(Date deleteTime) {
         this.deleteTime = deleteTime;
+    }
+
+    /**
+     * 毕业届次
+     */
+    public Date getThetime() {
+        return thetime;
+    }
+
+    /**
+     * 毕业届次
+     */
+    public void setThetime(Date thetime) {
+        this.thetime = thetime;
     }
 
     /**

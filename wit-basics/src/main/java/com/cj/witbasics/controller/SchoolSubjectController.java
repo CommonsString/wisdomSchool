@@ -4,6 +4,7 @@ package com.cj.witbasics.controller;
 import com.cj.witbasics.entity.SchoolSubject;
 import com.cj.witbasics.mapper.SchoolSubjectMapper;
 import com.cj.witbasics.service.SchoolSubjectService;
+import com.cj.witcommon.aop.Log;
 import com.cj.witcommon.entity.ApiCode;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.entity.ApiResultUtil;
@@ -162,12 +163,13 @@ System.out.println(apiResult.toString());
     @ApiImplicitParams({
             @ApiImplicitParam(name = "subjectId", value = "开课ID", required = false, dataType = "Long"),
     })
+    @Log(name = "删除开课信息")
     @DeleteMapping("/updataSubjectInfoDel")
     public ApiResult updataSubjectInfoDel(Long subjectId){
         //TODO:获取操作员ID
         Long operatorId = 1L;
         //返回对象
-        ApiResult apiResult = null;
+        ApiResult apiResult = new ApiResult();
         try{
             //构造对象
             SchoolSubject subject = new SchoolSubject();
