@@ -6,6 +6,7 @@ import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.utils.entity.other.Pager;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface SchoolSubjectService {
@@ -13,7 +14,7 @@ public interface SchoolSubjectService {
     /**
      * 新增课程信息
      */
-    ApiResult addSubjectInfo(SchoolSubject subject);
+    ApiResult addSubjectInfo(HttpSession session, SchoolSubject subject);
 
 
     /**
@@ -46,5 +47,23 @@ public interface SchoolSubjectService {
      * 停课
      */
     ApiResult updataStopSubject(SchoolSubject subject);
+
+
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+    /**
+     * 设置课程-右移
+     */
+    ApiResult SelectSubjectAndClassRight(Long subjectId, List<Long> classId);
+
+
+    /**
+     * 设置课程-左移
+     */
+    ApiResult SelectSubjectAndClassLeight(Long subjectId, List<Long> classId);
+
+
+
+
 
 }

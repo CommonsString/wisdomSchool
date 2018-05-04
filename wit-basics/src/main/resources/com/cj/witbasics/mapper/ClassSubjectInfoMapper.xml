@@ -119,4 +119,37 @@
     admin_info_id = #{teaId,jdbcType=BIGINT}
   </select>
 
+
+  <!--查重班级和科目-->
+  <select id="selectByclassByClassIdAndSubjectId" resultType="int">
+    SELECT COUNT(cls_sub_id)
+    FROM class_subject_info
+    WHERE
+    subject_id = #{subjectId, jdbcType=BIGINT}
+    AND
+    class_id = #{classId,jdbcType=BIGINT}
+    LIMIT 1
+  </select>
+
+
+  <insert id="insertSelectiveBath">
+     insert into
+     class_subject_info (class_id, subject_id)
+     values
+     <foreach collection="list" item="subjectId" separator=",">
+       (
+       #{classId,jdbcType=BIGINT}, #{subjectId,jdbcType=BIGINT}
+       )
+     </foreach>
+  </insert>
+
+  <delete id="deleteByBatch">
+    delete from class_subject_info
+    where
+    class_id =  #{classId,jdbcType=BIGINT}
+    AND
+    subject_id = #{subjectId,jdbcType=BIGINT}
+  </delete>
+
+
 </mapper>

@@ -61,7 +61,7 @@ public class ControllerAop {
         HttpServletRequest request = attributes.getRequest();
 
         MethodSignature ms=(MethodSignature) joinPoint.getSignature();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         HttpSession session = request.getSession();
         String adminName = (String) session.getAttribute("adminName");

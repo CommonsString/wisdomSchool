@@ -66,4 +66,21 @@ public interface ClassSubjectInfoMapper {
      * 根据教师ID,科目ID
      */
     List<ClassSubjectInfo> selectAdminId(Long teaId);
+    ////////////////////////////////////////////////////
+
+    /**
+     * 查重
+     */
+    int selectByclassByClassIdAndSubjectId(@Param("classId") Long classId, @Param("subjectId") Long subjectId);
+
+    /**
+     * //批量增加
+     */
+    int insertSelectiveBath(@Param("classId") Long classId, @Param("list") List<Long> subjectId);
+
+    /**
+     * 删除，批量
+     */
+    int deleteByBatch(@Param("classId") Long classId, @Param("subjectId") Long subjectId);
+
 }

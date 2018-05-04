@@ -27,6 +27,7 @@ public class SchoolClassInfo {
     private String classType; //班级类型
     private String classLevel; //班级层次
     private String classYear; //入学时间
+    private Date thetime; //届次
     private String classPeriod; //学段
 //    private SubjectForTea subject;
     private List<SubjectForTea> subject; //科目-教师

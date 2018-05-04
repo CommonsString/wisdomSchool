@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 学生管理接口
@@ -34,6 +35,6 @@ public interface StudentManagementService{
     public int updateStaffInfo(StudentOsaas studentOsaas);
 
     //学生信息批量导入.
-    public int importStucents(MultipartFile multipartFile,HttpServletRequest request) throws Exception;
+    public Map importStucents(MultipartFile multipartFile, HttpServletRequest request) throws Exception;
 
 }

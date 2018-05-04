@@ -127,6 +127,9 @@ public class ApiCode {
     public static final String account_exist_MSG =  "用户名或密码错误";
     public static final int config_error = 1008;
     public static final String config_error_MSG =  "参数配置表错误";
+    public static final int subjects_subject_exist = 1015;
+    public static final String subjects_subject_exist_MSG =  "科目下有课程未删除，无法删除";
+
 
     public static final int import_success = 1100;
     public static final String import_success_MSG =  "导入成功";

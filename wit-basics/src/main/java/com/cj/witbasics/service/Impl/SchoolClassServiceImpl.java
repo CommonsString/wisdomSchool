@@ -91,13 +91,14 @@ public class SchoolClassServiceImpl implements SchoolClassService{
             String fileName = file.getOriginalFilename(); //获取文件名
             Workbook workbook = ImportExeclUtil.chooseWorkbook(fileName, in);
             int sheets = workbook.getNumberOfSheets(); //获取sheet数量
+
             for(int i = 0; i < sheets; i++){
                 SchoolClass baseInfo = new SchoolClass(); //创建列表信息
-                List<SchoolClass> readBaseInfo = ImportExeclUtil.readDateListT(workbook, baseInfo, 4, 0, i);
+                List<SchoolClass> readBaseInfo = ImportExeclUtil.readDateListT(workbook, baseInfo, 2, 0, i);
                 Date createTime = new Date();//创建的时间
-
                 for(SchoolClass info : readBaseInfo){
                     //参数检查
+                    System.out.println(info.toString());
                     int isClassType = this.classTypeMapper.selectByClassType(info.getClassType());
                     if(isClassType <= 0){
                         apiResult.setCode(ApiCode.error_duplicated_data);
@@ -114,11 +115,13 @@ public class SchoolClassServiceImpl implements SchoolClassService{
                     }
                     //TODO:班级存在s
                     //存在更新
-                    Long isCopy = this.classMapper.selectCountByClassNumber(info.getClassNumber());
+                    int isCopy = this.classMapper.selectCountByClassNumber(info.getClassNumber());
+                    System.out.println(isCopy + "是否重复！");
 System.out.println(isCopy + " ： 存在");
-                    if(isCopy != null){
+                    if(isCopy > 0){
 System.out.println("班级号：" + isCopy);
-                        info.setClassId(isCopy);
+                        Long classId = this.classMapper.selectByClassNumber(info.getClassNumber());
+                        info.setClassId(classId);
                         this.classMapper.updateByPrimaryKeySelective(info);
 //                        //数据存在,无法导入
 //                        apiResult.setCode(ApiCode.error_duplicated_data);
@@ -129,6 +132,7 @@ System.out.println("班级号：" + isCopy);
                         //班级数据封装
                         buildeDate(info, createTime, operatorId);
                     }
+
                 }
             }
             //操作成功

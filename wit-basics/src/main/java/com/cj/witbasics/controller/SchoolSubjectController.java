@@ -17,12 +17,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.attribute.standard.MediaSize;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
-@Api(tags = "开课管理")
+@Api(tags = "课程管理")
 @RestController
 @RequestMapping("/api/v1/schoolsubject")
 public class SchoolSubjectController {
@@ -52,24 +53,20 @@ public class SchoolSubjectController {
      *  返回：成功/失败
      *  时间：
      */
-    @ApiOperation(value = "新增科目", notes = "成功/失败")
+    @ApiOperation(value = "新增课程", notes = "成功/失败")
     @ApiImplicitParams({
-//            @ApiImplicitParam(name = "schoolId", value = "学校ID", required = true, dataType = "Long"),
-            @ApiImplicitParam(name = "subjectName", value = "科目名称", required = false)
+            @ApiImplicitParam(name = "subjectName", value = "课程名", required = true),
+            @ApiImplicitParam(name = "subjecstId", value = "科目ID", required = true)
     })
     @PostMapping("/addSubjectInfo")
-    public ApiResult addSubjectInfo(/*Long schoolId, */SchoolSubject subject){
-        //TODO:session里面获取学校ID
-        //TODO:获取创建人ID
-        //创建人ID
-        Long operatorId = 1L;
-        //设置创建人,学校ID
-System.out.println(subject.toString());
-        subject.setOperatorId(operatorId);
-        subject.setSchoolId(toLong());
-        ApiResult apiResult = null;
+    public ApiResult addSubjectInfo(String subjectName, Long subjectsId, HttpServletRequest request){
+        ApiResult apiResult = new ApiResult();
         try{
-            apiResult = this.subjectService.addSubjectInfo(subject);
+            //数据填充
+            SchoolSubject schoolSubject = new SchoolSubject();
+            schoolSubject.setSubjectsId(subjectsId);
+            schoolSubject.setSubjectName(subjectName);
+            apiResult = this.subjectService.addSubjectInfo(request.getSession(), schoolSubject);
 System.out.println(apiResult.toString());
         }catch (Exception e){ //异常处理
             ApiResultUtil.fastResultHandler(apiResult, false,
@@ -86,7 +83,7 @@ System.out.println(apiResult.toString());
      *  返回：成功/失败
      *  时间：
      */
-    @ApiOperation(value = "查询开课信息(科目名)", notes = "集合")
+    @ApiOperation(value = "查询课程信息", notes = "集合")
     @ApiImplicitParams({
 //            @ApiImplicitParam(name = "schoolId", value = "学校ID", required = true, dataType = "Long"),
 //            @ApiImplicitParam(name = "subjecName", value = "开课名", required = false, dataType = "String"),
@@ -120,11 +117,10 @@ System.out.println(apiResult.toString());
      *  返回：成功/失败
      *  时间：
      */
-
-    @ApiOperation(value = "修改开课信息(仅修改状态)", notes = "成功/失败")
+    @ApiOperation(value = "修改课程信息(仅修改状态)", notes = "成功/失败")
     @ApiImplicitParams({
 //            @ApiImplicitParam(name = "schoolId", value = "学校ID", required = true, dataType = "Long"),
-            @ApiImplicitParam(name = "subjectId", value = "开课ID", required = false, dataType = "Long"),
+            @ApiImplicitParam(name = "subjectId", value = "课程Id", required = false, dataType = "Long"),
             @ApiImplicitParam(name = "state",value = "状态",required = false, dataType="String")
     })
     @PutMapping("/updateSubjectInfo")
@@ -159,7 +155,7 @@ System.out.println(apiResult.toString());
      *  返回：成功/失败
      *  时间：
      */
-    @ApiOperation(value = "删除开课信息", notes = "成功/失败")
+    @ApiOperation(value = "删除课程信息", notes = "成功/失败")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "subjectId", value = "开课ID", required = false, dataType = "Long"),
     })
@@ -248,7 +244,6 @@ System.out.println("进入！");
     @GetMapping("/exportSubjectAll")
     public ApiResult exportSubjectInfoAll(HttpServletResponse response){
         //TODO:获取导出路径
-//        String savePath = "D:/file/subjectInfoTable.xlsx";
         //TODO:获取输入文件名
         //用什么软件打开
         response.setHeader("content-Type", "application/vnd.ms-excel");
@@ -262,5 +257,73 @@ System.out.println("进入！");
         ApiResult apiResult = this.subjectService.exportSubjectInfoAll(response);
         return apiResult;
     }
+
+    /**
+     *  功能描述：科目为基础，选择班级
+     *  参数：
+     *  时间：
+     */
+    @ApiOperation(value = "设置课程右移(班级为基础，选择课程)", notes = "成功/失败")
+    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "schoolId", value = "学校ID", required = true, dataType = "Long"),
+            @ApiImplicitParam(name = "classId",value = "班级Id"),
+            @ApiImplicitParam(name = "subjectId", value = "课程Id集合")
+
+    })
+    @PostMapping("/SelectSubjectRight")
+    public ApiResult SelectSubjectAndClassRight(Long classId, @RequestBody List<Long> subjectId, HttpServletResponse response){
+        //TODO:获取操作员ID
+        Long operatorId = 1L;
+        ApiResult apiResult = new ApiResult();
+        try{
+            //构造对象
+            SchoolSubject subject = new SchoolSubject();
+            subject.setOperatorId(operatorId);
+            apiResult = this.subjectService.SelectSubjectAndClassRight(classId, subjectId);
+        }catch (Exception e){ //异常处理
+            ApiResultUtil.fastResultHandler(apiResult, false,
+                    ApiCode.error_delete_failed, ApiCode.error_unknown_database_operation_MSG, null);
+            e.printStackTrace();
+        }
+        return apiResult;
+    }
+
+
+    /**
+     *  功能描述：科目为基础，选择班级
+     *  参数：
+     *  时间：
+     */
+    @ApiOperation(value = "设置课程左移(班级为基础，移除课程)", notes = "成功/失败")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "classId",value = "班级Id"),
+            @ApiImplicitParam(name = "subjectId", value = "课程Id集合")
+    })
+    @PostMapping("/SelectSubjectLeight")
+    public ApiResult SelectSubjectAndClassLeight(Long classId, @RequestBody List<Long> subjectId, HttpServletResponse response){
+        //TODO:获取操作员ID
+        Long operatorId = 1L;
+        ApiResult apiResult = new ApiResult();
+        try{
+            //构造对象+
+            System.out.println(classId + " 班级ID");
+            SchoolSubject subject = new SchoolSubject();
+            subject.setOperatorId(operatorId);
+            for(Long item : subjectId){
+                System.out.println(item);
+            }
+            apiResult = this.subjectService.SelectSubjectAndClassLeight(classId, subjectId);
+        }catch (Exception e){ //异常处理
+            ApiResultUtil.fastResultHandler(apiResult, false,
+                    ApiCode.error_delete_failed, ApiCode.error_unknown_database_operation_MSG, null);
+            e.printStackTrace();
+        }
+        return apiResult;
+    }
+
+
+
+
+
 
 }

@@ -599,8 +599,8 @@
   </select>
 
   <!--查重-->
-  <select id="selectCountByClassNumber" parameterType="int" resultType="long">
-    SELECT class_id
+  <select id="selectCountByClassNumber" parameterType="int" resultType="int">
+    SELECT COUNT(class_id)
     FROM school_class
     WHERE
     class_number = #{classNumber,jdbcType=INTEGER}

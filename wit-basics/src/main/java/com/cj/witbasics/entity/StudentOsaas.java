@@ -79,9 +79,9 @@ public class StudentOsaas {
     private String gender;
 
     public void setGender(String gender) {
-        if("男".equals(gender)){
+        if("男".equals(gender) || "1".equals(gender)){
             this.gender = "1";
-        }else if("女".equals(gender)){
+        }else if("女".equals(gender) || "2".equals(gender)){
             this.gender = "2";
         }else {
             this.gender = "0";
@@ -483,5 +483,10 @@ public class StudentOsaas {
 
 
 
+
+    /**
+     * 备注
+     */
+    private String remarks;
 
 }

@@ -201,6 +201,7 @@
     period_id = #{periodId,jdbcType=BIGINT}
     AND
     state != '0'
+    GROUP BY thetime
     ORDER BY thetime DESC
   </select>
 

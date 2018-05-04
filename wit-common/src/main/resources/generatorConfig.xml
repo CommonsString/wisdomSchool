@@ -17,7 +17,7 @@
 
 		<!-- 数据库连接的信息 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-						connectionURL="jdbc:mysql://127.0.0.1:3306/witschool"
+						connectionURL="jdbc:mysql://118.123.16.211:3306/witschool"
 						userId="root" password="root" >
 			<!--针对mysql数据库,读取表注释-->
 			<property name="useInformationSchema" value="true"></property>
@@ -66,8 +66,8 @@
 		<!--<table tableName="dq_province" domainObjectName="DqProvince" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 
 
-		<table tableName="grade" domainObjectName="Grade" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-		<table tableName="period_director_thetime" domainObjectName="PeriodDirectorThetime" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+		<!--<table tableName="grade" domainObjectName="Grade" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+		<!--<table tableName="period_director_thetime" domainObjectName="PeriodDirectorThetime" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 
 		<!--<table tableName="remote_request" domainObjectName="RemoteRequest" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 
@@ -85,12 +85,13 @@
 		<!--<table tableName="school_osaas" domainObjectName="SchoolOsaas" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 		<!--<table tableName="school_period" domainObjectName="SchoolPeriod" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 
-		<table tableName="school_period_class_thetime" domainObjectName="SchoolPeriodClassThetime" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+		<!--<table tableName="school_period_class_thetime" domainObjectName="SchoolPeriodClassThetime" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 		<!--<table tableName="school_room" domainObjectName="SchoolRoom" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 		<!--<table tableName="school_subject" domainObjectName="SchoolSubject" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+		<!--<table tableName="school_subjects" domainObjectName="SchoolSubjects" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 
 		<!--<table tableName="student_home" domainObjectName="StudentHome" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-		<!--<table tableName="student_osaas" domainObjectName="StudentOsaas" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+		<table tableName="student_osaas" domainObjectName="StudentOsaas" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 		<!--<table tableName="student_punishment" domainObjectName="StudentPunishment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 		<!--<table tableName="student_score" domainObjectName="StudentScore" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 		<!--<table tableName="student_winning" domainObjectName="StudentWinning" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->

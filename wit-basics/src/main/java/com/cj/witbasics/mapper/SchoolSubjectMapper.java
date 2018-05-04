@@ -79,5 +79,10 @@ public interface SchoolSubjectMapper {
      */
     List<SchoolSubject> selectBySchoolIdAllInfo(Long schoolId);
 
+    /**
+     * 根据科目ID查询课程信息
+     */
+    public List<SchoolSubject> findAllSchoolSubjectBySubjectsId(Long subjectsId);
+
 
 }

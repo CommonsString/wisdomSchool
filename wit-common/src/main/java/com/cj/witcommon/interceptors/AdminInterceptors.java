@@ -21,16 +21,16 @@ public class AdminInterceptors implements HandlerInterceptor {
 
     //不校验登陆的
     String[] urls = new String[] {
-            "/api/v1/admin/ifLogin",//登录
-            "/api/v1/admin/ifLogout"//注销
+            "/api/v1/admin/ifLogin"//登录
+            ,"/api/v1/admin/ifLogout"//注销
 
     };
 
     //不校验权限的
     String[] urlss = new String[]{
-            "/api/v1/admin/ifLogin",//登录
-            "/api/v1/admin/ifLogout",//注销
-            "/api/v1/admin/loginSuccess"//查询用户所拥有的权限
+            "/api/v1/admin/ifLogin"//登录
+            ,"/api/v1/admin/ifLogout"//注销
+            ,"/api/v1/admin/loginSuccess"//查询用户所拥有的权限
 
     };
 
@@ -123,9 +123,10 @@ public class AdminInterceptors implements HandlerInterceptor {
                 }else if(adminId > 1){
                     //adminId存在
                     //获取sessionIDMap中的sessionId
-                    String sessionId = MemoryData.getSessionIDMap().get(adminId.toString());
+                    String oldSessionId = MemoryData.getSessionIDMap().get(adminId.toString());
+                    String newSessionId = request.getSession().getId();
 
-                    if(!request.getSession().getId().equals(sessionId)){
+                    if(!newSessionId.equals(oldSessionId)){
                         //如果sessionId不一致,用户已在其他设备登录
                         boo4 = false;
                         response.setCharacterEncoding("UTF-8");

@@ -125,7 +125,8 @@ public class PersonnelManagementController {
     @PostMapping("/addStaff")
     @Log(name = "人事 ==> 新增教职工信息(同时生成账号)")
     public ApiResult addStaff(
-            @ApiParam(name = "adminInfo",value = "教职工详情,封装为adminInfo,账号分类，1-管理员，2-用户（老师、学生、家长、其他）",required = true) @RequestBody AdminInfo adminInfo,
+            @ApiParam(name = "adminInfo",value = "教职工详情,封装为adminInfo,账号分类，1-管理员，2-用户（老师、学生、家长、其他）",required = true)
+            @RequestBody AdminInfo adminInfo,
             HttpServletRequest request)  {
 
         String adminType = adminInfo.getAdminType();
@@ -225,6 +226,7 @@ public class PersonnelManagementController {
         ApiResult<AdminInfo> apiResult=new ApiResult<>();
 
         AdminInfo result = personnelManagementService.selectAdminInfoById(adminId);
+
         ApiResultUtil.fastResult(apiResult,result);
         return apiResult;
     }

@@ -93,7 +93,7 @@ public interface SchoolClassMapper {
     List<SchoolClassInfo> selectByPeriodIdNoPager(Long periodId);
 
     //根据班级查重
-    long selectCountByClassNumber(int classNumber);
+    int selectCountByClassNumber(int classNumber);
 
     //返回所有无班主任的班级
     List<Map> selectAllNoHeadmaster();

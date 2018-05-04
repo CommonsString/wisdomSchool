@@ -141,7 +141,7 @@ public interface AdminInfoMapper {
 
 
     /**
-     * 根据教师编号查询对应的教师ID
+     * 根据 教师编号 查询对应的教师ID
      */
     Long selectByAdminInfoId(String staffNum);
 
@@ -149,9 +149,14 @@ public interface AdminInfoMapper {
     public AdminRole findAdminRoleByAdminRoleId(Long adminRoleId);
 
     /**
-     * 根据adminId查询adminIdInfo信息
+     * 根据adminId查询adminName信息
      */
     public String findAdminNameByadminId(Long adminId);
+
+    /**
+     * 根据 教职工编号 查询 adminId 信息
+     */
+    public Long findAdminIdByStaffNum(String staffNumber);
 
 
 }

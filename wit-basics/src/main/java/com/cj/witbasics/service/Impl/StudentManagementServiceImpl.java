@@ -25,14 +25,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
 @Slf4j
+@Transactional
 public class StudentManagementServiceImpl implements StudentManagementService {
 
 
@@ -57,6 +55,9 @@ public class StudentManagementServiceImpl implements StudentManagementService {
 
     @Value("${student_staff_prefix}")
     String studentStaffPrefix;
+
+    @Value("${school_id}")
+    String schoolId;
 
     @Value("${default_admin_pass}")
     String defaultAdminPass;
@@ -92,16 +93,13 @@ public class StudentManagementServiceImpl implements StudentManagementService {
 
     //学生信息批量导入
     @Override
-    @Transactional
-    public int importStucents(MultipartFile multipartFile,HttpServletRequest request) throws Exception {
+    public Map importStucents(MultipartFile multipartFile,HttpServletRequest request) throws Exception {
 
         String fileName = multipartFile.getOriginalFilename();
         InputStream in = multipartFile.getInputStream();
 
 
 
-//        Workbook workbook = WorkbookFactory.create(in);
-//        Sheet hssfSheet = workbook.getSheetAt(0);  //示意访问sheet
 
         Workbook wb = ImportExeclUtil.chooseWorkbook(fileName, in);
         int num = wb.getNumberOfSheets();
@@ -134,18 +132,30 @@ public class StudentManagementServiceImpl implements StudentManagementService {
 
 
         int nums = 0;  //学生信息导入成功数量
+        List msgList = new ArrayList();
+        Map map = new HashMap();
         for (StudentOsaas studentOsaas : osaasList) {
             System.out.println(studentOsaas);
 
             //学生信息导入对象装换及信息处理
 
             //调用添加一个学生对象接口
-            nums += addStudentOsaasinfo(studentOsaas,request);
+            int i = addStudentOsaasinfo(studentOsaas,request);
+
+            if(i > 0){
+//                msgList.add(studentOsaas.getSchoolNumber()+"处理成功");
+                nums += i;
+            }else {
+                msgList.add(studentOsaas.getSchoolNumber()+"处理失败");
+
+            }
 
         }
 
+        map.put("nums",nums);
+        map.put("msgList",msgList);
 
-        return nums;
+        return map;
     }
 
 
@@ -153,8 +163,7 @@ public class StudentManagementServiceImpl implements StudentManagementService {
     @Override
     public String getStudentNumber() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-
-        return studentStaffPrefix+sdf.format(new Date());
+        return studentStaffPrefix+schoolId+sdf.format(new Date());
     }
 
     /*
@@ -163,8 +172,18 @@ public class StudentManagementServiceImpl implements StudentManagementService {
     @Override
     @Transactional
     public  int addStudentOsaasinfo(StudentOsaas studentOsaas,HttpServletRequest request) {
-        //数据库中此学号的数量
+//        //数据库中此学号的数量
 //        int i = studentOsaasMapper.selectBySchoolNumber(studentOsaas.getSchoolNumber());
+
+        //根据学籍号 查询 adminId
+        Long adminId0 = studentOsaasMapper.findAdminIdByRegisterNumber(studentOsaas.getRegisterNumber());
+        //如果信息已存在，则更新
+        if(adminId0!=null && adminId0>0){
+            studentOsaas.setAdminId(adminId0);
+            int i = studentOsaasMapper.updateByPrimaryKeySelective(studentOsaas);
+            return i;
+
+        }
         //学生信息是否保存成功
         int j = 0;
 
@@ -172,10 +191,10 @@ public class StudentManagementServiceImpl implements StudentManagementService {
         //添加账号
         Admin admin = new Admin();
         admin.setRoleId(6l);
-        if(studentOsaas.getSchoolNumber() != null && studentOsaas.getSchoolNumber().length() > 0){
-            admin.setAdminName("s"+studentOsaas.getSchoolNumber());  //取学号做账号
-        }else {
-            admin.setAdminName("s"+studentOsaas.getRegisterNumber());  //取学籍号做账号
+        if(studentOsaas.getRegisterNumber() != null && studentOsaas.getRegisterNumber().length() > 0){
+//            admin.setAdminName(studentOsaas.getSchoolNumber());  //取学号做账号
+//        }else {
+            admin.setAdminName(studentOsaas.getRegisterNumber());  //取学籍号做账号
         }
 
         admin.setAdminPass(Md5Utils.MD5Encode(defaultAdminPass,"UTF-8",false));

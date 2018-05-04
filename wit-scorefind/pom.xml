@@ -27,12 +27,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.cj</groupId>
-			<artifactId>wit-common</artifactId>
+			<artifactId>wit-basics</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.cj</groupId>
-			<artifactId>wit-basics</artifactId>
+			<artifactId>wit-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

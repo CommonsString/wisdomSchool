@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolSubject" >
     <id column="subject_id" property="subjectId" jdbcType="BIGINT" />
     <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="subjects_id" property="subjectsId" jdbcType="BIGINT" />
     <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
     <result column="subject_english_name" property="subjectEnglishName" jdbcType="VARCHAR" />
     <result column="subject_required" property="subjectRequired" jdbcType="CHAR" />
@@ -17,11 +18,12 @@
     <result column="is_begin" property="isBegin" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    subject_id, subject_name, subject_english_name, subject_required, subject_report, 
-    subject_sort, founder_id, create_time, operator_id, delete_time, state
+    subject_id, school_id, subjects_id, subject_name, subject_english_name, subject_required,
+    subject_report, subject_sort, founder_id, create_time, operator_id, delete_time,
+    state, is_begin
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from school_subject
     where subject_id = #{subjectId,jdbcType=BIGINT}
@@ -31,14 +33,16 @@
     where subject_id = #{subjectId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolSubject" >
-    insert into school_subject (subject_id, subject_name, subject_english_name, 
-      subject_required, subject_report, subject_sort, 
-      founder_id, create_time, operator_id, 
-      delete_time, state)
-    values (#{subjectId,jdbcType=BIGINT}, #{subjectName,jdbcType=VARCHAR}, #{subjectEnglishName,jdbcType=VARCHAR}, 
-      #{subjectRequired,jdbcType=CHAR}, #{subjectReport,jdbcType=CHAR}, #{subjectSort,jdbcType=INTEGER}, 
-      #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, 
-      #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR})
+    insert into school_subject (subject_id, school_id, subjects_id,
+    subject_name, subject_english_name, subject_required,
+    subject_report, subject_sort, founder_id,
+    create_time, operator_id, delete_time,
+    state, is_begin)
+    values (#{subjectId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{subjectsId,jdbcType=BIGINT},
+    #{subjectName,jdbcType=VARCHAR}, #{subjectEnglishName,jdbcType=VARCHAR}, #{subjectRequired,jdbcType=CHAR},
+    #{subjectReport,jdbcType=CHAR}, #{subjectSort,jdbcType=INTEGER}, #{founderId,jdbcType=BIGINT},
+    #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP},
+    #{state,jdbcType=CHAR}, #{isBegin,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolSubject" >
     insert into school_subject
@@ -48,6 +52,9 @@
       </if>
       <if test="schoolId != null" >
         school_id,
+      </if>
+      <if test="subjectsId != null" >
+        subjects_id,
       </if>
       <if test="subjectName != null" >
         subject_name,
@@ -79,6 +86,9 @@
       <if test="state != null" >
         state,
       </if>
+      <if test="isBegin != null" >
+        is_begin,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="subjectId != null" >
@@ -86,6 +96,9 @@
       </if>
       <if test="schoolId != null" >
         #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="subjectsId != null" >
+        #{subjectsId,jdbcType=BIGINT},
       </if>
       <if test="subjectName != null" >
         #{subjectName,jdbcType=VARCHAR},
@@ -117,11 +130,20 @@
       <if test="state != null" >
         #{state,jdbcType=CHAR},
       </if>
+      <if test="isBegin != null" >
+        #{isBegin,jdbcType=CHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolSubject" >
     update school_subject
     <set >
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="subjectsId != null" >
+        subjects_id = #{subjectsId,jdbcType=BIGINT},
+      </if>
       <if test="subjectName != null" >
         subject_name = #{subjectName,jdbcType=VARCHAR},
       </if>
@@ -160,16 +182,19 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolSubject" >
     update school_subject
-    set subject_name = #{subjectName,jdbcType=VARCHAR},
-      subject_english_name = #{subjectEnglishName,jdbcType=VARCHAR},
-      subject_required = #{subjectRequired,jdbcType=CHAR},
-      subject_report = #{subjectReport,jdbcType=CHAR},
-      subject_sort = #{subjectSort,jdbcType=INTEGER},
-      founder_id = #{founderId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      operator_id = #{operatorId,jdbcType=BIGINT},
-      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
-      state = #{state,jdbcType=CHAR}
+    set school_id = #{schoolId,jdbcType=BIGINT},
+    subjects_id = #{subjectsId,jdbcType=BIGINT},
+    subject_name = #{subjectName,jdbcType=VARCHAR},
+    subject_english_name = #{subjectEnglishName,jdbcType=VARCHAR},
+    subject_required = #{subjectRequired,jdbcType=CHAR},
+    subject_report = #{subjectReport,jdbcType=CHAR},
+    subject_sort = #{subjectSort,jdbcType=INTEGER},
+    founder_id = #{founderId,jdbcType=BIGINT},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    operator_id = #{operatorId,jdbcType=BIGINT},
+    delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+    state = #{state,jdbcType=CHAR},
+    is_begin = #{isBegin,jdbcType=CHAR}
     where subject_id = #{subjectId,jdbcType=BIGINT}
   </update>
 
@@ -242,5 +267,17 @@
     IN
     (#{schoolId, jdbcType=BIGINT})
     ORDER BY ss.is_begin ASC
+  </select>
+
+  <!--根据科目ID查询课程信息-->
+  <select id="findAllSchoolSubjectBySubjectsId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+
+    FROM
+    witschool.school_subject ss
+    WHERE
+    ss.subjects_id = #{subjectsId}
+    AND
+    ss.state = '1'
   </select>
 </mapper>

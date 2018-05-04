@@ -2,6 +2,7 @@ package com.cj.witbasics.controller;
 
 import com.cj.witbasics.entity.StudentOsaas;
 import com.cj.witbasics.service.StudentManagementService;
+import com.cj.witcommon.aop.Log;
 import com.cj.witcommon.entity.ApiCode;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.entity.ApiResultUtil;
@@ -27,7 +28,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 学生管理
@@ -48,10 +51,11 @@ public class StudentManagementController {
      * 返回：student_osaas对象结果集 包含:学籍基本信息表ID,姓名，学号，班级，性别，市内外，本校升入，备注
      * 完成时间:1
      */
-    @GetMapping("/selectsStudentInfo")
+    @PostMapping("/selectsStudentInfo")
     @ApiOperation("模糊查询学生信息")
-    @ApiImplicitParam(name = "p",value = "分页参数，初始页码1，初始条数10，可为空,传入条件参数名：parameter",required = false)
-    public ApiResult selectsStudentInfo(Pager p){
+    @Log(name = "学生 ==> 模糊查询信息")
+    public ApiResult selectsStudentInfo(@ApiParam(name = "p",value = "分页参数，初始页码1，初始条数10，可为空,parameter=姓名、性别、学籍号",required = false)
+                                                   @RequestBody Pager p){
 
         ApiResult apiResult=new ApiResult();
         p = studentManagementService.findStudentsByCondition(p);
@@ -67,6 +71,7 @@ public class StudentManagementController {
      */
     @GetMapping("/getStudentNumber")
     @ApiOperation("生成学籍号")
+    @Log(name = "学生 ==> 生成学籍号")
     public ApiResult getStudentNumber(){
         return ApiResultUtil.fastResult(new ApiResult(),studentManagementService.getStudentNumber());
 
@@ -82,6 +87,7 @@ public class StudentManagementController {
      */
     @ApiOperation(value = "添加学生信息并查重", notes = "成功/失败")
     @PostMapping("/addStudentInfo")
+    @Log(name = "学生 ==> 添加学生")
     public ApiResult addStudentInfo(
             @ApiParam(name = "studentossa", value = "新增学生信息对象", required = true) @RequestBody StudentOsaas studentossa,
             HttpServletRequest request) throws Exception {
@@ -110,6 +116,7 @@ public class StudentManagementController {
      */
     @ApiOperation("学生信息模板下载")
     @GetMapping("/downloadStudentTemplate")
+    @Log(name = "学生 ==> 模板下载")
     public void downloadStudentTemplate(HttpServletRequest request, HttpServletResponse response) throws Exception {
         studentManagementService.downloadStudengTemplate(request,response);
 
@@ -149,18 +156,21 @@ public class StudentManagementController {
      */
     @ApiOperation("学生信息批量导入")
     @PostMapping("/importStucents")
+    @Log(name = "学生 ==> 信息导入")
     public ApiResult importStucents(
             @ApiParam(value = "学生信息批量导入（选择文件）",required = true) MultipartFile file,
             HttpServletRequest request) throws Exception {
         System.out.println("文件名====>>"+file.getOriginalFilename());
 
-        int nums = studentManagementService.importStucents(file,request);
+        Map map = studentManagementService.importStucents(file,request);
 
         ApiResult apiResult = new ApiResult();
+        int nums = (Integer) map.get("nums");
+        List msgList = (ArrayList)map.get("msgList");
         if(nums > 0){
             apiResult.setCode(ApiCode.import_success);
             apiResult.setMsg(ApiCode.import_success_MSG+nums+"条数据");
-
+            apiResult.setData(msgList);
         }else {
             apiResult.setCode(ApiCode.import_failed);
             apiResult.setMsg(ApiCode.import_failed_MSG);
@@ -182,6 +192,7 @@ public class StudentManagementController {
      */
     @GetMapping("/selectStudentOsaas")
     @ApiOperation("通过 adminId 查询学生信息详情")
+    @Log(name = "学生 ==> 查询学生信息详情")
     public ApiResult selectStudentOsaas(@ApiParam(name = "adminId",value = "账户ID",required = true) Long adminId){
         ApiResult apiResult = new ApiResult();
         apiResult.setCode(ApiCode.SUCCESS);
@@ -201,6 +212,7 @@ public class StudentManagementController {
      */
     @ApiOperation("编辑学生信息")
     @PutMapping("/updateStaffInfo")
+    @Log(name = "学生 ==> 编辑信息")
     public ApiResult updateStaffInfo(@ApiParam(name = "studentOsaas",value = "学生信息",required = true) StudentOsaas studentOsaas){
 
         int j = studentManagementService.updateStaffInfo(studentOsaas);

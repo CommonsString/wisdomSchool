@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -61,7 +62,7 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
      */
     @Override
     @Transactional
-    public ApiResult addSubjectInfo(SchoolSubject subject) {
+    public ApiResult addSubjectInfo(HttpSession session, SchoolSubject subject) {
         //返回
         ApiResult result = new ApiResult();
         //查重
@@ -73,6 +74,11 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
             result.setMsg(ApiCode.error_duplicated_data_MSG);
             return result;
         }
+        Long adminId = (Long) session.getAttribute("adminId");
+        //开发，假设创建人ID为0
+        subject.setFounderId(0l);
+//        subject.setFounderId(adminId);
+        subject.setSchoolId(Long.parseLong(schoolId));
         //创建时间
         subject.setCreateTime(new Date());
         int flag = this.subjectMapper.insertSelective(subject);
@@ -80,7 +86,6 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
         if(flag > 0){
             ApiResultUtil.fastResultHandler(result, true, null, null, null);
         }else{
-//            ApiResultUtil.fastResultHandler(result, true, null, null, null);
             ApiResultUtil.fastResultHandler(result, false, ApiCode.error_create_failed, ApiCode.FAIL_MSG, null);
         }
         return result;
@@ -327,6 +332,73 @@ System.out.println("进入2");
         }
         result.setCode(ApiCode.export_success);
         result.setMsg(ApiCode.export_success_MSG);
+        return result;
+    }
+
+
+    /**
+     * 设置课程(新增)
+     * 以课程为基础，设置班级课程
+     * @param classId
+     * @return
+     */
+    @Override
+    @Transactional
+    public ApiResult SelectSubjectAndClassRight(Long classId, List<Long> subjectId) {
+        ApiResult result = new ApiResult();
+        //去除重复
+        for(Long item : subjectId){
+            int flag_a = this.infoMapper.selectByclassByClassIdAndSubjectId(classId, item);
+            //存在
+            if(flag_a > 0){
+                //移除
+                subjectId.remove(item);
+            }
+        }
+        //批量增加
+        int flag_b = this.infoMapper.insertSelectiveBath(classId, subjectId);
+        //标志
+        if(flag_b > 0){
+            ApiResultUtil.fastResultHandler(result, true, null, null, null);
+        }else{
+            ApiResultUtil.fastResultHandler(result, false, ApiCode.error_create_failed, ApiCode.FAIL_MSG, null);
+        }
+        return result;
+    }
+
+
+    /**
+     * 设置课程(删除)
+     * 以课程为基础，设置班级课程
+     * @param classId
+     * @return
+     */
+    @Override
+    @Transactional
+    public ApiResult SelectSubjectAndClassLeight(Long classId, List<Long> subjectId) {
+        ApiResult result = new ApiResult();
+        //去除重复
+        System.out.println(subjectId.size() + " 前长度");
+        for(Long item : subjectId){
+            int flag_a = this.infoMapper.selectByclassByClassIdAndSubjectId(classId, item);
+            //不存在,说明是学校课程
+            if(flag_a <= 0){
+                //移除
+                subjectId.remove(item);
+            }
+        }
+        System.out.println(subjectId.size() + " 后长度");
+        //批量删除
+        int flag_b = 0;
+        for(Long item : subjectId){
+            flag_b = this.infoMapper.deleteByBatch(classId, item);
+        }
+        //标志
+        if(flag_b > 0){
+            ApiResultUtil.fastResultHandler(result, true, null, null, null);
+        }else{
+            ApiResultUtil.fastResultHandler(result, false, ApiCode.error_create_failed, ApiCode.FAIL_MSG, null);
+        }
         return result;
     }
 }

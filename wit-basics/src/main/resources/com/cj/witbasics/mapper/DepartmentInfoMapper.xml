@@ -44,6 +44,9 @@
     #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cj.witbasics.entity.DepartmentInfo" >
+    <selectKey order="AFTER" keyProperty="id" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into department_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

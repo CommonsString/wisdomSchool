@@ -1,13 +1,13 @@
 package com.cj.witbasics.entity;
 
-import lombok.ToString;
+import lombok.Data;
 
 import java.util.Date;
 
-@ToString
+@Data
 public class SchoolSubject {
     /**
-     * 学校学科信息表
+     * 学校课程表
      */
     private Long subjectId;
 
@@ -17,12 +17,17 @@ public class SchoolSubject {
     private Long schoolId;
 
     /**
-     * 科目名称
+     * 科目表ID
+     */
+    private Long subjectsId;
+
+    /**
+     * 课程名称
      */
     private String subjectName;
 
     /**
-     * 科目英文名称
+     * 课程英文名称
      */
     private String subjectEnglishName;
 
@@ -67,21 +72,21 @@ public class SchoolSubject {
     private String state;
 
     /**
-     *0-停课，1-正常，默认为1
+     * 0-停课，1-正常，默认为1
      */
     private String isBegin;
 
     /**
-     * 学校学科信息表
-     * @return subject_id 学校学科信息表
+     * 学校课程表
+     * @return subject_id 学校课程表
      */
     public Long getSubjectId() {
         return subjectId;
     }
 
     /**
-     * 学校学科信息表
-     * @param subjectId 学校学科信息表
+     * 学校课程表
+     * @param subjectId 学校课程表
      */
     public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
@@ -104,32 +109,48 @@ public class SchoolSubject {
     }
 
     /**
-     * 科目名称
-     * @return subject_name 科目名称
+     * 科目表ID
+     * @return subjects_id 科目表ID
+     */
+    public Long getSubjectsId() {
+        return subjectsId;
+    }
+
+    /**
+     * 科目表ID
+     * @param subjectsId 科目表ID
+     */
+    public void setSubjectsId(Long subjectsId) {
+        this.subjectsId = subjectsId;
+    }
+
+    /**
+     * 课程名称
+     * @return subject_name 课程名称
      */
     public String getSubjectName() {
         return subjectName;
     }
 
     /**
-     * 科目名称
-     * @param subjectName 科目名称
+     * 课程名称
+     * @param subjectName 课程名称
      */
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName == null ? null : subjectName.trim();
     }
 
     /**
-     * 科目英文名称
-     * @return subject_english_name 科目英文名称
+     * 课程英文名称
+     * @return subject_english_name 课程英文名称
      */
     public String getSubjectEnglishName() {
         return subjectEnglishName;
     }
 
     /**
-     * 科目英文名称
-     * @param subjectEnglishName 科目英文名称
+     * 课程英文名称
+     * @param subjectEnglishName 课程英文名称
      */
     public void setSubjectEnglishName(String subjectEnglishName) {
         this.subjectEnglishName = subjectEnglishName == null ? null : subjectEnglishName.trim();
@@ -251,23 +272,6 @@ public class SchoolSubject {
      * 0-已删除，1-正常，默认为1
      * @return state 0-已删除，1-正常，默认为1
      */
-    public String getIsBegin() {
-        return isBegin;
-    }
-
-    /**
-     * 0-已删除，1-正常，默认为1
-     * @param isBegin 0-已删除，1-正常，默认为1
-     */
-    public void setIsBegin(String isBegin) {
-        this.isBegin = isBegin == null ? null : isBegin.trim();
-    }
-
-
-    /**
-     * 0-已删除，1-正常，默认为1
-     * @return state 0-已删除，1-正常，默认为1
-     */
     public String getState() {
         return state;
     }
@@ -278,5 +282,21 @@ public class SchoolSubject {
      */
     public void setState(String state) {
         this.state = state == null ? null : state.trim();
+    }
+
+    /**
+     * 0-停课，1-正常，默认为1
+     * @return is_begin 0-停课，1-正常，默认为1
+     */
+    public String getIsBegin() {
+        return isBegin;
+    }
+
+    /**
+     * 0-停课，1-正常，默认为1
+     * @param isBegin 0-停课，1-正常，默认为1
+     */
+    public void setIsBegin(String isBegin) {
+        this.isBegin = isBegin == null ? null : isBegin.trim();
     }
 }

@@ -58,6 +58,9 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
 
     @Value("${teacher_staff_prefix}")
     String teacherStaffPrefix;
+
+    @Value("${school_id}")
+    String schoolId;
     /**
      * 生成最新职工编号
      */
@@ -66,7 +69,7 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
 //        Long maxStaffNumber= adminInfoMapper.selectMaxStaffNumber()+1L;
 //        return teacherStaffPrefix+"000"+maxStaffNumber;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        return teacherStaffPrefix+sdf.format(new Date());
+        return teacherStaffPrefix+schoolId+sdf.format(new Date());
     }
 
     /**
@@ -84,10 +87,39 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
         System.out.println(adminInfo);
         System.out.println("===============================================================");
 
+        System.out.println(adminInfo.getTheDepartmentId() + " id");
+        //批量导入时，部门ID不存在，进行部门匹配
+        if(adminInfo.getTheDepartmentId() == null || adminInfo.getTheDepartmentId() < 0 ){
+            System.out.println("进入");
+            //查询部门信息
+            List<DepartmentInfo> departmentInfos = departmentInfoMapper.getAllDepartmentInfo();
+            for(DepartmentInfo departmentInfo : departmentInfos){
+                //部门名称匹配
+                if(departmentInfo.getdName().equals(adminInfo.getTheDepartment())){
+                    adminInfo.setTheDepartmentId(departmentInfo.getId().intValue());
+                    break;
+                }
+            }
+
+        }
+
+        //部门信息匹配后，部门ID还是不存在，给与提示
+        if(adminInfo.getTheDepartmentId() == null || adminInfo.getTheDepartmentId() < 0 ){
+            return -1;
+        }
+
+        //根据教职工编号 检查信息是否已存在，如果已存在，则覆盖
+        Long adminId0 = adminInfoMapper.findAdminIdByStaffNum(adminInfo.getStaffNumber());
+        if(adminId0 != null && adminId0 > 0){
+            int i = adminInfoMapper.updateByPrimaryKeySelective(adminInfo);
+            return i;
+        }
+
+
         //当前时间
         Date date=new Date();
         //存储结果
-        Integer result=-1;
+//        Integer result=-1;
 
         //管理员表插入信息
         Admin admin=new Admin();
@@ -140,19 +172,19 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
             adminInfoMapper.insertAdminSelective(admin);
             adminId = admin.getId();
 
-                adminInfo.setAdminId(adminId);
-                //创建时间
-                adminInfo.setCreateTime(date);
-                String newUserUUID = (String) request.getSession().getAttribute("newUserUUID");
-                //设置用户uuid为云端注册的uuid
-                if(newUserUUID != null && newUserUUID.length() > 0){
-                    adminInfo.setAdminUuid(newUserUUID);
-                }else {  //根据角色类型生成uuid
-                    adminInfo.setAdminUuid(SLIDUtil.newUUID(adminRole.getType()));
-                }
-                //        Long founderId = (Long) request.getSession().getAttribute("adminId");
-                Long founderId = 0l;  //开发环境，假设操作员id为0
-                adminInfo.setFounderId(founderId);
+            adminInfo.setAdminId(adminId);
+            //创建时间
+            adminInfo.setCreateTime(date);
+            String newUserUUID = (String) request.getSession().getAttribute("newUserUUID");
+            //设置用户uuid为云端注册的uuid
+            if(newUserUUID != null && newUserUUID.length() > 0){
+                adminInfo.setAdminUuid(newUserUUID);
+            }else {  //根据角色类型生成uuid
+                adminInfo.setAdminUuid(SLIDUtil.newUUID(adminRole.getType()));
+            }
+            //        Long founderId = (Long) request.getSession().getAttribute("adminId");
+            Long founderId = 0l;  //开发环境，假设操作员id为0
+            adminInfo.setFounderId(founderId);
 
             SynBasicInformation synBasicInformation = new SynBasicInformation();
             synBasicInformation.setName(adminInfoMapper.findAdminNameByadminId(adminId));  //用户名
@@ -162,27 +194,18 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
             synBasicInformation.setSex(adminInfo.getGender());  //性别
             synBasicInformation.setAvatar(adminInfo.getAdminHead());  //头像
 
-                //TODO:云端同步教职工基础信息
-                if(cloudService.cloudSynchronization(request,synBasicInformation)){
-                    System.out.println("============>>"+adminInfo);
-                    nums=adminInfoMapper.insertSelective(adminInfo);
+            //TODO:云端同步教职工基础信息
+            if(cloudService.cloudSynchronization(request,synBasicInformation)){
+                System.out.println("============>>"+adminInfo);
+                nums=adminInfoMapper.insertSelective(adminInfo);
 
-                    //批量导入时，部门ID不存在
-                    if(adminInfo.getTheDepartmentId() != null && adminInfo.getTheDepartmentId() > 0 ){
-
-                        //添加人事-部门-关联表信息
-                        DepartmentAdmin departmentAdmin = new DepartmentAdmin();
-                        departmentAdmin.setAdminId(adminId);
-                        departmentAdmin.setdId(adminInfo.getTheDepartmentId());
-
-                        departmentAdminMapper.insertSelective(departmentAdmin);
-                    }
-
-                }
+                //添加人事-部门-关联表信息
+                DepartmentAdmin departmentAdmin = new DepartmentAdmin();
+                departmentAdmin.setAdminId(adminId);
+                departmentAdmin.setdId(adminInfo.getTheDepartmentId());
+                departmentAdminMapper.insertSelective(departmentAdmin);
+            }
         }
-
-
-
 
         return nums;
     }
@@ -214,7 +237,7 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
             adminInfoList.addAll(readDateListT);
         }
 
-        int nums = 0;  //学生信息导入成功数量
+        int nums = 0;  //教职工信息导入成功数量
         int i = 0;
         List msgList = new ArrayList();
         Map map = new HashMap();
@@ -222,13 +245,16 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
 
             //调用创建人事信息接口
             i = createAdminInfo(adminInfo,request,"");
-            if(i > 0){
-                msgList.add(adminInfo.getStaffNumber()+"导入成功。");
+            if(i == 1){
+                msgList.add(adminInfo.getStaffNumber()+" 处理成功。");
+                nums += i;
+            }else if(i == -1){
+                msgList.add(adminInfo.getTheDepartment()+" 不存在。");
+
             }else {
-                msgList.add(adminInfo.getStaffNumber()+"导入失败。");
+                msgList.add(adminInfo.getStaffNumber()+" 处理失败。");
 
             }
-            nums += i;
 
         }
 
@@ -369,6 +395,14 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
         departmentInfo.setState("1");
         int i;
         i=departmentInfoMapper.insertSelective(departmentInfo);
+
+        //将部门领导添加到部门内
+        DepartmentAdmin departmentAdmin = new DepartmentAdmin();
+        departmentAdmin.setdId(departmentInfo.getId().intValue());
+        departmentAdmin.setAdminId(departmentInfo.getdLeaderId());
+
+        departmentAdminMapper.insertSelective(departmentAdmin);
+
         if (i==-1){
             return ApiCode.FAIL;
         }
@@ -474,15 +508,15 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
     @Override
     public int updateDepartmentInfo(DepartmentInfo departmentInfo) {
         //校验部门名字是否重复
-       DepartmentInfo departmentInfo1 =  departmentInfoMapper.findDepartmentInfoByName(departmentInfo);
+        DepartmentInfo departmentInfo1 =  departmentInfoMapper.findDepartmentInfoByName(departmentInfo);
 
-       if(departmentInfo1 != null){  //该部门名称已存在
+        if(departmentInfo1 != null){  //该部门名称已存在
 
-           return -1;
-       }else {
-           //根据部门ID修改部门信息
-           return departmentInfoMapper.updateByPrimaryKeySelective(departmentInfo);
-       }
+            return -1;
+        }else {
+            //根据部门ID修改部门信息
+            return departmentInfoMapper.updateByPrimaryKeySelective(departmentInfo);
+        }
 
     }
 

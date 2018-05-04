@@ -1007,9 +1007,9 @@ substantiveLevel,jdbcType=VARCHAR},
   <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.AdminInfo" >
     update admin_info
     <set >
-      <if test="adminId != null" >
-        admin_id = #{adminId,jdbcType=BIGINT},
-      </if>
+      <!--<if test="adminId != null" >-->
+        <!--admin_id = #{adminId,jdbcType=BIGINT},-->
+      <!--</if>-->
       <if test="adminNick != null" >
         admin_nick = #{adminNick,jdbcType=VARCHAR},
       </if>
@@ -1766,14 +1766,18 @@ substantiveLevel,jdbcType=VARCHAR},
 
   <!-- 根据教师编号查询对应ID -->
   <select id="selectByAdminInfoId" parameterType="String" resultType="long">
-    SELECT admin_info_id FROM admin_info WHERE staff_number = #{staffNum}
+    SELECT
+    admin_info_id
+    FROM admin_info
+    WHERE staff_number = #{staffNum}
   </select>
 
   <!--根据 adminId 查询 adminIdInfo 信息-->
   <select id="selectByadminId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
-    FROM admin_info ai
+    FROM
+    admin_info ai
     WHERE
     ai.admin_id = #{adminId}
     AND
@@ -1856,4 +1860,12 @@ substantiveLevel,jdbcType=VARCHAR},
 
   </select>
 
+  <!--根据教职工编号查询对应的adminId-->
+  <select id="findAdminIdByStaffNum" parameterType="java.lang.String" resultType="java.lang.Long">
+    SELECT
+    ai.admin_id
+    FROM admin_info ai
+    WHERE
+    ai.staff_number = #{staffNumber}
+  </select>
 </mapper>
