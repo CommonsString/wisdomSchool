@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -153,11 +155,11 @@ public class SchoolExamController {
     @Log(name = "新增考试")
     @PostMapping("/addExamInfo")
     public ApiResult addSchoolExamInfo(
-            @ApiParam(name = "examInfo", value = "最内层,只传递subjectId,subjectName")
-            @RequestBody ExamParam examInfo){
-System.out.println(examInfo.toString());
+            @ApiParam(name = "examInfo", value = "params（subjectId=课程ID,subjectName=课程名）")
+            @RequestBody ExamParam examInfo,
+            HttpSession session){
         ApiResult apiResult = new ApiResult(); //返回对象
-        Long adminId = 1L;
+        Long adminId = (Long) session.getAttribute("adminId");
         try{
             apiResult = this.examService.addSchoolExamInfo(examInfo, adminId);
         }catch (Exception e){ //异常处理
@@ -228,8 +230,107 @@ System.out.println(examInfo.toString());
         return apiResult;
     }
 
+    /**
+     * ======================================================================================================
+     * 查询考试集合
+     */
+//    @ApiOperation("根据届次查询考试集合")
+//    @GetMapping("/findAllSchoolExamByThetime")
+//    @Log(name = "参数设置  ==> 根据届次查询考试集合")
+//    @ApiImplicitParam(name = "thetime",value = "thetime=毕业时间-届次",required = true)
+//    public ApiResult findAllSchoolExamByThetime(String thetime){
+//
+//        ApiResult apiResult = new ApiResult();
+//        apiResult.setCode(ApiCode.SUCCESS);
+//        apiResult.setMsg(ApiCode.SUCCESS_MSG);
+//        apiResult.setData(examService.findAllSchoolExamByThetime(thetime));
+//
+//        return apiResult;
+//
+//    }
+
+    /**
+     * 模糊查询考试集合
+     */
+    @PostMapping("/findAllSchoolExamParentByParameter")
+    @ApiOperation("查询考试信息（模糊查询）" +
+            "{\n" +
+            "  \"parameter\": \"考\"\n" +
+            "}")
+    @Log(name = "考试  ==> 查询考试信息（模糊查询）")
+    public ApiResult findAllSchoolExamParentByParameter(@ApiParam(name = "p",value = "parameter=考试名称",required = false)
+                                                         @RequestBody Pager p){
+
+        ApiResult apiResult = new ApiResult();
+        apiResult.setCode(ApiCode.SUCCESS);
+        apiResult.setMsg(ApiCode.SUCCESS_MSG);
+        apiResult.setData(examService.findAllSchoolExamParentByParameter(p));
+        return apiResult;
+
+    }
+
+    /**
+     * 根据考试父节点ID查询此次考试所有 学段-届次
+     */
+    @GetMapping("/findAllSchoolExamThetimeBySchoolExamParent")
+    @ApiOperation("查询考试届次（学段-届次-班级类型）")
+    @Log(name = "考试  ==> 查询考试届次（学段-届次-班级类型）")
+    @ApiImplicitParam(name = "examParentId",value = "examParentId=考试父节点ID",required = true)
+    public ApiResult findAllSchoolExamThetimeBySchoolExamParent(Long examParentId){
+        ApiResult apiResult = new ApiResult();
+        apiResult.setCode(ApiCode.SUCCESS);
+        apiResult.setMsg(ApiCode.SUCCESS_MSG);
+        apiResult.setData(examService.findAllSchoolExamThetimeBySchoolExamParent(examParentId));
+        return apiResult;
+    }
+
+    /**
+     * 根据考试 父节点ID 和 考试届次 查询此次考试的所有班级及课程信息
+     */
+    @GetMapping("/findAllSchoolExamClassAndSubject")
+    @ApiOperation("查询考试信息（届次-班级-课程）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examParentId", value = "examParentId=考试父节点ID", required = true),
+            @ApiImplicitParam(name = "thetime", value = "thetime=届次", required = true),
+            @ApiImplicitParam(name = "classPeriodId", value = "classPeriodId=学段ID", required = true)
+    })
+    @Log(name = "考试  ==> 查询考试信息（届次-班级-课程）")
+    public ApiResult findAllSchoolExamClassAndSubject(Long examParentId,String thetime,Long classPeriodId){
+        Map map = new HashMap();
+        map.put("examParentId",examParentId);
+        map.put("thetime",thetime);
+        map.put("classPeriodId",classPeriodId);
+        ApiResult apiResult = new ApiResult();
+        apiResult.setCode(ApiCode.SUCCESS);
+        apiResult.setMsg(ApiCode.SUCCESS_MSG);
+        apiResult.setData(examService.findAllSchoolExamClassByExamParentIdAndThetime(map));
+        return apiResult;
+    }
 
 
+    /**
+     * 根据考试 父节点ID 和 考试届次 查询此次考试的所有班级的课程信息
+     */
+    @GetMapping("/findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime")
+    @ApiOperation("查询考试信息（届次-课程）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examParentId", value = "examParentId=考试父节点ID", required = true),
+            @ApiImplicitParam(name = "thetime", value = "thetime=届次", required = true),
+            @ApiImplicitParam(name = "classPeriodId", value = "classPeriodId=学段ID", required = true)
+    })
+    @Log(name = "考试  ==> 查询考试信息（届次-课程）")
+    public ApiResult findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime(Long examParentId,String thetime,Long classPeriodId){
+        Map map = new HashMap();
+        map.put("examParentId",examParentId);
+        map.put("thetime",thetime);
+        map.put("classPeriodId",classPeriodId);
+        ApiResult apiResult = new ApiResult();
+        apiResult.setCode(ApiCode.SUCCESS);
+        apiResult.setMsg(ApiCode.SUCCESS_MSG);
+        apiResult.setData(examService.findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime(map));
+
+        return apiResult;
+    }
 
 
 }

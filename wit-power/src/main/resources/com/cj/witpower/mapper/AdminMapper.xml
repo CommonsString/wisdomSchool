@@ -204,7 +204,8 @@
 
   <resultMap id="find_admins" type="java.util.LinkedHashMap">
     <result column="id" property="id"></result>
-    <result column="full_name" property="fullName"></result>
+    <result column="ai_full_name" property="tFullName"></result>
+    <result column="so_full_name" property="sFullName"></result>
     <result column="admin_name" property="adminName"></result>
     <result column="role_id" property="roleId"></result>
     <result column="role_name" property="roleName"></result>
@@ -218,23 +219,31 @@
     COUNT(a.id)
     FROM admin a
     LEFT JOIN admin_role ar ON a.role_id = ar.id
+    LEFT JOIN admin_info ai ON a.id = ai.admin_id
+    LEFT JOIN student_osaas so ON a.id = so.admin_id
     WHERE
-    a.admin_state IN (-1,1)
+    (a.admin_state = "-1" OR a.admin_state = "1")
     <if test="parameters.containsKey('roleId')">
       <if test="parameters.roleId != '' ">
         AND
         ar.id = #{parameters.roleId}
+
       </if>
     </if>
 
     <if test="parameters.containsKey('adminName')">
       AND
       a.admin_name LIKE concat(concat('%',#{parameters.adminName}),'%')
+      OR
+      ai.full_name LIKE concat(concat('%',#{parameters.adminName}),'%')
+      OR
+      so.full_name LIKE concat(concat('%',#{parameters.adminName}),'%')
     </if>
     <if test="parameters.containsKey('adminType')">
       AND
       a.admin_type = #{parameters.adminType}
     </if>
+
   </select>
 
   <!--分页查询用户账户列表-->
@@ -266,10 +275,11 @@
   <!--重置-->
   <select id="findAllAdmin" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultMap="find_admins">
     SELECT
-    a.id, ai.full_name ,a.admin_name, a.role_id, ar.role_name, a.admin_state, a.admin_type, a.create_time
+    a.id, ai.full_name ai_full_name ,so.full_name so_full_name, a.admin_name, a.role_id, ar.role_name, a.admin_state, a.admin_type, a.create_time
     FROM admin a
     LEFT JOIN admin_role ar ON a.role_id = ar.id
     LEFT JOIN admin_info ai ON a.id = ai.admin_id
+    LEFT JOIN student_osaas so ON a.id = so.admin_id
     WHERE
     (a.admin_state = "-1" OR a.admin_state = "1")
     <if test="parameters.containsKey('roleId')">
@@ -283,6 +293,10 @@
     <if test="parameters.containsKey('adminName')">
       AND
       a.admin_name LIKE concat(concat('%',#{parameters.adminName}),'%')
+      OR
+      ai.full_name LIKE concat(concat('%',#{parameters.adminName}),'%')
+      OR
+      so.full_name LIKE concat(concat('%',#{parameters.adminName}),'%')
     </if>
     <if test="parameters.containsKey('adminType')">
       AND

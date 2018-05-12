@@ -1,6 +1,5 @@
 package com.cj.witbasics.entity;
 
-import com.cj.witcommon.utils.excle.IsNeeded;
 import lombok.ToString;
 
 import java.math.BigDecimal;
@@ -19,14 +18,24 @@ public class StudentScore {
     private Long schoolId;
 
     /**
+     * 考试父ID
+     */
+    private Long examParentId;
+
+    /**
      * 考试ID
      */
     private Long examId;
 
     /**
-     * 学生姓名
+     * 届次
      */
-    private String studentName;
+    private Date thetime;
+
+    /**
+     * 班级ID
+     */
+    private Long classId;
 
     /**
      * 学籍号
@@ -34,24 +43,39 @@ public class StudentScore {
     private String registerNumber;
 
     /**
+     * 学生姓名
+     */
+    private String studentName;
+
+    /**
      * 学期（前端单选）
      */
     private String schoolStageId;
 
     /**
-     * 科目名称（pk-学校学科信息表）
+     * 课程ID（pk-学校课程信息表）
      */
     private Long schoolSubjectId;
 
     /**
-     * 学科成绩
+     * 课程成绩
      */
     private BigDecimal score;
 
     /**
-     * 学科总分
+     * 课程总分
      */
     private String subjectTotalScore;
+
+    /**
+     * 年级排名
+     */
+    private Integer gradeRanking;
+
+    /**
+     * 班级排名
+     */
+    private Integer classRanking;
 
     /**
      * 创建人ID
@@ -111,6 +135,22 @@ public class StudentScore {
     }
 
     /**
+     * 考试父ID
+     * @return exam_parent_id 考试父ID
+     */
+    public Long getExamParentId() {
+        return examParentId;
+    }
+
+    /**
+     * 考试父ID
+     * @param examParentId 考试父ID
+     */
+    public void setExamParentId(Long examParentId) {
+        this.examParentId = examParentId;
+    }
+
+    /**
      * 考试ID
      * @return exam_id 考试ID
      */
@@ -127,19 +167,35 @@ public class StudentScore {
     }
 
     /**
-     * 学生姓名
-     * @return student_name 学生姓名
+     * 届次
+     * @return thetime 届次
      */
-    public String getStudentName() {
-        return studentName;
+    public Date getThetime() {
+        return thetime;
     }
 
     /**
-     * 学生姓名
-     * @param studentName 学生姓名
+     * 届次
+     * @param thetime 届次
      */
-    public void setStudentName(String studentName) {
-        this.studentName = studentName == null ? null : studentName.trim();
+    public void setThetime(Date thetime) {
+        this.thetime = thetime;
+    }
+
+    /**
+     * 班级ID
+     * @return class_id 班级ID
+     */
+    public Long getClassId() {
+        return classId;
+    }
+
+    /**
+     * 班级ID
+     * @param classId 班级ID
+     */
+    public void setClassId(Long classId) {
+        this.classId = classId;
     }
 
     /**
@@ -159,6 +215,22 @@ public class StudentScore {
     }
 
     /**
+     * 学生姓名
+     * @return student_name 学生姓名
+     */
+    public String getStudentName() {
+        return studentName;
+    }
+
+    /**
+     * 学生姓名
+     * @param studentName 学生姓名
+     */
+    public void setStudentName(String studentName) {
+        this.studentName = studentName == null ? null : studentName.trim();
+    }
+
+    /**
      * 学期（前端单选）
      * @return school_stage_id 学期（前端单选）
      */
@@ -175,51 +247,83 @@ public class StudentScore {
     }
 
     /**
-     * 科目名称（pk-学校学科信息表）
-     * @return school_subject_id 科目名称（pk-学校学科信息表）
+     * 课程ID（pk-学校课程信息表）
+     * @return school_subject_id 课程ID（pk-学校课程信息表）
      */
     public Long getSchoolSubjectId() {
         return schoolSubjectId;
     }
 
     /**
-     * 科目名称（pk-学校学科信息表）
-     * @param schoolSubjectId 科目名称（pk-学校学科信息表）
+     * 课程ID（pk-学校课程信息表）
+     * @param schoolSubjectId 课程ID（pk-学校课程信息表）
      */
     public void setSchoolSubjectId(Long schoolSubjectId) {
         this.schoolSubjectId = schoolSubjectId;
     }
 
     /**
-     * 学科成绩
-     * @return score 学科成绩
+     * 课程成绩
+     * @return score 课程成绩
      */
     public BigDecimal getScore() {
         return score;
     }
 
     /**
-     * 学科成绩
-     * @param score 学科成绩
+     * 课程成绩
+     * @param score 课程成绩
      */
     public void setScore(BigDecimal score) {
         this.score = score;
     }
 
     /**
-     * 学科总分
-     * @return subject_total_score 学科总分
+     * 课程总分
+     * @return subject_total_score 课程总分
      */
     public String getSubjectTotalScore() {
         return subjectTotalScore;
     }
 
     /**
-     * 学科总分
-     * @param subjectTotalScore 学科总分
+     * 课程总分
+     * @param subjectTotalScore 课程总分
      */
     public void setSubjectTotalScore(String subjectTotalScore) {
         this.subjectTotalScore = subjectTotalScore == null ? null : subjectTotalScore.trim();
+    }
+
+    /**
+     * 年级排名
+     * @return grade_ranking 年级排名
+     */
+    public Integer getGradeRanking() {
+        return gradeRanking;
+    }
+
+    /**
+     * 年级排名
+     * @param gradeRanking 年级排名
+     */
+    public void setGradeRanking(Integer gradeRanking) {
+        this.gradeRanking = gradeRanking;
+    }
+
+    /**
+     * 班级排名
+     * @return class_ranking 班级排名
+     */
+    public Integer getClassRanking() {
+        return classRanking;
+    }
+
+    /**
+     * 班级排名
+     * @param classRanking 班级排名
+     */
+    public void setClassRanking(Integer classRanking) {
+        this.classRanking = classRanking;
     }
 
     /**

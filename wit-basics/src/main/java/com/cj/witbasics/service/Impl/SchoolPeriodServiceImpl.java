@@ -166,7 +166,7 @@ System.out.println(periodList.size() + "  : 学段集合");
     }
 
     @Override
-    public List<Period> findAllSchoolPeriod(String schoolId) {
+    public List<SchoolPeriod> findAllSchoolPeriod(String schoolId) {
         return schoolPeriodMapper.findAllSchoolPeriod(Long.parseLong(schoolId));
     }
 
@@ -176,7 +176,7 @@ System.out.println(periodList.size() + "  : 学段集合");
     }
 
     @Override
-    public List<SchoolPeriodClassThetime> findAllClassByGradeAndPeriodId(Long periodId) {
+    public List<String> findAllClassByGradeAndPeriodId(Long periodId) {
 
         return schoolPeriodClassThetimeMapper.findAllClassByGradeAndPeriodId(periodId);
     }

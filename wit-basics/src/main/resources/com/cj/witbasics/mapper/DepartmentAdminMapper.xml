@@ -78,4 +78,34 @@
     WHERE
     da.d_id = #{id}
   </select>
+
+  <!--修改用户所在部门-->
+  <update id="updateDidByAdminId" parameterType="com.cj.witbasics.entity.DepartmentAdmin">
+    UPDATE
+    department_admin
+    SET
+    d_id = #{dId}
+    WHERE
+    admin_id = #{adminId}
+
+  </update>
+
+  <!--根据adminId查询信息-->
+  <select id="findDepartmentAdminByAdminId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    department_admin da
+    WHERE
+    da.admin_id = #{adminId}
+  </select>
+
+  <!--根据 adminId 删除数据-->
+  <delete id="deleteDepartmentAdminByAdminId" parameterType="java.lang.Long" >
+    DELETE
+    FROM
+    department_admin
+    WHERE
+    admin_id = #{dId}
+  </delete>
 </mapper>

@@ -16,6 +16,7 @@ import java.util.List;
 public class PeriodUnderGrade {
 
     private Long periodId;  //学段Id
+    private Integer periodSystem;  //学制
     private String periodName; //学段名称
     private Long schoolId;
 

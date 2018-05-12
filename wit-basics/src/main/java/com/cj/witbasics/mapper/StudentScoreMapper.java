@@ -82,4 +82,15 @@ public interface StudentScoreMapper {
 
     List<ClassGradeInfo> selectBathInfo(@Param("list") List<Long> classIdList);
 
+    /**
+     * 批量更新
+     */
+    int updateBatchInfo(@Param("list")  List<StudentScore> params);
+
+
+    /**
+     * 更新
+     */
+    int updateByPrimaryBySome(StudentScore record);
+
 }

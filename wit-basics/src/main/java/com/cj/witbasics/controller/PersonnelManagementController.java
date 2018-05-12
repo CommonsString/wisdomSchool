@@ -184,6 +184,7 @@ public class PersonnelManagementController {
         }else {
             apiResult.setCode(ApiCode.import_failed);
             apiResult.setMsg(ApiCode.import_failed_MSG);
+            apiResult.setData(msgList);
         }
         return apiResult;
     }

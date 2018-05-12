@@ -4,9 +4,19 @@ import java.util.Date;
 
 public class SchoolExam {
     /**
-     * 学校考试表
+     * 学校考试详细信息表
      */
     private Long examId;
+
+    /**
+     * 考试父节点ID
+     */
+    private Long examParentId;
+
+    /**
+     * 届次
+     */
+    private Date thetime;
 
     /**
      * 学校（校区）ID
@@ -84,19 +94,51 @@ public class SchoolExam {
     private String state;
 
     /**
-     * 学校考试表
-     * @return exam_id 学校考试表
+     * 学校考试详细信息表
+     * @return exam_id 学校考试详细信息表
      */
     public Long getExamId() {
         return examId;
     }
 
     /**
-     * 学校考试表
-     * @param examId 学校考试表
+     * 学校考试详细信息表
+     * @param examId 学校考试详细信息表
      */
     public void setExamId(Long examId) {
         this.examId = examId;
+    }
+
+    /**
+     * 考试父节点ID
+     * @return exam_parent_id 考试父节点ID
+     */
+    public Long getExamParentId() {
+        return examParentId;
+    }
+
+    /**
+     * 考试父节点ID
+     * @param examParentId 考试父节点ID
+     */
+    public void setExamParentId(Long examParentId) {
+        this.examParentId = examParentId;
+    }
+
+    /**
+     * 届次
+     * @return thetime 届次
+     */
+    public Date getThetime() {
+        return thetime;
+    }
+
+    /**
+     * 届次
+     * @param thetime 届次
+     */
+    public void setThetime(Date thetime) {
+        this.thetime = thetime;
     }
 
     /**

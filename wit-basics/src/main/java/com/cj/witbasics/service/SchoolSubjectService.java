@@ -1,13 +1,16 @@
 package com.cj.witbasics.service;
 
 
+import com.cj.witbasics.entity.SchoolExamParent;
 import com.cj.witbasics.entity.SchoolSubject;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.utils.entity.other.Pager;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 public interface SchoolSubjectService {
 
@@ -54,15 +57,29 @@ public interface SchoolSubjectService {
     /**
      * 设置课程-右移
      */
-    ApiResult SelectSubjectAndClassRight(Long subjectId, List<Long> classId);
+    ApiResult SelectSubjectAndClassRight(Map params,
+                                         HttpSession session);
 
 
     /**
      * 设置课程-左移
      */
-    ApiResult SelectSubjectAndClassLeight(Long subjectId, List<Long> classId);
+    ApiResult SelectSubjectAndClassLeight(Map params,
+                                          HttpSession session);
 
 
+    /**
+     * ========================================================
+     */
+    /**
+     * 根据科目ID查询所有的课程
+     */
+    public List<SchoolSubject> findAllSubjectBySubjectsId(Long subjectsId);
+
+    /**
+     * 物理删除课程信息
+     */
+    public int deleteSubject(Long subjectId);
 
 
 

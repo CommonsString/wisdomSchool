@@ -1,6 +1,7 @@
 package com.cj.witbasics.controller;
 
 import com.cj.witbasics.service.RegionService;
+import com.cj.witcommon.aop.Log;
 import com.cj.witcommon.entity.ApiCode;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.utils.entity.other.Region;
@@ -37,6 +38,7 @@ public class RegionController {
      */
     @GetMapping("/region")
     @ApiOperation("查询所有地区信息，树形结构封装")
+    @Log(name = "地区 ==> 查询所有地区信息")
     public ApiResult findRegion(){
         List<Region> initCityPicker = regionService.findAllProvinces();
 

@@ -62,6 +62,16 @@ public interface DepartmentInfoMapper {
      */
     public DepartmentInfo findDepartmentInfoByName(DepartmentInfo departmentInfo);
 
+    /**
+     * 查询所有的部门领导ID
+     */
+    public List<Long> findAllDepartmentAdminIds();
+
+    /**
+     * 修改此部门领导信息
+     */
+    public int updateDepartmentAdminId(Long dLeaderId);
+
 
 
 

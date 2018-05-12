@@ -1,5 +1,7 @@
 package com.cj.witbasics.service.Impl;
 
+import com.cj.witbasics.entity.ClassSubjectInfo;
+import com.cj.witbasics.entity.SchoolExamParent;
 import com.cj.witbasics.entity.SchoolSubject;
 import com.cj.witbasics.mapper.ClassSubjectInfoMapper;
 import com.cj.witbasics.mapper.SchoolSubjectMapper;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
@@ -28,6 +31,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -35,10 +39,10 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
 
     private static final Logger log = LoggerFactory.getLogger(SchoolSubjectServiceImpl.class);
 
-    @Autowired(required = false)
+    @Autowired
     private SchoolSubjectMapper subjectMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private ClassSubjectInfoMapper infoMapper;
 
     @Value("${school_id}")
@@ -76,7 +80,7 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
         }
         Long adminId = (Long) session.getAttribute("adminId");
         //开发，假设创建人ID为0
-        subject.setFounderId(0l);
+        subject.setFounderId(adminId);
 //        subject.setFounderId(adminId);
         subject.setSchoolId(Long.parseLong(schoolId));
         //创建时间
@@ -101,7 +105,7 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
         //查询总条数
         int total = this.subjectMapper.selectCountByAll(schoolId, pager);
         //limit #{pager.minRow},#{pager.pageSize}
-System.out.println(total);
+        System.out.println(total);
         pager.setRecordTotal(total);
         // 查询集合
         List<SchoolSubject> result = this.subjectMapper.selectByScholId(schoolId, pager);
@@ -144,9 +148,9 @@ System.out.println(total);
             result.setMsg(ApiCode.error_invalid_argument_MSG);
             return result;
         }
-        //统计科目,有无使用
+        //统计课程,有无使用
         int isCopy = this.infoMapper.selectCountBySubjectId(subject.getSubjectId());
-System.out.println("重复" + isCopy);
+        System.out.println("重复" + isCopy);
         if(isCopy > 0){
             log.error("数据存在使用");
             result.setCode(ApiCode.error_duplicated_data);
@@ -157,7 +161,7 @@ System.out.println("重复" + isCopy);
         subject.setDeleteTime(new Date());
         subject.setState("0");
         int flag_s = this.subjectMapper.updateByPrimaryKeySelective(subject);
-System.out.println(flag_s + " 成功");
+        System.out.println(flag_s + " 成功");
         if(flag_s > 0){
             result.setCode(ApiCode.SUCCESS);
             result.setMsg(ApiCode.SUCCESS_MSG);
@@ -268,7 +272,7 @@ System.out.println(flag_s + " 成功");
         ApiResult result = new ApiResult();
         OutputStream out = null;
         Long schoolId = toLong();
-System.out.println("进入2");
+        System.out.println("进入2");
         try {
             //获取流
             try {
@@ -339,26 +343,43 @@ System.out.println("进入2");
     /**
      * 设置课程(新增)
      * 以课程为基础，设置班级课程
-     * @param classId
+     * @param
      * @return
      */
     @Override
     @Transactional
-    public ApiResult SelectSubjectAndClassRight(Long classId, List<Long> subjectId) {
+    public ApiResult SelectSubjectAndClassRight(Map params,
+                                                HttpSession session) {
+        System.out.println("进入逻辑");
         ApiResult result = new ApiResult();
-        //去除重复
-        for(Long item : subjectId){
-            int flag_a = this.infoMapper.selectByclassByClassIdAndSubjectId(classId, item);
-            //存在
-            if(flag_a > 0){
-                //移除
-                subjectId.remove(item);
+        //班级ID
+        List<Integer> classId = (List<Integer>)params.get("classId");
+        //科目
+        List<Integer> subjectId = (List<Integer>)params.get("subjectId");
+        //标志
+        int flag = 0;
+        for(Integer id : classId){
+            //去除重复
+            for(Integer item : subjectId){
+                Long tempId = id.longValue();
+                Long tempItem = item.longValue();
+                int flag_a = this.infoMapper.selectByclassByClassIdAndSubjectId(tempId, tempItem);
+                //不存在,插入
+                if(flag_a <= 0){
+//                    subjectId.remove(item);
+                    ClassSubjectInfo info = new ClassSubjectInfo();
+                    info.setClassId(tempId);
+                    info.setSubjectId(tempItem);
+                    //插入
+                    flag = this.infoMapper.insertSelective(info);
+                }else{
+                    flag = 1;
+                }
             }
         }
-        //批量增加
-        int flag_b = this.infoMapper.insertSelectiveBath(classId, subjectId);
-        //标志
-        if(flag_b > 0){
+        System.out.println(flag + " 标志");
+//        int flag_b = this.infoMapper.insertSelectiveBath(classId, subjectId);
+        if(flag > 0){
             ApiResultUtil.fastResultHandler(result, true, null, null, null);
         }else{
             ApiResultUtil.fastResultHandler(result, false, ApiCode.error_create_failed, ApiCode.FAIL_MSG, null);
@@ -370,35 +391,76 @@ System.out.println("进入2");
     /**
      * 设置课程(删除)
      * 以课程为基础，设置班级课程
-     * @param classId
+     * @param
      * @return
      */
     @Override
     @Transactional
-    public ApiResult SelectSubjectAndClassLeight(Long classId, List<Long> subjectId) {
+    public ApiResult SelectSubjectAndClassLeight(Map params,
+                                                 HttpSession session) {
         ApiResult result = new ApiResult();
-        //去除重复
-        System.out.println(subjectId.size() + " 前长度");
-        for(Long item : subjectId){
-            int flag_a = this.infoMapper.selectByclassByClassIdAndSubjectId(classId, item);
-            //不存在,说明是学校课程
-            if(flag_a <= 0){
-                //移除
-                subjectId.remove(item);
+        //班级ID
+        List<Integer> classId = (List<Integer>)params.get("classId");
+        //科目
+        List<Integer> subjectId = (List<Integer>)params.get("subjectId");
+        int flag = 0;
+        for(Integer id : classId){
+            //去除重复
+            for(Integer item : subjectId){
+                Long tempId = id.longValue();
+                Long tempItem = item.longValue();
+                int flag_a = this.infoMapper.selectByclassByClassIdAndSubjectId(tempId, tempItem);
+                //存在,删除
+                if(flag_a > 0){
+//                    subjectId.remove(item);
+                    ClassSubjectInfo info = new ClassSubjectInfo();
+                    info.setState("0");
+                    info.setClassId(tempId);
+                    info.setSubjectId(tempItem);
+                    //删除
+                    flag = this.infoMapper.updateByClassIdAndSubjectIdDel(info);
+                }else{
+                    flag = 1;
+                }
             }
         }
-        System.out.println(subjectId.size() + " 后长度");
-        //批量删除
-        int flag_b = 0;
-        for(Long item : subjectId){
-            flag_b = this.infoMapper.deleteByBatch(classId, item);
-        }
+//        for(Long item : subjectId){
+//            int flag_a = this.infoMapper.selectByclassByClassIdAndSubjectId(classId, item);
+//            //不存在,说明是学校课程
+//            if(flag_a <= 0){
+//                //移除
+//                subjectId.remove(item);
+//            }
+//        }
+//        System.out.println(subjectId.size() + " 后长度");
+//        //批量删除
+//        int flag_b = 0;
+//        for(Long item : subjectId){
+//            flag_b = this.infoMapper.deleteByBatch(classId, item);
+//        }
         //标志
-        if(flag_b > 0){
+        if(flag > 0){
             ApiResultUtil.fastResultHandler(result, true, null, null, null);
         }else{
             ApiResultUtil.fastResultHandler(result, false, ApiCode.error_create_failed, ApiCode.FAIL_MSG, null);
         }
         return result;
     }
+
+    @Override
+    public List<SchoolSubject> findAllSubjectBySubjectsId(Long subjectsId) {
+        return subjectMapper.findAllSchoolSubjectBySubjectsId(subjectsId);
+    }
+
+    @Override
+    public int deleteSubject(Long subjectId) {
+        //统计课程,有无使用
+        int isCopy = infoMapper.selectCountBySubjectId(subjectId);
+        if(isCopy > 0){
+            return ApiCode.error_delete_failed;
+        }
+        return subjectMapper.deleteByPrimaryKey(subjectId);
+    }
+
+
 }

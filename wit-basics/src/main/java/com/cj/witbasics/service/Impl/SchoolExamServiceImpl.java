@@ -1,12 +1,7 @@
 package com.cj.witbasics.service.Impl;
 
-import com.cj.witbasics.entity.SchoolExam;
-import com.cj.witbasics.entity.SchoolGrade;
-import com.cj.witbasics.entity.SchoolSubject;
-import com.cj.witbasics.mapper.SchoolClassMapper;
-import com.cj.witbasics.mapper.SchoolExamMapper;
-import com.cj.witbasics.mapper.SchoolGradeMapper;
-import com.cj.witbasics.mapper.SchoolSubjectMapper;
+import com.cj.witbasics.entity.*;
+import com.cj.witbasics.mapper.*;
 import com.cj.witbasics.service.SchoolExamService;
 import com.cj.witcommon.entity.*;
 import com.cj.witcommon.utils.common.StringHandler;
@@ -24,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class SchoolExamServiceImpl implements SchoolExamService{
     private static final Logger log = LoggerFactory.getLogger(SchoolExamServiceImpl.class);
 
@@ -42,6 +38,9 @@ public class SchoolExamServiceImpl implements SchoolExamService{
 
     @Value("${school_id}")
     private String schoolId;
+
+    @Autowired(required = false)
+    private SchoolExamParentMapper schoolExamParentMapper;
 
     /**
      * 转为Long
@@ -188,13 +187,53 @@ public class SchoolExamServiceImpl implements SchoolExamService{
         return pager;
     }
 
+    @Override
+    public List<SchoolExam> findAllSchoolExamByThetime(String thetime) {
+        return examMapper.findAllSchoolExamByThetime(thetime);
+    }
+
+    @Override
+    public List<SchoolExamParent> findAllSchoolExamParentByParameter(Pager p) {
+        return schoolExamParentMapper.findAllSchoolExamParentByParameter(p);
+    }
+
+    @Override
+    public List<Map> findAllSchoolExamThetimeBySchoolExamParent(Long examParentId) {
+        return examMapper.findAllSchoolExamThetimeBySchoolExamParent(examParentId);
+    }
+
+    @Override
+    public List<ExamClassPeriod> findAllSchoolExamClassByExamParentIdAndThetime(Map map) {
+        return examMapper.findAllSchoolExamClassByExamParentIdAndThetime(map);
+    }
+
+    @Override
+    public List<ExamClassPeriod> findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime(Map map) {
+        return examMapper.findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime(map);
+    }
+
     /**
      * 新增考试
      */
     @Override
-    @Transactional
+//    @Transactional
     public ApiResult addSchoolExamInfo(ExamParam examInfo, Long adminId) {
-        //TODO:获取操作员ID
+
+        //父节点ID
+        Long parentId = null;
+        int flag_a = this.schoolExamParentMapper.selectByExamName(examInfo.getExamName());
+        if(flag_a <= 0){
+            /////////////////////////父节点////////////////////////////
+            SchoolExamParent schoolExamParent = new SchoolExamParent();
+            schoolExamParent.setExamName(examInfo.getExamName());
+            schoolExamParent.setCreateTime(new Date());
+            schoolExamParentMapper.insertSelective(schoolExamParent);
+            //父节点ID
+            parentId = schoolExamParent.getExamParentId();
+System.out.println(parentId + "  id");
+            //////////////////////////父节点////////////////////////////+
+        }
+        //===================================================================
         ApiResult result = new ApiResult();
         //插入集合
         List<SchoolExam> examList = new ArrayList<SchoolExam>();
@@ -204,7 +243,7 @@ public class SchoolExamServiceImpl implements SchoolExamService{
         Date time = new Date();
         //查重逻辑
         for(ExamClassSubject e : listClass){
-            int classId = e.getClassId();
+            Integer classId = e.getClassId();
             //第二层
             List<SubjectForTea> subject = e.getSubject();
             for(SubjectForTea s : subject){
@@ -220,12 +259,19 @@ public class SchoolExamServiceImpl implements SchoolExamService{
                     result.setMsg(ApiCode.error_duplicated_data_MSG);
                     return result;
                 }
+
                 //封装结果集合
                 SchoolExam exam = new SchoolExam();
                 exam.setExamTypeName(examInfo.getExamTypeName());
                 exam.setExamTime(examInfo.getExamTime());
                 exam.setExamName(examInfo.getExamName());
                 exam.setSchoolId(toLong());
+                SchoolClass info = classMapper.selectByPrimaryKey(classId.longValue());
+System.out.println(info.toString());
+                //设置届次
+                exam.setThetime(info.getThetime());
+                //设置父节点ID
+                if(parentId != null) exam.setExamParentId(parentId);
                 //设置考试年级
                 exam.setCreateTime(time);
                 exam.setFounderId(adminId);
@@ -239,9 +285,12 @@ public class SchoolExamServiceImpl implements SchoolExamService{
         }
         //批量插入
         int success = this.examMapper.insertBatchInfoByU(examList);
-        for(SchoolExam ss : examList){
-            System.out.println(ss.toString());
-        }
+//        for(SchoolExam ss : examList){
+//            System.out.println(ss.toString());
+//        }
+        //新增考试父节点信息
+
+
         if(success > 0){
             ApiResultUtil.fastResultHandler(result, true, null, null, null);
         }else{

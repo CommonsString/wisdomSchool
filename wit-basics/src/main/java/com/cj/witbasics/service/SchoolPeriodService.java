@@ -46,13 +46,13 @@ public interface SchoolPeriodService {
     List<GradeInfo> findPeriodGradeInfo(Long schoolId, Long periodId);
 
     //查询所有的学段
-    public List<Period> findAllSchoolPeriod(String schoolId);
+    public List<SchoolPeriod> findAllSchoolPeriod(String schoolId);
 
     //查询学段下所有的年级
     public List<SchoolGrade> findAllGradeByPeriodId(Long periodId);
 
     //查询学段下所有届次信息
-    public List<SchoolPeriodClassThetime> findAllClassByGradeAndPeriodId(Long periodId);
+    public List<String> findAllClassByGradeAndPeriodId(Long periodId);
 
     //查询届次下所有班级
     public List<Map> findAllSchoolClassByThetime(Map map);

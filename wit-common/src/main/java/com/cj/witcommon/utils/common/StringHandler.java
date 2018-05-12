@@ -138,7 +138,10 @@ System.out.println(str);
         item.add(StringHandler.faceString(title.getChineseScore()));
         item.add(StringHandler.faceString(title.getMathScore()));
         item.add(StringHandler.faceString(title.getEnglishScore()));
-        item.add(StringHandler.faceString(title.getArtScore()));
+
+        item.add(StringHandler.faceString(title.getPhysicalScore()));
+        item.add(StringHandler.faceString(title.getChemistryScore()));
+        item.add(StringHandler.faceString(title.getBiologicalScore()));
     //扩展.....
     //科目名
         return item;
@@ -154,8 +157,13 @@ System.out.println(str);
         subjectScore.add(new BigDecimal(item.getMathScore()));
         //英语分数
         subjectScore.add(new BigDecimal(item.getEnglishScore()));
-        //艺术分数
-        subjectScore.add(new BigDecimal(item.getArtScore()));
+        //物理分数
+        subjectScore.add(new BigDecimal(item.getPhysicalScore()));
+        //化学分数
+        subjectScore.add(new BigDecimal(item.getChemistryScore()));
+        //生物分数
+        subjectScore.add(new BigDecimal(item.getBiologicalScore()));
+//        subjectScore.add(new BigDecimal(item.getArtScore()));
         return subjectScore;
     }
 
@@ -209,12 +217,12 @@ System.out.println(str);
             //获取英语分数
             float englishScore = Float.parseFloat(scoreInfo.get(i).getEnglishScore());
             //获取英语分数
-            float artScore = Float.parseFloat(scoreInfo.get(i).getArtScore());
+//            float artScore = Float.parseFloat(scoreInfo.get(i).getArtScore());
             //分数检测
             if(chineseScore > bigChineseScore) return true;
             if(mathScore > bigMathScore) return true;
             if(englishScore > bigEnglishScore) return true;
-            if(artScore > bigArtScore) return true;
+//            if(artScore > bigArtScore) return true;
         }
         return false;
     }

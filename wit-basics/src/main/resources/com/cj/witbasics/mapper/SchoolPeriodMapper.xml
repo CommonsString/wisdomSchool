@@ -330,6 +330,7 @@
       WHERE sp.period_name = #{periodName,jdbcType=VARCHAR}
   </select>
 
+  <!--根据学校ID查询所有学段信息-->
   <select id="findAllSchoolPeriod" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
@@ -339,6 +340,33 @@
     sp.school_id = #{schoolId}
     AND
     sp.state = '1'
+
+  </select>
+
+  <resultMap id="PeriodAndGrade" type="com.cj.witcommon.entity.PeriodUnderGrade">
+    <result column="period_id" property="periodId"></result>
+    <result column="period_system" property="periodSystem"></result>
+    <result column="period_name" property="periodName"></result>
+    <collection property="grade" ofType="com.cj.witcommon.entity.GradeInfo">
+      <result column="grade_id" property="gradeId"></result>
+      <result column="grade_name" property="gradeName"></result>
+    </collection>
+  </resultMap>
+
+  <!--根据学校ID查询所有学段、学制、年级信息-->
+  <select id="findAllPeriodAndGradeBySchoolId" parameterType="java.lang.Long" resultMap="PeriodAndGrade">
+    SELECT
+    sp.period_id,sp.period_system,sp.period_name,
+    sg.grade_id,sg.grade_name
+    FROM
+    school_period sp
+    LEFT JOIN school_grade sg ON sp.period_id = sg.period_id
+    WHERE
+    sp.school_id = #{schoolId}
+    AND
+    sp.state = '1'
+    AND
+    sg.state = '1'
 
   </select>
 

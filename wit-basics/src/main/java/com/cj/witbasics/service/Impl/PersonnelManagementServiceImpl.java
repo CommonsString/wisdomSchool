@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -87,7 +86,6 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
         System.out.println(adminInfo);
         System.out.println("===============================================================");
 
-        System.out.println(adminInfo.getTheDepartmentId() + " id");
         //批量导入时，部门ID不存在，进行部门匹配
         if(adminInfo.getTheDepartmentId() == null || adminInfo.getTheDepartmentId() < 0 ){
             System.out.println("进入");
@@ -111,6 +109,13 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
         //根据教职工编号 检查信息是否已存在，如果已存在，则覆盖
         Long adminId0 = adminInfoMapper.findAdminIdByStaffNum(adminInfo.getStaffNumber());
         if(adminId0 != null && adminId0 > 0){
+            //修改部门关系
+            DepartmentAdmin departmentAdmin = new DepartmentAdmin();
+            departmentAdmin.setdId(adminInfo.getTheDepartmentId());
+            departmentAdmin.setAdminId(adminId0);
+            departmentAdminMapper.updateDidByAdminId(departmentAdmin);
+
+            adminInfo.setAdminId(adminId0);
             int i = adminInfoMapper.updateByPrimaryKeySelective(adminInfo);
             return i;
         }
@@ -182,8 +187,8 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
             }else {  //根据角色类型生成uuid
                 adminInfo.setAdminUuid(SLIDUtil.newUUID(adminRole.getType()));
             }
-            //        Long founderId = (Long) request.getSession().getAttribute("adminId");
-            Long founderId = 0l;  //开发环境，假设操作员id为0
+                    Long founderId = (Long) request.getSession().getAttribute("adminId");
+//            Long founderId = 0l;  //开发环境，假设操作员id为0
             adminInfo.setFounderId(founderId);
 
             SynBasicInformation synBasicInformation = new SynBasicInformation();
@@ -246,13 +251,13 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
             //调用创建人事信息接口
             i = createAdminInfo(adminInfo,request,"");
             if(i == 1){
-                msgList.add(adminInfo.getStaffNumber()+" 处理成功。");
+                msgList.add(adminInfo.getFullName()+"("+adminInfo.getStaffNumber()+") 处理成功。");
                 nums += i;
             }else if(i == -1){
-                msgList.add(adminInfo.getTheDepartment()+" 不存在。");
+                msgList.add(adminInfo.getFullName()+"("+adminInfo.getStaffNumber()+")导入失败   "+adminInfo.getTheDepartment()+" 不存在。");
 
             }else {
-                msgList.add(adminInfo.getStaffNumber()+" 处理失败。");
+                msgList.add(adminInfo.getFullName()+"("+adminInfo.getStaffNumber()+") 处理失败。");
 
             }
 
@@ -276,8 +281,8 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
     @Transactional
     @Override
     public Integer deleteStaff(List<Long> adminIds, HttpServletRequest request) {
-        //        Long founderId = (Long) request.getSession().getAttribute("adminId");
-        Long operatorId = 0l;  //开发环境，假设操作员id为0
+                Long founderId = (Long) request.getSession().getAttribute("adminId");
+//        Long founderId = 0l;  //开发环境，假设操作员id为0
         HashMap<String,Object> params;
         Date date=new Date();
         int i;  //接收处理成功条数
@@ -285,7 +290,7 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
         for (Long adminId:adminIds) {
             params=new HashMap<>();
             params.put("adminId",adminId);
-            params.put("operator_id",operatorId);
+            params.put("operator_id",founderId);
             params.put("updateTime",date);
             params.put("adminState","0");
 
@@ -326,8 +331,8 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
      */
     @Transactional
     public Integer updateAdminInfo(AdminInfo adminInfo,HttpServletRequest request){
-        //        Long founderId = (Long) request.getSession().getAttribute("adminId");
-        Long founderId = 0l;  //开发环境，假设操作员id为0
+                Long founderId = (Long) request.getSession().getAttribute("adminId");
+//        Long founderId = 0l;  //开发环境，假设操作员id为0
 
         adminInfo.setFounderId(founderId);
 
@@ -387,8 +392,7 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
      */
     @Transactional
     public Integer addDepartmentInfo(DepartmentInfo departmentInfo,HttpServletRequest request){
-        //        Long founderId = (Long) request.getSession().getAttribute("adminId");
-        Long founderId = 0l;  //开发环境，假设操作员id为0
+        Long founderId = (Long) request.getSession().getAttribute("adminId");//操作员ID
         Date date=new Date();
         departmentInfo.setFounderId(founderId);
         departmentInfo.setCreateTime(date);
@@ -396,12 +400,31 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
         int i;
         i=departmentInfoMapper.insertSelective(departmentInfo);
 
-        //将部门领导添加到部门内
-        DepartmentAdmin departmentAdmin = new DepartmentAdmin();
-        departmentAdmin.setdId(departmentInfo.getId().intValue());
-        departmentAdmin.setAdminId(departmentInfo.getdLeaderId());
+        //检查 此用户是否已经是其他部门的人员
+        DepartmentAdmin departmentAdmin = departmentAdminMapper.findDepartmentAdminByAdminId(departmentInfo.getdLeaderId());
+        if(departmentAdmin == null){
+            departmentAdmin = new DepartmentAdmin();
+            //将部门领导添加到部门内
+            departmentAdmin.setdId(departmentInfo.getId().intValue());
+            departmentAdmin.setAdminId(departmentInfo.getdLeaderId());
 
-        departmentAdminMapper.insertSelective(departmentAdmin);
+            departmentAdminMapper.insertSelective(departmentAdmin);
+
+        }else {
+            //修改 adminId --部门关联信息
+            departmentAdmin.setdId(departmentInfo.getId().intValue());
+            departmentAdminMapper.updateDidByAdminId(departmentAdmin);
+        }
+
+        //更新adminInfo 信息
+
+        Map map = new HashMap();
+        map.put("adminId",departmentInfo.getdLeaderId());  //adminID
+        map.put("did",departmentInfo.getId());  //部门ID
+        map.put("theDepartment",departmentInfo.getdName());  //部门名称
+        map.put("operatorId",founderId);  //操作员ID
+        adminInfoMapper.updateStaffDepartment(map);
+
 
         if (i==-1){
             return ApiCode.FAIL;
@@ -465,17 +488,41 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
      */
     public Integer updateStaffDepartment(List<Long> adminIds,Long did, String theDepartment, HttpServletRequest request){
         int i = 0;
-//        Long operatorId = (Long) request.getSession().getAttribute("adminId");  //操作员ID
-        Long operatorId = 0l;  //操作员ID,开发时假设为0
+        Long operatorId = (Long) request.getSession().getAttribute("adminId");  //操作员ID
+//        Long operatorId = 0l;  //操作员ID,开发时假设为0
 
         //更新adminInfo表中部门名称 和 DepartmentAdmin表中 adminId-部门ID关系
         Map map = new HashMap();
+        //查询部门领导ID集合
+        List<Long> departmentAdminIds = departmentInfoMapper.findAllDepartmentAdminIds();
         for (Long adminId:adminIds){
             map.put("adminId",adminId);  //adminID
             map.put("did",did);  //部门ID
             map.put("theDepartment",theDepartment);  //部门名称
             map.put("operatorId",operatorId);  //操作员ID
+            for (Long dLeaderId : departmentAdminIds){
+                if(adminId == dLeaderId){  //如果被操作的用户是部门领导
+                    //则清除此部门领导信息
+                    departmentInfoMapper.updateDepartmentAdminId(dLeaderId);
 
+
+                }
+            }
+
+
+            //检查此用户是否存在部门信息关联
+            DepartmentAdmin departmentAdmin =  departmentAdminMapper.findDepartmentAdminByAdminId(adminId);
+            if(departmentAdmin == null){
+                departmentAdmin = new DepartmentAdmin();
+                departmentAdmin.setAdminId(adminId);
+                departmentAdmin.setdId(did.intValue());
+                departmentAdminMapper.insertSelective(departmentAdmin);
+            }else {
+                departmentAdmin.setdId(did.intValue());
+                departmentAdminMapper.updateDidByAdminId(departmentAdmin);
+            }
+
+            //修改 adminInfo 信息
             i += adminInfoMapper.updateStaffDepartment(map);
 
             if (i==-1){
@@ -514,6 +561,48 @@ public class PersonnelManagementServiceImpl implements PersonnelManagementServic
 
             return -1;
         }else {
+            AdminInfo adminInfo = new AdminInfo();
+            //查询此部门原信息
+            DepartmentInfo oldDepartmentInfo = departmentInfoMapper.selectByPrimaryKey(departmentInfo.getId());
+
+            //如果部门原领导ID != 此部门新领导ID
+            if(oldDepartmentInfo.getdLeaderId() != departmentInfo.getdLeaderId()){
+                //将部门原领导信息移除
+                departmentAdminMapper.deleteDepartmentAdminByAdminId(oldDepartmentInfo.getdLeaderId());
+                //移除adminInfo部门信息
+                adminInfo.setAdminId(oldDepartmentInfo.getdLeaderId());
+                adminInfo.setTheDepartmentId(0);
+                adminInfo.setTheDepartment("");
+                adminInfoMapper.updateByPrimaryKeySelective(adminInfo);
+
+
+                //将部门领导加入到此部门
+                //根据 adminId 查询部门关联信息
+                DepartmentAdmin departmentAdmin = departmentAdminMapper.findDepartmentAdminByAdminId(departmentInfo.getdLeaderId());
+                if(departmentAdmin == null ){  //此用户之前不存在任何部门
+                    departmentAdmin = new DepartmentAdmin();
+                    departmentAdmin.setAdminId(departmentInfo.getdLeaderId());
+                    departmentAdmin.setdId(departmentInfo.getId().intValue());
+                    //将部门新领导添加到数据库
+                    departmentAdminMapper.insertSelective(departmentAdmin);
+
+                }else {
+                    departmentAdmin.setAdminId(departmentInfo.getdLeaderId());
+                    departmentAdmin.setdId(departmentInfo.getId().intValue());
+                    //将部门新领导数据修改
+                    departmentAdminMapper.updateDidByAdminId(departmentAdmin);
+                }
+
+
+
+            }
+
+            //跟新 adminInfo 部门信息
+            adminInfo.setAdminId(departmentInfo.getdLeaderId());
+            adminInfo.setTheDepartmentId(departmentInfo.getId().intValue());
+            adminInfo.setTheDepartment(departmentInfo.getdName());
+            adminInfoMapper.updateByPrimaryKeySelective(adminInfo);
+
             //根据部门ID修改部门信息
             return departmentInfoMapper.updateByPrimaryKeySelective(departmentInfo);
         }

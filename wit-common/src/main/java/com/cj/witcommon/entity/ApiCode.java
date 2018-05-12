@@ -130,6 +130,15 @@ public class ApiCode {
     public static final int subjects_subject_exist = 1015;
     public static final String subjects_subject_exist_MSG =  "科目下有课程未删除，无法删除";
 
+    public static final int period_error = 1051;
+    public static final String period_error_MSG = "学段不存在";
+    public static final int grade_error = 1052;
+    public static final String grade_error_MSG = "年级不存在";
+    public static final int thetime_error = 1053;
+    public static final String thetime_error_MSG = "届次不存在";
+    public static final int class_error = 1054;
+    public static final String class_error_MSG = "班级不存在";
+
 
     public static final int import_success = 1100;
     public static final String import_success_MSG =  "导入成功";
@@ -138,7 +147,7 @@ public class ApiCode {
 
     public static final int export_success = 1110;
     public static final String export_success_MSG =  "导出成功";
-    public static final int export_failed = 1102;
+    public static final int export_failed = 1111;
     public static final String export_failed_MSG =  "导出失败";
 
 }

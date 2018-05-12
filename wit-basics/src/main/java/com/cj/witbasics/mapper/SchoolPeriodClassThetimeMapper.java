@@ -47,7 +47,7 @@ public interface SchoolPeriodClassThetimeMapper {
 
 
     //根据学段ID、所属届次 查询符合条件的所有班级
-    public List<SchoolPeriodClassThetime> findAllClassByGradeAndPeriodId(Long periodId);
+    public List<String> findAllClassByGradeAndPeriodId(Long periodId);
 
     //查询届次下所有班级
     public List<Map> findAllSchoolClassByThetime(Map map);
@@ -67,4 +67,8 @@ public interface SchoolPeriodClassThetimeMapper {
     //查重
     SchoolPeriodClassThetime selectByAdminIdUbw(@Param("headmasterId") Long headmasterId,
                                                 @Param("classId") Long classId);
+
+    //根据班级ID查询
+    SchoolPeriodClassThetime selectByClassId(Long classId);
+
 }

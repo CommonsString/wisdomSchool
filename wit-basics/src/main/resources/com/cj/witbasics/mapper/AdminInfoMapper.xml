@@ -1371,7 +1371,7 @@ substantiveLevel,jdbcType=VARCHAR},
         post = #{post,jdbcType=VARCHAR},
       </if>
       <if test="postAttach != null" >
-        postAttach = #{postAttach,jdbcType=VARCHAR},
+        post_attach = #{postAttach,jdbcType=VARCHAR},
       </if>
     </set>
     where admin_id = #{adminId,jdbcType=BIGINT}
@@ -1677,7 +1677,10 @@ substantiveLevel,jdbcType=VARCHAR},
 
 
     <if test="parameter != null and parameter != '' " >
-      AND  da.id = #{parameter}  OR ai.full_name = #{parameter}
+      AND
+      da.id LIKE concat(concat('%',#{parameter}),'%')
+      OR
+      ai.full_name LIKE concat(concat('%',#{parameter}),'%')
     </if>
 
     limit #{minRow},#{pageSize}
@@ -1696,7 +1699,10 @@ substantiveLevel,jdbcType=VARCHAR},
 
 
     <if test="parameter != null and parameter != '' " >
-      AND  da.id = #{parameter}  OR ai.full_name = #{parameter}
+      AND
+      da.id LIKE concat(concat('%',#{parameter}),'%')
+      OR
+      ai.full_name LIKE concat(concat('%',#{parameter}),'%')
     </if>
 
 

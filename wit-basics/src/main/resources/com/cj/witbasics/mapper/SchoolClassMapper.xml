@@ -13,6 +13,7 @@
     <result column="class_level_id" property="classLevelId" jdbcType="INTEGER" />
     <result column="class_level" property="classLevel" jdbcType="VARCHAR" />
     <result column="class_year" property="classYear" jdbcType="TIMESTAMP" />
+    <result column="thetime" property="thetime" jdbcType="TIMESTAMP" />
     <result column="class_period_id" property="classPeriodId" jdbcType="INTEGER" />
     <result column="class_period" property="classPeriod" jdbcType="VARCHAR" />
     <result column="class_headmaster_id" property="classHeadmasterId" jdbcType="INTEGER" />
@@ -25,7 +26,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     class_id, class_name, class_abbreviation, class_number, school_id, class_campus,
-    class_type_id, class_type, class_level_id, class_level, class_year, class_period_id,
+    class_type_id, class_type, class_level_id, class_level, class_year, thetime, class_period_id,
     class_period, class_headmaster_id, class_headmaster, founder_id, create_time, operator_id,
     delete_time, state
   </sql>
@@ -398,9 +399,9 @@
     ON ss.admin_info_id = ai.admin_info_id
     <where>
       /*根据学段ID,查询学制 &lt;= ----> 小于转义气
-       endTime传入参数
-       NOW：当前时间
-       class_year:入学年度
+      endTime传入参数
+      NOW：当前时间
+      class_year:入学年度
       */
       <if test="periodId != null">
         (
@@ -415,16 +416,16 @@
         )
       </if>
       /**
-        年级下的班级
-       */
+      年级下的班级
+      */
       <if test="gradeAge != null">
         AND
         (
-          <if test="gradeAge == '一年级'">
-            sc.period_id = #{periodId}
-            AND
-            DATEDIFF(NOW(), #{sc.class_year}) BETWEEN 365 AND 366
-          </if>
+        <if test="gradeAge == '一年级'">
+          sc.period_id = #{periodId}
+          AND
+          DATEDIFF(NOW(), #{sc.class_year}) BETWEEN 365 AND 366
+        </if>
         )
       </if>
       /*模糊条件*/
@@ -460,12 +461,12 @@
     SELECT  FROM school_class WHERE class_level_id IN (#{classLevel})
   </select>
 
-<!--
-      sc.class_id,
-      sc.class_name, sc.class_headmaster, sc.class_headmaster_id, sc.class_headmaster,
-      sc.class_number, sc.class_type, sc.class_level,
-      sb.subject_id, sb.subject_name, ai.admin_info_id, ai.full_name, sc.class_year
-  -->
+  <!--
+        sc.class_id,
+        sc.class_name, sc.class_headmaster, sc.class_headmaster_id, sc.class_headmaster,
+        sc.class_number, sc.class_type, sc.class_level,
+        sb.subject_id, sb.subject_name, ai.admin_info_id, ai.full_name, sc.class_year
+    -->
   <resultMap id="subjectForTeaMap" type="com.cj.witcommon.entity.SubjectForTea">
     <result property="adminInfoId" column="admin_info_id" />
     <result property="fullName" column="full_name" />
@@ -504,12 +505,6 @@
       sc.state != '0'
       limit #{pager.minRow},#{pager.pageSize}
   </select>
-
-
-
-
-
-
 
   <!--根据入学年度筛选-->
   <select id="selectByPeriodAndGrade" resultMap="selectInfoMap">
@@ -714,52 +709,141 @@
       SELECT period_name FROM school_period WHERE period_name = #{periodName,jdbcType=VARCHAR}
   </select>
 
+  <resultMap id="schoolClassInfo" type="com.cj.witcommon.entity.SchoolClassInfo">
+    <result column="class_id" property="classId"/>
+    <result column="class_name" property="className"/>
+    <result column="class_headmaster_id" property="classHeadmasterId"/>
+    <result column="class_headmaster" property="classHeadmaster"/>
+    <result column="class_number" property="classNumber"/>
+    <result column="class_year" property="classYear"/>
+    <result column="thetime" property="thetime"/>
+    <result column="class_period_id" property="classPeriodId"/>
+    <result column="class_period" property="classPeriod"/>
 
- <!--重构-->
+    <result column="class_campus" property="classCampus" jdbcType="VARCHAR" />
+    <result column="class_type_id" property="classTypeId" jdbcType="INTEGER" />
+    <result column="class_type" property="classType" jdbcType="VARCHAR" />
+    <result column="class_level_id" property="classLevelId" jdbcType="INTEGER" />
+    <result column="class_level" property="classLevel" jdbcType="VARCHAR" />
+    <collection property="subject" ofType="com.cj.witcommon.entity.SubjectForTea" select="getSubjectInfo" column="class_id">
+    </collection>
+  </resultMap>
+  <!--重构-->
+
+<!--计数-->
+<select id="selectCountByPeriodId" parameterType="int" resultType="int">
+    SELECT
+    count(class_id)
+    FROM
+    school_class AS sc
+    WHERE
+    sc.class_period_id = #{periodId}
+    AND
+    sc.state != '0'
+</select>
   <!--根据学段筛选-->
-  <select id="selectByPeriodIdUBW" parameterType="Long" resultMap="BaseResultMap">
-      SELECT
-      *
-      FROM
-      school_class AS sc
-      WHERE
-      sc.class_period_id = #{classPeriodId,jdbcType=INTEGER}
-      AND
-      sc.state != '0'
-      limit #{pager.minRow},#{pager.pageSize}
-  </select>
-  <!--根据届次筛选-->
-  <select id="selectByPrimaryKeyByPeriodAndThetime" parameterType="com.cj.witbasics.entity.SchoolClass" resultMap="BaseResultMap">
-      SELECT
-      *
-      FROM
-      school_class AS sc
-      WHERE
-      sc.class_id = #{item.classId,jdbcType=BIGINT}
-      AND
-      sc.class_period_id = #{item.classPeriodId,jdbcType=INTEGER}
-      AND
-      thetime = #{item.thetime,jdbcType=TIMESTAMP},
-      AND
-      sc.state != '0'
-  </select>
-
-  <!--模糊查询-->
-  <select id="">
+  <select id="selectByPeriodIdUBW" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultMap="schoolClassInfo">
     SELECT
     *
     FROM
     school_class AS sc
     WHERE
-    sc.class_id = #{sClass.classId,jdbcType=BIGINT}
-    AND
-    (sc.class_number LIKE CONCAT(#{vague}, "%")
-    OR sc.class_headmaster LIKE CONCAT(#{vague}, "%")
-    OR sc.class_name LIKE CONCAT(#{vague}, "%"))
-    AND
+    <if test="parameters.containsKey('periodId')">
+      <if test="parameters.periodId != null and parameters.periodId != ''">
+        sc.class_period_id = #{parameters.periodId}
+        AND
+      </if>
+    </if>
     sc.state != '0'
-    limit #{pager.minRow},#{pager.pageSize}
+    limit #{minRow},#{pageSize}
+  </select>
+  <!--根据届次筛选-->
+  <select id="selectByPrimaryKeyByPeriodAndThetime" resultMap="schoolClassInfo">
+      SELECT
+      *
+      FROM
+      school_class AS sc
+      WHERE
+      sc.class_id = #{info.classId}
+      AND
+      sc.class_period_id = #{info.classPeriodId}
+      AND
+      sc.thetime = date_format(#{thetime,jdbcType=TIMESTAMP}, '%Y%m%d')
+      AND
+      sc.state != '0'
   </select>
 
 
+    <!--届次-->
+    <select id="selectByByPeriodAndThetime" resultMap="schoolClassInfo">
+      SELECT
+      *
+      FROM
+      school_class AS sc
+      WHERE
+      sc.class_period_id = #{periodId}
+      AND
+      sc.thetime = date_format(#{thetime,jdbcType=TIMESTAMP}, '%Y%m%d')
+      AND
+      sc.state != '0'
+      limit #{pager.minRow},#{pager.pageSize}
+    </select>
+    <!--计数-->
+    <select id="selectCountByPeriodIdAndThetime" resultType="int">
+      SELECT
+      count(class_id)
+      FROM
+      school_class AS sc
+      WHERE
+      sc.class_period_id = #{periodId}
+      AND
+      sc.thetime = date_format(#{thetime,jdbcType=TIMESTAMP}, '%Y%m%d')
+      AND
+      sc.state != '0'
+    </select>
+  <!--模糊查询-->
+  <select id="selectByVagueParamUBW" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultMap="schoolClassInfo">
+    SELECT
+    *
+    FROM
+    school_class AS sc
+    WHERE
+    <if test="parameter != null">
+      sc.class_id = #{parameter}
+      AND
+    </if>
+    <if test="parameters.containsKey('vague')">
+      (
+      sc.class_number LIKE CONCAT(#{parameters.vague}, "%")
+      OR
+      sc.class_headmaster LIKE CONCAT(#{parameters.vague}, "%")
+      OR
+      sc.class_name LIKE CONCAT(#{parameters.vague}, "%")
+      )
+      AND
+    </if>
+    sc.state != '0'
+    limit #{minRow},#{pageSize}
+  </select>
+
+
+  <!--======================================================================================-->
+  <resultMap id="PeriodAndThetime" type="com.cj.witcommon.entity.PeriodAndThetime">
+    <result column="class_period_id" property="classPeriodId"></result>
+    <result column="class_period" property="classPeriod"></result>
+    <collection property="thisYear" ofType="com.cj.witcommon.entity.ClassYear">
+      <result column="class_year" property="classYear"></result>
+      <result column="thetiem" property="thetiem"></result>
+      <collection property="classInfo" ofType="com.cj.witcommon.entity.ClassInfo">
+        <result column="class_id" property="classId"></result>
+        <result column="class_name" property="className"></result>
+
+      </collection>
+
+    </collection>
+  </resultMap>
+  <!--/查询学段、届次、班级信息 树形结构-->
+  <select id="findAllPeriodAndThetimeAndClassBySchoolId" parameterType="java.lang.Long" resultMap="PeriodAndThetime">
+
+  </select>
 </mapper>

@@ -27,6 +27,7 @@ import java.util.*;
 
 
 @Service
+@Transactional
 public class SchoolClassServiceImpl implements SchoolClassService{
 
     private static final Logger log = LoggerFactory.getLogger(SchoolClassServiceImpl.class);
@@ -101,14 +102,14 @@ public class SchoolClassServiceImpl implements SchoolClassService{
                     System.out.println(info.toString());
                     int isClassType = this.classTypeMapper.selectByClassType(info.getClassType());
                     if(isClassType <= 0){
-                        apiResult.setCode(ApiCode.error_duplicated_data);
+                        apiResult.setCode(ApiCode.import_failed);
                         apiResult.setData(info);
                         apiResult.setMsg("班级类型：" + info.getClassPeriod() + "该班级类型不存在，无法导入");
                         return apiResult;
                     }
                     String isPeriod = this.classMapper.selectInfoByPeriodInfo(info.getClassPeriod());
                     if(isPeriod == null){
-                        apiResult.setCode(ApiCode.error_duplicated_data);
+                        apiResult.setCode(ApiCode.import_failed);
                         apiResult.setData(info);
                         apiResult.setMsg("学段：" + info.getClassPeriod() + "该学段不存在，无法导入");
                         return apiResult;
@@ -117,12 +118,24 @@ public class SchoolClassServiceImpl implements SchoolClassService{
                     //存在更新
                     int isCopy = this.classMapper.selectCountByClassNumber(info.getClassNumber());
                     System.out.println(isCopy + "是否重复！");
-System.out.println(isCopy + " ： 存在");
+                    System.out.println(isCopy + " ： 存在");
                     if(isCopy > 0){
-System.out.println("班级号：" + isCopy);
+                        System.out.println("班级号：" + isCopy);
                         Long classId = this.classMapper.selectByClassNumber(info.getClassNumber());
                         info.setClassId(classId);
+                        //更新班级表
                         this.classMapper.updateByPrimaryKeySelective(info);
+                        //更新关联表
+                        SchoolPeriodClassThetime cTime = new SchoolPeriodClassThetime();
+                        cTime.setClassId(classId);
+                        cTime.setPeriodId(info.getClassPeriodId().longValue());
+                        //查询学段下学制
+                        SchoolPeriod period = this.periodMapper.selectByPrimaryKey(info.getClassPeriodId().longValue());
+                        //转换届次
+                        String classYear = info.getClassYear();
+
+
+                        this.classThetimeMapper.updateByClassIdKeySelective(cTime);
 //                        //数据存在,无法导入
 //                        apiResult.setCode(ApiCode.error_duplicated_data);
 //                        apiResult.setData(info);
@@ -249,9 +262,9 @@ System.out.println("班级号：" + isCopy);
                 type.setClasstypeName(classType.get(i));
                 data.add(type);
             }
-System.out.println(data.size() + " 长度");
+            System.out.println(data.size() + " 长度");
             int result = this.classTypeMapper.addBathClassType(data);
-System.out.println(result + "结果");
+            System.out.println(result + "结果");
             if(result > 0){
                 log.info("插入成功");
                 success = true;
@@ -308,7 +321,7 @@ System.out.println(result + "结果");
         //判断类型,查重
         for(String levelName : classLevel){
             int flag = this.classLevelMapper.selectByClassLevel(levelName);
-System.out.println(levelName + "  " + flag);
+            System.out.println(levelName + "  " + flag);
             if(flag > 0){
                 isCopy = true;
                 break;
@@ -324,9 +337,9 @@ System.out.println(levelName + "  " + flag);
                 //添加数据
                 data.add(type);
             }
-System.out.println(data.size() + " 长度");
+            System.out.println(data.size() + " 长度");
             int result = this.classLevelMapper.addBathClassLevel(data);
-System.out.println(result + "结果");
+            System.out.println(result + "结果");
             if(result > 0){
                 log.info("插入成功");
                 success = true;
@@ -363,7 +376,7 @@ System.out.println(result + "结果");
     @Transactional
     public boolean updateClassLevelDel(Integer classLevelId) {
         int flag = this.classMapper.selectCountClassLevel(classLevelId);
-System.out.println(flag + " 班级层次");
+        System.out.println(flag + " 班级层次");
         if(flag > 0){
             log.info("该班级层次下，存在班级，无法删除");
             return false; //存在，无法删除
@@ -387,7 +400,7 @@ System.out.println(flag + " 班级层次");
     public boolean updateSchoolClassInfo(SchoolClass schoolClass, Long chineseId, Long englishId, Long mathId,
                                          String chineseTea, String englishTea, String mathTea) {
         Long classId = schoolClass.getClassId(); //获取ID
-System.out.println(classId  + " 班级ID");
+        System.out.println(classId  + " 班级ID");
         //更新班级基本信息
         int classFlag = this.classMapper.updateByPrimaryKeySelective(schoolClass); //更新班级信息表，根据班级号
         boolean flag1 = false, flag2 = false, flag3 = false; //默认未更新
@@ -414,98 +427,11 @@ System.out.println(classId  + " 班级ID");
     @Override
     @Transactional
     public Pager findSchoolClassInfo(Long periodId, Long gradeId, String vague, Pager pager) {
-System.out.println(periodId + " " + gradeId + " " + vague);
+        System.out.println(periodId + " " + gradeId + " " + vague);
         //学段过滤
         if(periodId != null){
             //根据学段Id,查询对于班级
             List<SchoolClassInfo> underPeriodClass = this.classMapper.selectByPeriodId(periodId, pager);
-            for(SchoolClassInfo info : underPeriodClass){
-                System.out.println(info.toString());
-            }
-System.out.println(underPeriodClass.size() + " 数量");
-            //查询学段ID下的总条数,测试
-            pager.setRecordTotal(underPeriodClass.size());
-            //结果集
-            pager.setContent(underPeriodClass);
-            //年级查询(二层)
-            if(gradeId != null){
-System.out.println("进入第二层");
-                //根据学段ID和年级ID,查询年级名称
-                String gradeName = this.gradeMapper.selectByPIdAndGrId(periodId, gradeId);
-                //年级数据
-                int gradeAge = StringHandler.getGradeAge(gradeName);
-System.out.println(gradeName + "  年级名称   " + "年级age: " + gradeAge);
-                if(gradeAge < 0){
-                    log.error("年级出错");
-                    return null;
-                }
-                //二层数据
-                List<SchoolClassInfo> undesrGradeClass = new ArrayList<SchoolClassInfo>();
-                //循环处理
-System.out.println("二层数据");
-                for(SchoolClassInfo item : underPeriodClass){
-                    //获取数据
-//System.out.println(item.getClassId()  + " id信息" + "   时间 " + item.getClassYear());
-                    SchoolClassInfo temp = this.classMapper.selectByPeriodAndGrade(item, gradeAge, pager);
-                    if(temp != null){
-                        //存在,添加进结果集合
-                        undesrGradeClass.add(temp);
-System.out.println(temp.toString());
-                    }
-                }
-System.out.println(undesrGradeClass.size() + "二层数量");
-                //结果集
-                pager.setContent(undesrGradeClass);
-                //查询总数,测试
-                pager.setPageTotal(undesrGradeClass.size());
-                //第三层结果集
-                List<SchoolClassInfo> undesrGradeVagueClass = new ArrayList<SchoolClassInfo>();
-                //结果集覆盖
-                if(vague == null || "".equals(vague)) return pager;
-                //模糊查询
-                if(vague != null || !"".equals(vague)){
-System.out.println("进入第三层 ~");
-                    for(SchoolClassInfo sClass : undesrGradeClass){
-                        SchoolClassInfo underClassForVague = this.classMapper.selectByVagueParam(sClass, vague,  pager);
-                        if(underClassForVague != null){
-                            //数据添加
-System.out.println(underClassForVague.toString());
-                            undesrGradeVagueClass.add(underClassForVague);
-                        }
-                    }
-                    //查询总数,测试
-                    pager.setPageTotal(undesrGradeVagueClass.size());
-                    //结果集
-                    pager.setContent(undesrGradeVagueClass);
-                }else{
-                    return pager;
-                }
-            }else{
-                return pager;
-            }
-        }else{
-            log.error("无记录");
-            return pager;
-        }
-        return pager;
-}
-
-
-    /**
-     * 查询班级，重构
-     * @param periodId
-     * @param thetime
-     * @param vague
-     * @param pager
-     * @return
-     */
-    @Override
-    public Pager findSchoolClassInfoUBW(Long periodId, Date thetime, String vague, Pager pager) {
-        System.out.println(periodId + " " + thetime + " " + vague);
-        //学段过滤
-        if(periodId != null){
-            //根据学段Id,查询对于班级
-            List<SchoolClassInfo> underPeriodClass = this.classMapper.selectByPeriodIdUBW(periodId, pager);
             for(SchoolClassInfo info : underPeriodClass){
                 System.out.println(info.toString());
             }
@@ -515,16 +441,25 @@ System.out.println(underClassForVague.toString());
             //结果集
             pager.setContent(underPeriodClass);
             //年级查询(二层)
-            if(thetime != null){
+            if(gradeId != null){
                 System.out.println("进入第二层");
-//                String gradeName = this.gradeMapper.selectByPIdAndGrId(periodId, gradeId);
+                //根据学段ID和年级ID,查询年级名称
+                String gradeName = this.gradeMapper.selectByPIdAndGrId(periodId, gradeId);
+                //年级数据
+                int gradeAge = StringHandler.getGradeAge(gradeName);
+                System.out.println(gradeName + "  年级名称   " + "年级age: " + gradeAge);
+                if(gradeAge < 0){
+                    log.error("年级出错");
+                    return null;
+                }
                 //二层数据
                 List<SchoolClassInfo> undesrGradeClass = new ArrayList<SchoolClassInfo>();
                 //循环处理
                 System.out.println("二层数据");
                 for(SchoolClassInfo item : underPeriodClass){
                     //获取数据
-                    SchoolClassInfo temp = this.classMapper.selectByPrimaryKeyByPeriodAndThetime(item);
+//System.out.println(item.getClassId()  + " id信息" + "   时间 " + item.getClassYear());
+                    SchoolClassInfo temp = this.classMapper.selectByPeriodAndGrade(item, gradeAge, pager);
                     if(temp != null){
                         //存在,添加进结果集合
                         undesrGradeClass.add(temp);
@@ -544,7 +479,132 @@ System.out.println(underClassForVague.toString());
                 if(vague != null || !"".equals(vague)){
                     System.out.println("进入第三层 ~");
                     for(SchoolClassInfo sClass : undesrGradeClass){
-                        SchoolClassInfo underClassForVague = this.classMapper.selectByVagueParamUBW(sClass, vague,  pager);
+                        SchoolClassInfo underClassForVague = this.classMapper.selectByVagueParam(sClass, vague,  pager);
+                        if(underClassForVague != null){
+                            //数据添加
+                            System.out.println(underClassForVague.toString());
+                            undesrGradeVagueClass.add(underClassForVague);
+                        }
+                    }
+                    //查询总数,测试
+                    pager.setPageTotal(undesrGradeVagueClass.size());
+                    //结果集
+                    pager.setContent(undesrGradeVagueClass);
+                }else{
+                    return pager;
+                }
+            }else{
+                return pager;
+            }
+        }else{
+            log.error("无记录");
+            return pager;
+        }
+        return pager;
+    }
+
+
+    /**
+     * 查询班级，重构
+     * @param periodId
+     * @param thetime
+     * @param vague
+     * @param pager
+     * @return
+     */
+    @Override
+    public Pager findSchoolClassInfoUBW(Integer periodId, String thetime, String vague, Pager pager) {
+        System.out.println(periodId + " " + thetime + " " + vague);
+        //学段层
+        if(periodId != null && thetime == null) {
+            System.out.println("1成~~~~~~");
+            //根据学段Id,查询对于班级
+            List<SchoolClassInfo> underPeriodClass = classMapper.selectByPeriodIdUBW(pager);
+            System.out.println(underPeriodClass.size() + " 数量");
+            //查询学段ID下的总条数,测试
+            System.out.println("一层数量：" + this.classMapper.selectCountByPeriodId(periodId));
+            pager.setRecordTotal(this.classMapper.selectCountByPeriodId(periodId)); //问题
+            //结果集
+            pager.setContent(underPeriodClass);
+            return pager;
+        }
+
+        //学段届次
+        if(periodId != null && thetime != null){
+            System.out.println("2成~~~~~~");
+            List<SchoolClassInfo> undesrGradeClass = new ArrayList<SchoolClassInfo>();
+            undesrGradeClass = this.classMapper.selectByByPeriodAndThetime(periodId, thetime, pager);
+            pager.setContent(undesrGradeClass);
+            //查询总数,测试
+            pager.setRecordTotal(this.classMapper.selectCountByPeriodIdAndThetime(periodId, thetime));
+            return pager;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //学段过滤
+        if(periodId != null){
+            //根据学段Id,查询对于班级
+            List<SchoolClassInfo> underPeriodClass = classMapper.selectByPeriodIdUBW(pager);
+System.out.println(underPeriodClass.size() + " 数量");
+            //查询学段ID下的总条数,测试
+            System.out.println("一层数量：" + this.classMapper.selectCountByPeriodId(periodId));
+            pager.setRecordTotal(this.classMapper.selectCountByPeriodId(periodId)); //问题
+            //结果集
+            pager.setContent(underPeriodClass);
+            //年级查询(二层)
+            if(thetime != null){
+System.out.println("进入第二层");
+//                String gradeName = this.gradeMapper.selectByPIdAndGrId(periodId, gradeId);
+                //二层数据
+                List<SchoolClassInfo> undesrGradeClass = new ArrayList<SchoolClassInfo>();
+                //循环处理
+                for(SchoolClassInfo schoolClassInfo : underPeriodClass){
+                    //获取数据
+System.out.println("测试" + schoolClassInfo.toString());
+                    SchoolClassInfo temp = classMapper.selectByPrimaryKeyByPeriodAndThetime(schoolClassInfo, thetime/*, pager*/);
+                    if(temp != null){
+                        //存在,添加进结果集合
+                        undesrGradeClass.add(temp);
+                    }
+                }
+System.out.println(undesrGradeClass.size() + "二层数量");
+System.out.println("二层数据：" + undesrGradeClass);
+
+//                //结果集
+                pager.setContent(undesrGradeClass);
+                //查询总数,测试
+                pager.setRecordTotal(undesrGradeClass.size());
+                //第三层结果集
+                List<SchoolClassInfo> undesrGradeVagueClass = new ArrayList<SchoolClassInfo>();
+                //结果集覆盖
+                if(vague == null || "".equals(vague)) return pager;
+                //模糊查询
+                if(vague != null || !"".equals(vague)){
+                    System.out.println("进入第三层 ~");
+                    for(SchoolClassInfo sClass : undesrGradeClass){
+                        pager.setParameter(sClass.getClassId().toString());
+                        SchoolClassInfo underClassForVague = classMapper.selectByVagueParamUBW(pager);
                         if(underClassForVague != null){
                             //数据添加
                             System.out.println(underClassForVague.toString());
@@ -577,9 +637,9 @@ System.out.println(underClassForVague.toString());
     private boolean updateInfo(Long classId, Long subjectId, String teacher){
         String staffNum = StringHandler.paramHandler(teacher); //获取员工编号
 
-System.out.println(staffNum + "  : 员工编号");
+        System.out.println(staffNum + "  : 员工编号");
         Long adminId = this.adminInfoMapper.selectByAdminInfoId(staffNum);
-System.out.println(adminId + "员工ID");
+        System.out.println(adminId + "员工ID");
         if(adminId != null){
             int result = this.clsInfoMapper.updateBySubjectIdAndAdmin(classId, subjectId, adminId);
             if(result > 0){
@@ -755,16 +815,16 @@ System.out.println(adminId + "员工ID");
     public Pager findHasPowerForDirector(String vague, Pager pager) {
         List<Map> result = this.classMapper.findHasPowerForDirector(vague);
         List<Map> result_ = new ArrayList<Map>();
-System.out.println("哈哈");
+        System.out.println("哈哈");
         for(Map item : result){
             HashMap map = (HashMap)item;
-System.out.println((Long)map.get("directorId") + "   id");
-System.out.println(map.get("thetime") + "  时间");
+            System.out.println((Long)map.get("directorId") + "   id");
+            System.out.println(map.get("thetime") + "  时间");
             List<PeriodDirectorThetime> count = this.directorTimeMapper.selectByDirectorIdUbw((Long)map.get("directorId"));
             for(PeriodDirectorThetime bbs : count){
-System.out.println(bbs.toString());
+                System.out.println(bbs.toString());
                 if(bbs != null){ //年级权限下，存在年级
-System.out.println("进入1");
+                    System.out.println("进入1");
                     SchoolPeriod period = this.periodMapper.selectByPrimaryKey(bbs.getPeriodId());
                     HashMap temp = new HashMap();
                     temp.putAll(item);
@@ -778,9 +838,9 @@ System.out.println("进入1");
                     String time = format.format(bbs.getThetime());
                     temp.put("thetime", time);
                     result_.add(temp);
-System.out.println(bbs.getThetime() + "时间");
+                    System.out.println(bbs.getThetime() + "时间");
                 }else{
-System.out.println("进入2");
+                    System.out.println("进入2");
                     HashMap temp = new HashMap();
                     temp.putAll(item);
                     temp.put("periodId", -1);
@@ -806,7 +866,6 @@ System.out.println("进入2");
         return pager;
     }
 
-
     /**
      * 添加班级
      * @param info
@@ -816,20 +875,67 @@ System.out.println("进入2");
     public ApiResult addClassInfo(SchoolClass info) {
         ApiResult result = new ApiResult();
         int isCopy = this.classMapper.selectByCountClassNumber(info.getClassNumber());
-        System.out.println(isCopy + "： 数量");
         if(isCopy > 0){
             result.setCode(ApiCode.error_duplicated_data);
             result.setMsg(ApiCode.error_duplicated_data_MSG);
             return result;
         }
-        System.out.println("二阶段");
+        //查询班级类型
+        SchoolClassType type = this.classTypeMapper.selectByPrimaryKey(info.getClassTypeId());
+        info.setClassType(type.getClasstypeName());
+        //查询班级层次
+        SchoolClassLevel level = this.classLevelMapper.selectByPrimaryKey(info.getClassLevelId());
+        info.setClassLevel(level.getClasslevelName());
+        ///查询学段
+        SchoolPeriod period = this.periodMapper.selectByPrimaryKey(info.getClassPeriodId().longValue());
+        info.setClassPeriod(period.getPeriodName());
+        //入学年度，计算毕业届次
+        Date thetime = StringHandler.getEndTime(period.getPeriodSystem(), info.getClassYear());
+        info.setThetime(thetime);
+        info.setCreateTime(new Date());
+
+        //关联表
+        SchoolPeriodClassThetime timeInfo = new SchoolPeriodClassThetime();
+        timeInfo.setSchoolId(info.getSchoolId());
+        timeInfo.setPeriodId(info.getClassPeriodId().longValue());
+        timeInfo.setClassId(info.getClassId());
+        timeInfo.setThetime(thetime);
+        timeInfo.setFounderId(info.getFounderId());
+        timeInfo.setOperatorId(info.getOperatorId());
+        timeInfo.setCreateTime(new Date());
+
         int flag_a = this.classMapper.insertSelective(info);
         if(flag_a > 0){
+            timeInfo.setClassId(info.getClassId());
+            this.classThetimeMapper.insertSelective(timeInfo);
             ApiResultUtil.fastResultHandler(result, true, null, null, null);
         }else{
             ApiResultUtil.fastResultHandler(result, false, ApiCode.error_create_failed, ApiCode.FAIL_MSG, null);
         }
         return result;
+    }
+
+
+    /**
+     * 修改班级
+     */
+    @Override
+    public boolean updateClassInfo(SchoolClass schoolInfo) {
+
+        int flag_a = this.classMapper.updateByPrimaryKeySelective(schoolInfo);
+        if(flag_a > 0){
+            SchoolPeriodClassThetime time = this.classThetimeMapper.selectByClassId(schoolInfo.getClassId());
+            time.setPeriodId(schoolInfo.getClassPeriodId().longValue());
+            //
+            SchoolPeriod period = this.periodMapper.selectByPrimaryKey(schoolInfo.getClassPeriodId().longValue());
+            //入学年度，计算毕业届次
+            Date thetime = StringHandler.getEndTime(period.getPeriodSystem(), schoolInfo.getClassYear());
+            time.setThetime(thetime);
+            time.setUpdateTime(new Date());
+            int flag_b = this.classThetimeMapper.updateByPrimaryKeySelective(time);
+            if(flag_b > 0) return true;
+        }
+        return false;
     }
 
     /**
@@ -846,8 +952,6 @@ System.out.println("进入2");
         if(result > 0) return true;
         return false;
     }
-
-
 
 
 }

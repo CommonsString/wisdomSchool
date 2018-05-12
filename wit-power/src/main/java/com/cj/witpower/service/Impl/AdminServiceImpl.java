@@ -278,6 +278,9 @@ public class AdminServiceImpl implements AdminService {
     //修改密码，不校验旧密码
     @Override
     public int updateAdminPass(HttpServletRequest request, Long adminId, String newPass) {
+        if(newPass == null || newPass == ""){
+            newPass = "123456";
+        }
         Admin admin = new Admin();
         admin.setId(adminId);
         admin.setAdminPass(Md5Utils.MD5Encode(newPass,"UTF-8",false));

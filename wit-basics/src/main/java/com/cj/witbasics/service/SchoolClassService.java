@@ -53,7 +53,7 @@ public interface SchoolClassService {
     public boolean updateSchoolClassInfo(SchoolClass schoolClass, Long chineseId, Long englishId, Long mathId,
                                          String chineseTea, String englishTea, String mathTea);
 
-    //模糊查询，根据输入条件，查询对应班级信息(班级名称，班级好，班主任名字)
+    //模糊查询，根据输入条件，查询对应班级信息(班级名称，班级号，班主任名字)
     public Pager findSchoolClassInfo(Long periodId, Long gradeId, String vague, Pager pager);
 
     /**
@@ -104,6 +104,9 @@ public interface SchoolClassService {
     boolean updateClassInfoDel(Long classId);
 
     //重构
-    Pager findSchoolClassInfoUBW(Long periodId, Date thetime, String vague, Pager pager);
+    Pager findSchoolClassInfoUBW(Integer periodId, String thetime, String vague, Pager pager);
+
+    //修改班级
+    boolean updateClassInfo(SchoolClass schoolInfo);
 
 }

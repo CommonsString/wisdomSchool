@@ -85,11 +85,12 @@ public class StudentManagementController {
      * 返回：成功/失败
      * 完成时间：4
      */
-    @ApiOperation(value = "添加学生信息并查重", notes = "成功/失败")
+    @ApiOperation(value = "添加学生信息", notes = "成功/失败")
     @PostMapping("/addStudentInfo")
     @Log(name = "学生 ==> 添加学生")
     public ApiResult addStudentInfo(
-            @ApiParam(name = "studentossa", value = "新增学生信息对象", required = true) @RequestBody StudentOsaas studentossa,
+            @ApiParam(name = "studentossa", value = "新增学生信息对象", required = true)
+            @RequestBody StudentOsaas studentossa,
             HttpServletRequest request) throws Exception {
 
         int j = studentManagementService.addStudentOsaasinfo(studentossa,request);
@@ -174,6 +175,7 @@ public class StudentManagementController {
         }else {
             apiResult.setCode(ApiCode.import_failed);
             apiResult.setMsg(ApiCode.import_failed_MSG);
+            apiResult.setData(msgList);
 
         }
 
@@ -213,12 +215,13 @@ public class StudentManagementController {
     @ApiOperation("编辑学生信息")
     @PutMapping("/updateStaffInfo")
     @Log(name = "学生 ==> 编辑信息")
-    public ApiResult updateStaffInfo(@ApiParam(name = "studentOsaas",value = "学生信息",required = true) StudentOsaas studentOsaas){
+    public ApiResult updateStaffInfo(@ApiParam(name = "studentOsaas",value = "学生信息",required = true)
+                                         @RequestBody StudentOsaas studentOsaas){
 
         int j = studentManagementService.updateStaffInfo(studentOsaas);
         ApiResult apiResult = new ApiResult();
         if(j > 0){
-            //添加成功
+            //修改
             apiResult.setCode(ApiCode.SUCCESS);
             apiResult.setMsg(ApiCode.SUCCESS_MSG);
 

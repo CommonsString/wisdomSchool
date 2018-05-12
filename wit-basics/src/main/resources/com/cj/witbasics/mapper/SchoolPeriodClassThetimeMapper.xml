@@ -176,9 +176,9 @@
   </update>
 
   <!--根据学段ID查询所有的届次-->
-  <select id="findAllClassByGradeAndPeriodId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="findAllClassByGradeAndPeriodId" parameterType="java.lang.Long" resultType="java.lang.String">
     SELECT
-    <include refid="Base_Column_List"/>
+    DISTINCT(date_format(spct.thetime,'%Y')) AS thetime
     FROM
     school_period_class_thetime spct
     WHERE
@@ -191,11 +191,11 @@
 
   <resultMap id="asacMap" type="java.util.Map">
     <result column="class_id" jdbcType="BIGINT" property="classId" />
-    <result column="thetime" jdbcType="DATE" property="thetime" />
+    <result column="thetime" jdbcType="VARCHAR" property="thetime" />
   </resultMap>
   <select id="selectByPeriodId" parameterType="long" resultMap="asacMap">
     select
-    class_id, IFNULL(thetime, "无") AS thetime
+    class_id, date_format(thetime,'%Y') AS thetime
     from school_period_class_thetime
     where
     period_id = #{periodId,jdbcType=BIGINT}
@@ -208,7 +208,6 @@
     <resultMap id="newMap" type="java.util.LinkedHashMap">
         <result column="class_id" property="classId"></result>
         <result column="class_name" property="className"></result>
-
     </resultMap>
     <!--联查届次下所有班级-->
     <select id="findAllSchoolClassByThetime" parameterType="java.util.Map" resultMap="newMap">
@@ -222,7 +221,7 @@
         AND spct.period_id = #{periodId}
         AND sc.class_id = spct.class_id
         AND spct.state = '1'
-        AND YEAR(spct.thetime)=date_format(#{thetime},'%Y')
+        AND YEAR(spct.thetime)=#{thetime}
     </select>
 
   <!--根据班级ID更改班主任-->
@@ -328,6 +327,15 @@
     </set>
     WHERE class_id = #{classId,jdbcType=BIGINT}
   </update>
+  
+  <select id="selectByClassId" parameterType="Long" resultMap="BaseResultMap">
+    select
+    *
+    from school_period_class_thetime
+    where class_id = #{classId,jdbcType=BIGINT}
+  </select>
+
+  
 </mapper>
 <!--    admin_id = null,
     headmaster = null-->

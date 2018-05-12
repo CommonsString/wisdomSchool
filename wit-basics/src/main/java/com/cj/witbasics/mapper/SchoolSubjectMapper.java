@@ -1,5 +1,6 @@
 package com.cj.witbasics.mapper;
 
+import com.cj.witbasics.entity.SchoolExamParent;
 import com.cj.witbasics.entity.SchoolSubject;
 import com.cj.witcommon.utils.entity.other.Pager;
 import org.apache.ibatis.annotations.Param;
@@ -83,6 +84,10 @@ public interface SchoolSubjectMapper {
      * 根据科目ID查询课程信息
      */
     public List<SchoolSubject> findAllSchoolSubjectBySubjectsId(Long subjectsId);
+
+
+
+
 
 
 }

@@ -216,6 +216,8 @@
       school_id = #{schoolId,jdbcType=BIGINT}
       AND
       state != '0'
+      AND
+      is_begin != '0'
   </select>
 
   <!--根据学校ID,科目名称,模糊查询-->
@@ -226,6 +228,8 @@
       school_id = #{schoolId,jdbcType=BIGINT}
       AND
       state != '0'
+      AND
+      is_begin != '0'
       limit #{pager.minRow},#{pager.pageSize}
   </select>
 
@@ -272,9 +276,10 @@
   <!--根据科目ID查询课程信息-->
   <select id="findAllSchoolSubjectBySubjectsId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
+    <include refid="Base_Column_List"/>
 
     FROM
-    witschool.school_subject ss
+    school_subject ss
     WHERE
     ss.subjects_id = #{subjectsId}
     AND

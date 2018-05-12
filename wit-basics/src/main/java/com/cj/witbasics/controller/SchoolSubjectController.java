@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.print.attribute.standard.MediaSize;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "课程管理")
 @RestController
@@ -29,7 +31,7 @@ import java.util.List;
 public class SchoolSubjectController {
 
 
-    @Autowired(required = false)
+    @Autowired
     private SchoolSubjectService subjectService;
 
     @Value("${school_id}")
@@ -56,9 +58,10 @@ public class SchoolSubjectController {
     @ApiOperation(value = "新增课程", notes = "成功/失败")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "subjectName", value = "课程名", required = true),
-            @ApiImplicitParam(name = "subjecstId", value = "科目ID", required = true)
+            @ApiImplicitParam(name = "subjectsId", value = "科目ID", required = true)
     })
     @PostMapping("/addSubjectInfo")
+    @Log(name = "课程管理 ==> 新增课程")
     public ApiResult addSubjectInfo(String subjectName, Long subjectsId, HttpServletRequest request){
         ApiResult apiResult = new ApiResult();
         try{
@@ -109,6 +112,23 @@ System.out.println(apiResult.toString());
         return apiResult;
     }
 
+    @GetMapping("/findAllSubjectBySubjectsId")
+    @ApiOperation("根据科目id查询其下所有的课程")
+    @Log(name = "课程 ==> 查询科目下的所有课程")
+    @ApiImplicitParam(name = "subjectsId", value = "科目ID", required = true,paramType = "query")
+    public ApiResult findAllSubjectBySubjectsId(
+                                                Long subjectsId){
+
+        ApiResult apiResult = new ApiResult();
+        apiResult.setCode(ApiCode.SUCCESS);
+        apiResult.setMsg(ApiCode.SUCCESS_MSG);
+        apiResult.setData(subjectService.findAllSubjectBySubjectsId(subjectsId));
+
+        return apiResult;
+
+
+
+    }
 
 
     /**
@@ -117,23 +137,18 @@ System.out.println(apiResult.toString());
      *  返回：成功/失败
      *  时间：
      */
-    @ApiOperation(value = "修改课程信息(仅修改状态)", notes = "成功/失败")
-    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "schoolId", value = "学校ID", required = true, dataType = "Long"),
-            @ApiImplicitParam(name = "subjectId", value = "课程Id", required = false, dataType = "Long"),
-            @ApiImplicitParam(name = "state",value = "状态",required = false, dataType="String")
-    })
+    @ApiOperation(value = "编辑课程信息", notes = "成功/失败")
+
     @PutMapping("/updateSubjectInfo")
-    public ApiResult updateSubjectInfo(/*Long schoolId,*/ Long subjectId, String state){
+    @Log(name = "课程管理 ==> 编辑课程信息")
+    public ApiResult updateSubjectInfo(@ApiParam(name = "",value = "subjectName=课程名称，subjectId=课程Id，isBegin=是否停课，state=是否删除")
+                                           @RequestBody SchoolSubject schoolSubject){
         //处理参数
-        SchoolSubject subject = new SchoolSubject();
-        subject.setSchoolId(toLong());
-        subject.setSubjectId(subjectId);
-        subject.setState(state);
+        schoolSubject.setSchoolId(toLong());
         //返回对象
         ApiResult apiResult = new ApiResult();
         try{
-            boolean result = this.subjectService.updateSubjectInfo(subject);
+            boolean result = this.subjectService.updateSubjectInfo(schoolSubject);
 //            boolean result = false;
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
@@ -159,11 +174,11 @@ System.out.println(apiResult.toString());
     @ApiImplicitParams({
             @ApiImplicitParam(name = "subjectId", value = "开课ID", required = false, dataType = "Long"),
     })
-    @Log(name = "删除开课信息")
     @DeleteMapping("/updataSubjectInfoDel")
-    public ApiResult updataSubjectInfoDel(Long subjectId){
+    @Log(name = "课程  ==> 删除课程（非物理删除）")
+    public ApiResult updataSubjectInfoDel(Long subjectId, HttpSession session){
         //TODO:获取操作员ID
-        Long operatorId = 1L;
+        Long operatorId = (Long) session.getAttribute("adminId");
         //返回对象
         ApiResult apiResult = new ApiResult();
         try{
@@ -177,6 +192,35 @@ System.out.println(apiResult.toString());
                     ApiCode.error_delete_failed, ApiCode.error_unknown_database_operation_MSG, null);
             e.printStackTrace();
         }
+        return apiResult;
+    }
+
+    /**
+     * 删除课程-物理删除
+     */
+    @ApiOperation("删除课程-物理删除")
+    @DeleteMapping("/deleteSubject")
+    @Log(name = "课程 ==> 删除课程")
+    @ApiImplicitParam(name = "subjectId",value = "subjectId=课程ID",required = true)
+    public ApiResult deleteSubject(Long subjectId){
+
+        ApiResult apiResult = new ApiResult();
+        int i = subjectService.deleteSubject(subjectId);
+        if(i == 9){
+            apiResult.setCode(ApiCode.error_delete_failed);
+            apiResult.setMsg(ApiCode.error_delete_failed_MSG+",此课程有班级正在使用");
+
+        }else if(i == 1){
+            apiResult.setCode(ApiCode.SUCCESS);
+            apiResult.setMsg(ApiCode.SUCCESS_MSG);
+
+        }else {
+            apiResult.setCode(ApiCode.FAIL);
+            apiResult.setMsg(ApiCode.FAIL_MSG);
+
+        }
+
+
         return apiResult;
     }
 
@@ -266,20 +310,27 @@ System.out.println("进入！");
     @ApiOperation(value = "设置课程右移(班级为基础，选择课程)", notes = "成功/失败")
     @ApiImplicitParams({
 //            @ApiImplicitParam(name = "schoolId", value = "学校ID", required = true, dataType = "Long"),
-            @ApiImplicitParam(name = "classId",value = "班级Id"),
-            @ApiImplicitParam(name = "subjectId", value = "课程Id集合")
+//            @ApiImplicitParam(name = "classId",value = "班级Id"),
+//            @ApiImplicitParam(name = "subjectId", value = "课程Id集合")
 
     })
+    @Log(name = "课程管理 ==> 设置课程右移(增加)")
     @PostMapping("/SelectSubjectRight")
-    public ApiResult SelectSubjectAndClassRight(Long classId, @RequestBody List<Long> subjectId, HttpServletResponse response){
+    public ApiResult SelectSubjectAndClassRight(/*@RequestBody List<Long> classId, @RequestBody List<Long> subjectId,*/
+            @RequestBody Map params,
+            HttpServletRequest request){
         //TODO:获取操作员ID
         Long operatorId = 1L;
         ApiResult apiResult = new ApiResult();
+//        System.out.println(params.isEmpty());
+//        List<Integer> a = (List<Integer>)params.get("classId");
+//        for(Integer in : a){
+//            System.out.println(in);
+//        }
+
         try{
             //构造对象
-            SchoolSubject subject = new SchoolSubject();
-            subject.setOperatorId(operatorId);
-            apiResult = this.subjectService.SelectSubjectAndClassRight(classId, subjectId);
+            apiResult = this.subjectService.SelectSubjectAndClassRight(params, request.getSession());
         }catch (Exception e){ //异常处理
             ApiResultUtil.fastResultHandler(apiResult, false,
                     ApiCode.error_delete_failed, ApiCode.error_unknown_database_operation_MSG, null);
@@ -295,24 +346,14 @@ System.out.println("进入！");
      *  时间：
      */
     @ApiOperation(value = "设置课程左移(班级为基础，移除课程)", notes = "成功/失败")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "classId",value = "班级Id"),
-            @ApiImplicitParam(name = "subjectId", value = "课程Id集合")
-    })
     @PostMapping("/SelectSubjectLeight")
-    public ApiResult SelectSubjectAndClassLeight(Long classId, @RequestBody List<Long> subjectId, HttpServletResponse response){
+    public ApiResult SelectSubjectAndClassLeight(@RequestBody Map params,
+                                                 HttpServletRequest request){
         //TODO:获取操作员ID
         Long operatorId = 1L;
         ApiResult apiResult = new ApiResult();
         try{
-            //构造对象+
-            System.out.println(classId + " 班级ID");
-            SchoolSubject subject = new SchoolSubject();
-            subject.setOperatorId(operatorId);
-            for(Long item : subjectId){
-                System.out.println(item);
-            }
-            apiResult = this.subjectService.SelectSubjectAndClassLeight(classId, subjectId);
+            apiResult = this.subjectService.SelectSubjectAndClassLeight(params, request.getSession());
         }catch (Exception e){ //异常处理
             ApiResultUtil.fastResultHandler(apiResult, false,
                     ApiCode.error_delete_failed, ApiCode.error_unknown_database_operation_MSG, null);

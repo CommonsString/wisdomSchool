@@ -16,5 +16,5 @@ import java.util.List;
 @ToString
 public class ExamClassSubject {
     private int classId; //班级ID
-    private List<SubjectForTea>  subject; //科目集合
+    private List<SubjectForTea>  subject; //课程集合
 }

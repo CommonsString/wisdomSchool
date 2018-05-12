@@ -1,10 +1,12 @@
 package com.cj.witbasics.mapper;
 
 import com.cj.witbasics.entity.SchoolClass;
+import com.cj.witcommon.entity.PeriodAndThetime;
 import com.cj.witcommon.entity.SchoolClassInfo;
 import com.cj.witcommon.entity.SchoolPeriodInfo;
 import com.cj.witcommon.utils.entity.other.Pager;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Map;
@@ -76,6 +78,8 @@ public interface SchoolClassMapper {
     List<SchoolClassInfo> selectByPeriodId(@Param("classPeriodId") Long classPeriodId,
                                        @Param("pager") Pager pager);
 
+    int selectCountByPeriodId(Integer periodId);
+
     //根据年级筛选
     SchoolClassInfo selectByPeriodAndGrade(@Param("sClass") SchoolClassInfo sClass,
                                        @Param("gradeAge") int gradeAge,
@@ -85,6 +89,15 @@ public interface SchoolClassMapper {
     SchoolClassInfo selectByVagueParam(@Param("sClass")SchoolClassInfo sclass,
                                              @Param("vague") String vague,
                                              @Param("pager")Pager pager);
+
+    //根据学段届次返回班级
+    List<SchoolClassInfo> selectByByPeriodAndThetime(@Param("periodId") Integer periodId,
+                                                     @Param("thetime") String thetime,
+                                                     @Param("pager") Pager pager);
+
+    //计数
+    int selectCountByPeriodIdAndThetime(@Param("periodId") Integer periodId,
+                                        @Param("thetime") String thetime);
 
     //考试模块,查询班级
     SchoolClassInfo findAllClassForYeah(@Param("sClass")SchoolClassInfo sClass, @Param("gradeAge") int gradeAge);
@@ -119,13 +132,21 @@ public interface SchoolClassMapper {
 
     /////////////////////////////////////////////////////////
     //根据学段筛选
-    List<SchoolClassInfo> selectByPeriodIdUBW(@Param("classPeriodId") Long classPeriodId, @Param("pager") Pager pager);
+    List<SchoolClassInfo> selectByPeriodIdUBW(Pager pager);
 
     //根据届次筛选
-    SchoolClassInfo selectByPrimaryKeyByPeriodAndThetime(SchoolClassInfo item);
+    SchoolClassInfo selectByPrimaryKeyByPeriodAndThetime(@Param("info") SchoolClassInfo schoolClassInfo,
+                                                         @Param("thetime") String thetime/*,,
+                                                         @Param("pager") Pager pager*/);
 
     //根据模糊查询
-    SchoolClassInfo selectByVagueParamUBW(SchoolClassInfo sClass, String vague,  Pager pager);
+    SchoolClassInfo selectByVagueParamUBW(  Pager pager);
+
+    /**
+     * =========================================================
+     */
+    //查询学段、届次、班级信息 树形结构
+    public List<PeriodAndThetime> findAllPeriodAndThetimeAndClassBySchoolId(Long schoolId);
 
 }
 

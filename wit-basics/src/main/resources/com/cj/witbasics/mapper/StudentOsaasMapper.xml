@@ -18,6 +18,7 @@
     <result column="period_id" property="periodId" jdbcType="BIGINT" />
     <result column="grade_id" property="gradeId" jdbcType="BIGINT" />
     <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <!--<result column="class_name" property="className" jdbcType="BIGINT" />-->
     <result column="birth_date" property="birthDate" jdbcType="TIMESTAMP" />
     <result column="card_type" property="cardType" jdbcType="VARCHAR" />
     <result column="card_number" property="cardNumber" jdbcType="VARCHAR" />
@@ -84,7 +85,7 @@
   <sql id="Base_Column_List" >
     osaas_id, admin_id, user_id, user_uuid, user_nike, user_head, school_number, class_number,
     examination_number, register_number, full_name, gender, basic_id, period_id, grade_id,
-    class_id, birth_date, card_type, card_number, photo_url, education_id, national_register_number,
+    class_id,  birth_date, card_type, card_number, photo_url, education_id, national_register_number,
     different_countries, hong_kong, registered_residence, registered_residence_detailed,
     political_outlook, nation, student_type, way_of_studying, treat_type, present_address,
     home_address, home_address_detailed, postal_address, native_heath, place_of_origin,
@@ -980,7 +981,9 @@
   <select id="findStudentsByCondition" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
-    FROM student_osaas so
+    FROM
+    student_osaas so
+--     LEFT JOIN school_class sc ON so.class_id = sc.class_id
     WHERE
     so.state = '1'
     <if test="parameter != null">
@@ -1006,7 +1009,9 @@
   <select id="selectStudentOsaas" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
-    FROM student_osaas so
+    FROM
+    student_osaas so
+--     LEFT JOIN school_class sc ON so.class_id = sc.class_id
     WHERE
     so.admin_id = #{adminId}
     AND

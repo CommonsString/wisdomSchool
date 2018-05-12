@@ -1,5 +1,10 @@
 package com.cj.witbasics.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ClassSubjectInfo {
     /**
      * 班级-科目-管理员信息(查询)
@@ -21,6 +26,7 @@ public class ClassSubjectInfo {
      */
     private Long adminInfoId;
 
+    private String state;
     /**
      * 班级-科目-管理员信息(查询)
      * @return cls_sub_id 班级-科目-管理员信息(查询)

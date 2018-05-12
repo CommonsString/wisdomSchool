@@ -11,7 +11,7 @@ public class SubjectForTea {
 
     private Long adminInfoId; //教师ID
     private String fullName; //教师名
-    private Long subjectId; //科目ID
-    private String subjectName; //科目名
+    private Long subjectId; //课程ID
+    private String subjectName; //课程名
 
 }

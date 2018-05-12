@@ -3,6 +3,8 @@
 <mapper namespace="com.cj.witbasics.mapper.SchoolExamMapper" >
   <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolExam" >
     <id column="exam_id" property="examId" jdbcType="BIGINT" />
+    <result column="exam_parent_id" property="examParentId" jdbcType="BIGINT" />
+    <result column="thetime" property="thetime" jdbcType="DATE" />
     <result column="school_id" property="schoolId" jdbcType="BIGINT" />
     <result column="exam_object_id" property="examObjectId" jdbcType="BIGINT" />
     <result column="exam_object" property="examObject" jdbcType="VARCHAR" />
@@ -20,9 +22,9 @@
     <result column="state" property="state" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    exam_id, school_id, exam_object_id, exam_object, exam_type, exam_type_name, exam_time,
-    exam_name, exam_subject_id, exam_subject, class_id, founder_id, create_time, operator_id,
-    delete_time, state
+    exam_id, exam_parent_id, thetime, school_id, exam_object_id, exam_object, exam_type,
+    exam_type_name, exam_time, exam_name, exam_subject_id, exam_subject, class_id, founder_id,
+    create_time, operator_id, delete_time, state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
@@ -35,24 +37,32 @@
     where exam_id = #{examId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolExam" >
-    insert into school_exam (exam_id, school_id, exam_object_id,
-    exam_object, exam_type, exam_type_name,
-    exam_time, exam_name, exam_subject_id,
-    exam_subject, class_id, founder_id,
-    create_time, operator_id, delete_time,
-    state)
-    values (#{examId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{examObjectId,jdbcType=BIGINT},
-    #{examObject,jdbcType=VARCHAR}, #{examType,jdbcType=CHAR}, #{examTypeName,jdbcType=VARCHAR},
-    #{examTime,jdbcType=TIMESTAMP}, #{examName,jdbcType=VARCHAR}, #{examSubjectId,jdbcType=BIGINT},
-    #{examSubject,jdbcType=VARCHAR}, #{classId,jdbcType=INTEGER}, #{founderId,jdbcType=BIGINT},
-    #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP},
-    #{state,jdbcType=CHAR})
+    insert into school_exam (exam_id, exam_parent_id, thetime,
+    school_id, exam_object_id, exam_object,
+    exam_type, exam_type_name, exam_time,
+    exam_name, exam_subject_id, exam_subject,
+    class_id, founder_id, create_time,
+    operator_id, delete_time, state
+    )
+    values (#{examId,jdbcType=BIGINT}, #{examParentId,jdbcType=BIGINT}, #{thetime,jdbcType=DATE},
+    #{schoolId,jdbcType=BIGINT}, #{examObjectId,jdbcType=BIGINT}, #{examObject,jdbcType=VARCHAR},
+    #{examType,jdbcType=CHAR}, #{examTypeName,jdbcType=VARCHAR}, #{examTime,jdbcType=TIMESTAMP},
+    #{examName,jdbcType=VARCHAR}, #{examSubjectId,jdbcType=BIGINT}, #{examSubject,jdbcType=VARCHAR},
+    #{classId,jdbcType=INTEGER}, #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
+    #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolExam" >
     insert into school_exam
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="examId != null" >
         exam_id,
+      </if>
+      <if test="examParentId != null" >
+        exam_parent_id,
+      </if>
+      <if test="thetime != null" >
+        thetime,
       </if>
       <if test="schoolId != null" >
         school_id,
@@ -104,6 +114,12 @@
       <if test="examId != null" >
         #{examId,jdbcType=BIGINT},
       </if>
+      <if test="examParentId != null" >
+        #{examParentId,jdbcType=BIGINT},
+      </if>
+      <if test="thetime != null" >
+        #{thetime,jdbcType=DATE},
+      </if>
       <if test="schoolId != null" >
         #{schoolId,jdbcType=BIGINT},
       </if>
@@ -154,6 +170,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.cj.witbasics.entity.SchoolExam" >
     update school_exam
     <set >
+      <if test="examParentId != null" >
+        exam_parent_id = #{examParentId,jdbcType=BIGINT},
+      </if>
+      <if test="thetime != null" >
+        thetime = #{thetime,jdbcType=DATE},
+      </if>
       <if test="schoolId != null" >
         school_id = #{schoolId,jdbcType=BIGINT},
       </if>
@@ -204,24 +226,25 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolExam" >
     update school_exam
-    set school_id = #{schoolId,jdbcType=BIGINT},
-      exam_object_id = #{examObjectId,jdbcType=BIGINT},
-      exam_object = #{examObject,jdbcType=VARCHAR},
-      exam_type = #{examType,jdbcType=CHAR},
-      exam_type_name = #{examTypeName,jdbcType=VARCHAR},
-      exam_time = #{examTime,jdbcType=TIMESTAMP},
-      exam_name = #{examName,jdbcType=VARCHAR},
-      exam_subject_id = #{examSubjectId,jdbcType=BIGINT},
-      exam_subject = #{examSubject,jdbcType=VARCHAR},
-      class_id = #{classId,jdbcType=INTEGER},
-      founder_id = #{founderId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      operator_id = #{operatorId,jdbcType=BIGINT},
-      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
-      state = #{state,jdbcType=CHAR}
+    set exam_parent_id = #{examParentId,jdbcType=BIGINT},
+    thetime = #{thetime,jdbcType=DATE},
+    school_id = #{schoolId,jdbcType=BIGINT},
+    exam_object_id = #{examObjectId,jdbcType=BIGINT},
+    exam_object = #{examObject,jdbcType=VARCHAR},
+    exam_type = #{examType,jdbcType=CHAR},
+    exam_type_name = #{examTypeName,jdbcType=VARCHAR},
+    exam_time = #{examTime,jdbcType=TIMESTAMP},
+    exam_name = #{examName,jdbcType=VARCHAR},
+    exam_subject_id = #{examSubjectId,jdbcType=BIGINT},
+    exam_subject = #{examSubject,jdbcType=VARCHAR},
+    class_id = #{classId,jdbcType=INTEGER},
+    founder_id = #{founderId,jdbcType=BIGINT},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    operator_id = #{operatorId,jdbcType=BIGINT},
+    delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+    state = #{state,jdbcType=CHAR}
     where exam_id = #{examId,jdbcType=BIGINT}
   </update>
-
 
 
   <resultMap id="PeriondGradeUMap" type="com.cj.witcommon.entity.PeriodUnderGrade" >
@@ -291,7 +314,7 @@
   <!--批量插入-->
   <insert id="insertBatchInfoByU" parameterType="java.util.List">
     insert into school_exam (school_id,
-    exam_type, exam_type_name,
+    exam_type, exam_type_name, thetime, exam_parent_id,
     exam_time, exam_name, exam_subject_id,
     exam_subject, class_id, founder_id,
     create_time)
@@ -299,7 +322,8 @@
     <foreach collection="list" item="item" separator=",">
       (
       #{item.schoolId,jdbcType=BIGINT},
-       #{item.examType,jdbcType=CHAR}, #{item.examTypeName,jdbcType=VARCHAR},
+      #{item.examType,jdbcType=CHAR}, #{item.examTypeName,jdbcType=VARCHAR}, #{item.thetime,jdbcType=TIMESTAMP},
+      #{item.examParentId,jdbcType=BIGINT},
       #{item.examTime,jdbcType=TIMESTAMP}, #{item.examName,jdbcType=VARCHAR}, #{item.examSubjectId,jdbcType=BIGINT},
       #{item.examSubject,jdbcType=VARCHAR}, #{item.classId,jdbcType=INTEGER}, #{item.founderId,jdbcType=BIGINT},
       #{item.createTime,jdbcType=TIMESTAMP}
@@ -371,6 +395,99 @@
     </choose>
     GROUP BY
     exam_type_name
+  </select>
+
+  <!--根据届次查询考试集合-->
+  <select id="findAllSchoolExamByThetime" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    school_exam se
+    WHERE
+    YEAR(se.thetime) = #{thetime}
+  </select>
+
+
+  <resultMap id="SchoolExamThetimeBySchoolExamParent" type="java.util.LinkedHashMap">
+    <result column="class_period_id" property="classPeriodId"></result>
+    <result column="class_period" property="classPeriod"></result>
+    <result column="thetime" property="thetime"></result>
+
+  </resultMap>
+  <!--根据考试父节点ID查询此次考试所有的 学段-届次-->
+  <select id="findAllSchoolExamThetimeBySchoolExamParent" parameterType="java.lang.Long" resultMap="SchoolExamThetimeBySchoolExamParent">
+    SELECT
+    sc.class_period_id,sc.class_period,DATE_FORMAT(se.thetime,'%Y') AS thetime
+    FROM
+    school_exam se
+    LEFT JOIN school_class sc ON sc.`class_id` = se.`class_id`
+    WHERE
+    se.exam_parent_id = #{examParentId}
+    GROUP BY se.thetime
+
+  </select>
+
+  <resultMap id="SchoolExamClassByExamParentIdAndThetime" type="com.cj.witcommon.entity.ExamClassPeriod">
+    <result column="class_period_id" property="classPeriodId"/>
+    <result column="class_period" property="classPeriod"/>
+    <result column="thetime" property="thetime"/>
+    <collection property="examClassNames" ofType="com.cj.witcommon.entity.ExamClassName">
+      <result column="class_id" property="classId"/>
+      <result column="class_name" property="className"/>
+      <collection property="examSubjects" ofType="com.cj.witcommon.entity.ExamSubject">
+        <result column="exam_subject_id" property="examSubjectId"/>
+        <result column="exam_subject" property="examSubject"/>
+      </collection>
+    </collection>
+  </resultMap>
+
+  <!--根据开始父节点ID/届次、学段ID查询信息查询年级考试班级及班级考试课程 并封装-->
+  <select id="findAllSchoolExamClassByExamParentIdAndThetime" parameterType="java.util.Map" resultMap="SchoolExamClassByExamParentIdAndThetime">
+
+    SELECT
+    sc.class_period_id,sc.class_period,DATE_FORMAT(sc.thetime,'%Y') AS thetime,
+    sc.class_id,sc.class_name,
+    se.exam_subject_id,se.exam_subject
+    FROM
+    school_exam se,school_class sc
+    WHERE
+    se.exam_parent_id = #{examParentId}
+    AND
+    YEAR(se.thetime) = #{thetime}
+    AND
+    se.class_id = sc.class_id
+    AND
+    sc.class_period_id = #{classPeriodId}
+
+  </select>
+
+  <resultMap id="SchoolExamThetimeAndSubjectByExamParentIdAndThetime" type="com.cj.witcommon.entity.ExamClassPeriod">
+    <result column="class_period_id" property="classPeriodId"></result>
+    <result column="class_period" property="classPeriod"></result>
+    <result column="thetime" property="thetime"></result>
+    <collection property="examSubjects" ofType="com.cj.witcommon.entity.ExamSubject">
+      <result column="exam_subject_id" property="examSubjectId"></result>
+      <result column="exam_subject" property="examSubject"></result>
+    </collection>
+  </resultMap>
+  <!--根据 考试父节点ID/届次、学段ID查询年级考试课程 并封装-->
+  <select id="findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime" parameterType="java.util.Map" resultMap="SchoolExamThetimeAndSubjectByExamParentIdAndThetime">
+
+    SELECT
+    sc.class_period_id,sc.class_period,DATE_FORMAT(sc.thetime,'%Y') AS thetime,
+    se.exam_subject_id,se.exam_subject
+    FROM
+    school_exam se,school_class sc
+    WHERE
+    se.exam_parent_id = #{examParentId}
+    AND
+    YEAR(se.thetime) = #{thetime}
+    AND
+    se.class_id = sc.class_id
+    AND
+    sc.class_period_id = #{classPeriodId}
+    GROUP BY se.exam_subject
+
   </select>
 
 </mapper>

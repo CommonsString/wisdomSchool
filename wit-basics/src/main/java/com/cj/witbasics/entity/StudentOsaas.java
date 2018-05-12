@@ -120,7 +120,12 @@ public class StudentOsaas {
      */
     private Long classId;
 
-    //班级名称
+    /**
+     * 班级名称
+     */
+    private String className;
+
+    //班级名称，
     @IsNeeded
     private String classIdName;
 

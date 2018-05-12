@@ -6,6 +6,7 @@
     <result column="class_id" property="classId" jdbcType="BIGINT" />
     <result column="subject_id" property="subjectId" jdbcType="BIGINT" />
     <result column="admin_info_id" property="adminInfoId" jdbcType="BIGINT" />
+    <result column="state" property="state" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     cls_sub_id, class_id, subject_id, admin_info_id
@@ -108,6 +109,8 @@
     FROM class_subject_info
     WHERE
     subject_id = #{subjectId,jdbcType=BIGINT}
+    AND
+    state != '0'
     LIMIT 1;
   </select>
   
@@ -117,6 +120,8 @@
     class_subject_info
     WHERE
     admin_info_id = #{teaId,jdbcType=BIGINT}
+    AND
+    state != '0'
   </select>
 
 
@@ -128,6 +133,8 @@
     subject_id = #{subjectId, jdbcType=BIGINT}
     AND
     class_id = #{classId,jdbcType=BIGINT}
+    AND
+    state != '0'
     LIMIT 1
   </select>
 
@@ -150,6 +157,16 @@
     AND
     subject_id = #{subjectId,jdbcType=BIGINT}
   </delete>
+  
+  <update id="updateByClassIdAndSubjectIdDel">
+    update class_subject_info
+    set
+      state = '0'
+    where
+    class_id = #{info.classId,jdbcType=BIGINT}
+    AND
+    subject_id = #{info.subjectId,jdbcType=BIGINT}
+  </update>
 
 
 </mapper>

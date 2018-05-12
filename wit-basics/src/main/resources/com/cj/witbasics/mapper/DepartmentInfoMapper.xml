@@ -203,7 +203,7 @@
   <!--部门名称，部门编号，成立时间 ，有效性，部门排序，部门领导，所属部门-->
   <select id="selectDepartmentInfoById" parameterType="java.lang.Long" resultMap="BaseResultMap" >
     SELECT
-    df.id, df.d_name,df.d_number, df.d_effectiveness, df.d_sort, df.d_leader, df.d_attribute, df.create_time
+    <include refid="Base_Column_List"/>
     FROM department_info df
     WHERE
     df.id=#{id}
@@ -213,17 +213,17 @@
 
   <!--&lt;!&ndash;根据部门ID、模糊查询条件 查询部门人员信息&ndash;&gt;-->
   <!--<select id="selectAdminInfoByDepartment" parameterType="java.lang.Long" resultMap="">-->
-    <!--SELECT-->
-    <!--*-->
-    <!--FROM department_admin da,admin_info ai-->
-    <!--WHERE-->
-    <!--da.id = #{id} AND da.admin_id = ai.admin_id-->
+  <!--SELECT-->
+  <!--*-->
+  <!--FROM department_admin da,admin_info ai-->
+  <!--WHERE-->
+  <!--da.id = #{id} AND da.admin_id = ai.admin_id-->
   <!--</select>-->
 
   <!--获取所有部门信息-->
   <select id="getAllDepartmentInfo" resultMap="BaseResultMap">
     SELECT
-    df.id,df.d_name
+    <include refid="Base_Column_List"/>
     FROM department_info df
     WHERE
     df.state NOT IN (0)
@@ -232,8 +232,8 @@
   <!--根据部门名称查询部门信息-->
   <select id="findDepartmentInfoByName" parameterType="com.cj.witbasics.entity.DepartmentInfo" resultMap="BaseResultMap">
     SELECT
-     <include refid="Base_Column_List"/>
-     FROM
+    <include refid="Base_Column_List"/>
+    FROM
     department_info di
     WHERE
     di.d_name = #{dName}
@@ -241,6 +241,25 @@
     di.id NOT IN (#{id})
   </select>
 
+  <!--查询所有的部门领导ID-->
+  <select id="findAllDepartmentAdminIds" resultType="java.lang.Long">
+    SELECT
+    di.d_leader_id
+    FROM
+    department_info di
+    WHERE
+    di.state = '1'
 
+  </select>
+
+  <!--修改部门领导信息-->
+  <update id="updateDepartmentAdminId" parameterType="java.lang.Long">
+    UPDATE department_info
+    SET
+    d_leader_id = '0',d_leader = '无'
+    WHERE
+    d_leader_id = #{dLeaderId}
+
+  </update>
 
 </mapper>

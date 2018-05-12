@@ -1,6 +1,7 @@
 package com.cj.witbasics.mapper;
 
 import com.cj.witbasics.entity.ClassSubjectInfo;
+import com.cj.witbasics.entity.SchoolSubject;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public interface ClassSubjectInfoMapper {
 
 
     /**
-     * 查找科目是否再使用
+     * 查找课程是否再使用
      */
     int selectCountBySubjectId(Long subjectId);
 
@@ -82,5 +83,17 @@ public interface ClassSubjectInfoMapper {
      * 删除，批量
      */
     int deleteByBatch(@Param("classId") Long classId, @Param("subjectId") Long subjectId);
+
+    /**
+     * 根据科目ID查询所有的课程
+     */
+    public List<SchoolSubject> findAllSubjectBySubjectsId(Long subjecstId);
+	
+	
+
+    /**
+     * 删除
+     */
+    int updateByClassIdAndSubjectIdDel(@Param("info") ClassSubjectInfo info);
 
 }
