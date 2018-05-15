@@ -16,7 +16,7 @@ import java.util.Map;
 public interface SchoolPeriodService {
 
     //根据年级id,修改年级名称
-    boolean updateSchoolGradeInfo(Long gradeId, String gradeName);
+    boolean updateSchoolGradeInfo(Long gradeId, String gradeName, Long adminId);
 
     //根据年级的ID，删除年级信息
     boolean updateSchoolGradeDel(Long gradeId);

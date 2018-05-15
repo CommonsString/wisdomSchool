@@ -4,19 +4,33 @@
   <resultMap id="BaseResultMap" type="com.cj.witbasics.entity.SchoolExamGrade" >
     <id column="exam_grade_id" property="examGradeId" jdbcType="BIGINT" />
     <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+    <result column="exam_parent_id" property="examParentId" jdbcType="BIGINT" />
     <result column="exam_id" property="examId" jdbcType="BIGINT" />
+    <result column="class_period_id" property="classPeriodId" jdbcType="INTEGER" />
+    <result column="thetime" property="thetime" jdbcType="CHAR" />
+    <result column="class_type_id" property="classTypeId" jdbcType="INTEGER" />
     <result column="class_id" property="classId" jdbcType="BIGINT" />
     <result column="exam_subject_id" property="examSubjectId" jdbcType="BIGINT" />
+    <result column="exam_subject" property="examSubject" jdbcType="VARCHAR" />
     <result column="grade_type" property="gradeType" jdbcType="CHAR" />
     <result column="founder_id" property="founderId" jdbcType="BIGINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
     <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
     <result column="state" property="state" jdbcType="CHAR" />
+    <collection property="grades" ofType="com.cj.witbasics.entity.Grade">
+      <id column="grade_id" property="gradeId" jdbcType="BIGINT" />
+      <result column="exam_grade_id" property="examGradeId" jdbcType="BIGINT" />
+      <result column="grade_name" property="gradeName" jdbcType="VARCHAR" />
+      <result column="grade_type" property="gradeType" jdbcType="CHAR" />
+      <result column="num_max" property="numMax" jdbcType="INTEGER" />
+      <result column="num_min" property="numMin" jdbcType="INTEGER" />
+    </collection>
   </resultMap>
   <sql id="Base_Column_List" >
-    exam_grade_id, school_id, exam_id, class_id, exam_subject_id, grade_type, founder_id,
-    create_time, operator_id, delete_time, state
+    exam_grade_id, school_id, exam_parent_id, exam_id, class_period_id, thetime, class_type_id, 
+    class_id, exam_subject_id, exam_subject, grade_type, founder_id, create_time, operator_id, 
+    delete_time, state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
@@ -29,16 +43,23 @@
     where exam_grade_id = #{examGradeId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.cj.witbasics.entity.SchoolExamGrade" >
-    insert into school_exam_grade (exam_grade_id, school_id, exam_id,
-      class_id, exam_subject_id, grade_type,
-      founder_id, create_time, operator_id,
-      delete_time, state)
-    values (#{examGradeId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{examId,jdbcType=BIGINT},
-      #{classId,jdbcType=BIGINT}, #{examSubjectId,jdbcType=BIGINT}, #{gradeType,jdbcType=CHAR},
-      #{founderId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT},
-      #{deleteTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR})
+    insert into school_exam_grade (exam_grade_id, school_id, exam_parent_id, 
+      exam_id, class_period_id, thetime, 
+      class_type_id, class_id, exam_subject_id, 
+      exam_subject, grade_type, founder_id, 
+      create_time, operator_id, delete_time, 
+      state)
+    values (#{examGradeId,jdbcType=BIGINT}, #{schoolId,jdbcType=BIGINT}, #{examParentId,jdbcType=BIGINT}, 
+      #{examId,jdbcType=BIGINT}, #{classPeriodId,jdbcType=INTEGER}, #{thetime,jdbcType=CHAR}, 
+      #{classTypeId,jdbcType=INTEGER}, #{classId,jdbcType=BIGINT}, #{examSubjectId,jdbcType=BIGINT}, 
+      #{examSubject,jdbcType=VARCHAR}, #{gradeType,jdbcType=CHAR}, #{founderId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, #{deleteTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cj.witbasics.entity.SchoolExamGrade" >
+    <selectKey order="AFTER" keyProperty="examGradeId" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into school_exam_grade
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="examGradeId != null" >
@@ -47,14 +68,29 @@
       <if test="schoolId != null" >
         school_id,
       </if>
+      <if test="examParentId != null" >
+        exam_parent_id,
+      </if>
       <if test="examId != null" >
         exam_id,
+      </if>
+      <if test="classPeriodId != null" >
+        class_period_id,
+      </if>
+      <if test="thetime != null" >
+        thetime,
+      </if>
+      <if test="classTypeId != null" >
+        class_type_id,
       </if>
       <if test="classId != null" >
         class_id,
       </if>
       <if test="examSubjectId != null" >
         exam_subject_id,
+      </if>
+      <if test="examSubject != null" >
+        exam_subject,
       </if>
       <if test="gradeType != null" >
         grade_type,
@@ -82,14 +118,29 @@
       <if test="schoolId != null" >
         #{schoolId,jdbcType=BIGINT},
       </if>
+      <if test="examParentId != null" >
+        #{examParentId,jdbcType=BIGINT},
+      </if>
       <if test="examId != null" >
         #{examId,jdbcType=BIGINT},
+      </if>
+      <if test="classPeriodId != null" >
+        #{classPeriodId,jdbcType=INTEGER},
+      </if>
+      <if test="thetime != null" >
+        #{thetime,jdbcType=CHAR},
+      </if>
+      <if test="classTypeId != null" >
+        #{classTypeId,jdbcType=INTEGER},
       </if>
       <if test="classId != null" >
         #{classId,jdbcType=BIGINT},
       </if>
       <if test="examSubjectId != null" >
         #{examSubjectId,jdbcType=BIGINT},
+      </if>
+      <if test="examSubject != null" >
+        #{examSubject,jdbcType=VARCHAR},
       </if>
       <if test="gradeType != null" >
         #{gradeType,jdbcType=CHAR},
@@ -117,14 +168,29 @@
       <if test="schoolId != null" >
         school_id = #{schoolId,jdbcType=BIGINT},
       </if>
+      <if test="examParentId != null" >
+        exam_parent_id = #{examParentId,jdbcType=BIGINT},
+      </if>
       <if test="examId != null" >
         exam_id = #{examId,jdbcType=BIGINT},
+      </if>
+      <if test="classPeriodId != null" >
+        class_period_id = #{classPeriodId,jdbcType=INTEGER},
+      </if>
+      <if test="thetime != null" >
+        thetime = #{thetime,jdbcType=CHAR},
+      </if>
+      <if test="classTypeId != null" >
+        class_type_id = #{classTypeId,jdbcType=INTEGER},
       </if>
       <if test="classId != null" >
         class_id = #{classId,jdbcType=BIGINT},
       </if>
       <if test="examSubjectId != null" >
         exam_subject_id = #{examSubjectId,jdbcType=BIGINT},
+      </if>
+      <if test="examSubject != null" >
+        exam_subject = #{examSubject,jdbcType=VARCHAR},
       </if>
       <if test="gradeType != null" >
         grade_type = #{gradeType,jdbcType=CHAR},
@@ -150,9 +216,14 @@
   <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolExamGrade" >
     update school_exam_grade
     set school_id = #{schoolId,jdbcType=BIGINT},
+      exam_parent_id = #{examParentId,jdbcType=BIGINT},
       exam_id = #{examId,jdbcType=BIGINT},
+      class_period_id = #{classPeriodId,jdbcType=INTEGER},
+      thetime = #{thetime,jdbcType=CHAR},
+      class_type_id = #{classTypeId,jdbcType=INTEGER},
       class_id = #{classId,jdbcType=BIGINT},
       exam_subject_id = #{examSubjectId,jdbcType=BIGINT},
+      exam_subject = #{examSubject,jdbcType=VARCHAR},
       grade_type = #{gradeType,jdbcType=CHAR},
       founder_id = #{founderId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -161,4 +232,92 @@
       state = #{state,jdbcType=CHAR}
     where exam_grade_id = #{examGradeId,jdbcType=BIGINT}
   </update>
+
+
+  <!--查询考试参数设置总条数-->
+  <select id="findScoreGradeTotal" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultType="java.lang.Integer">
+    SELECT
+    COUNT(seg.exam_grade_id)
+    FROM
+    school_exam_grade seg
+    LEFT JOIN grade g ON seg.exam_grade_id = g.exam_grade_id
+    WHERE
+    seg.state = '1'
+    <if test="parameters != null">
+      <if test="parameters.containsKey('examParentId')">
+        AND
+        seg.exam_parent_id = #{examParentId}
+
+      </if>
+      <if test="parameters.containsKey('examId')">
+        AND
+        seg.exam_id = #{examId}
+
+      </if>
+      <if test="parameters.containsKey('classPeriodId')">
+        AND
+        seg.class_period_id = #{classPeriodId}
+
+      </if>
+      <if test="parameters.containsKey('thetime')">
+        AND
+        seg.thetime = #{thetime}
+
+      </if>
+      <if test="parameters.containsKey('classTypeId')">
+        AND
+        seg.class_type_id = #{classTypeId}
+
+      </if>
+      <if test="parameters.containsKey('classId')">
+        AND
+        seg.class_id = #{classId}
+      </if>
+    </if>
+  </select>
+
+
+
+  <!--查询考试参数设置-->
+  <select id="findScoreGrade" parameterType="com.cj.witcommon.utils.entity.other.Pager" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    school_exam_grade seg
+    LEFT JOIN grade g ON seg.exam_grade_id = g.exam_grade_id
+    WHERE
+    seg.state = '1'
+    <if test="parameters != null">
+      <if test="parameters.containsKey('examParentId')">
+        AND
+        seg.exam_parent_id = #{examParentId}
+
+      </if>
+      <if test="parameters.containsKey('examId')">
+        AND
+        seg.exam_id = #{examId}
+
+      </if>
+      <if test="parameters.containsKey('classPeriodId')">
+        AND
+        seg.class_period_id = #{classPeriodId}
+
+      </if>
+      <if test="parameters.containsKey('thetime')">
+        AND
+        seg.thetime = #{thetime}
+
+      </if>
+      <if test="parameters.containsKey('classTypeId')">
+        AND
+        seg.class_type_id = #{classTypeId}
+
+      </if>
+      <if test="parameters.containsKey('classId')">
+        AND
+        seg.class_id = #{classId}
+      </if>
+    </if>
+
+  </select>
 </mapper>

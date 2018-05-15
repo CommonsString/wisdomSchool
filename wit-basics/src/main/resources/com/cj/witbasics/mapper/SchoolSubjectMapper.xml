@@ -230,7 +230,6 @@
       state != '0'
       AND
       is_begin != '0'
-      limit #{pager.minRow},#{pager.pageSize}
   </select>
 
   <!--根据开课ID，批量查询-->

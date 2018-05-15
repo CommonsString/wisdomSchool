@@ -14,9 +14,10 @@ import lombok.ToString;
  */
 public class PeriodAndGrade {
 
-    private Long periodId;  //学段Id
-    private String periodName; //学段名称
+    private Integer periodId;  //学段Id
+    private String thetime; //届次
+/*    private String periodName; //学段名称
     private Long gradeId; //年级ID
-    private String gradeName; //年级名称
+    private String gradeName; //年级名称*/
 
 }

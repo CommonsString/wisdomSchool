@@ -101,7 +101,7 @@ public interface SchoolClassService {
     ApiResult addClassInfo(SchoolClass info);
 
     //删除班级
-    boolean updateClassInfoDel(Long classId);
+    boolean updateClassInfoDel(Long classId, Long adminId);
 
     //重构
     Pager findSchoolClassInfoUBW(Integer periodId, String thetime, String vague, Pager pager);

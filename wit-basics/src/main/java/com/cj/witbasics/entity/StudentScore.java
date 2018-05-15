@@ -70,12 +70,12 @@ public class StudentScore {
     /**
      * 年级排名
      */
-    private Integer gradeRanking;
+    private String gradeRanking;
 
     /**
      * 班级排名
      */
-    private Integer classRanking;
+    private String classRanking;
 
     /**
      * 创建人ID
@@ -298,7 +298,7 @@ public class StudentScore {
      * 年级排名
      * @return grade_ranking 年级排名
      */
-    public Integer getGradeRanking() {
+    public String getGradeRanking() {
         return gradeRanking;
     }
 
@@ -306,7 +306,7 @@ public class StudentScore {
      * 年级排名
      * @param gradeRanking 年级排名
      */
-    public void setGradeRanking(Integer gradeRanking) {
+    public void setGradeRanking(String gradeRanking) {
         this.gradeRanking = gradeRanking;
     }
 
@@ -314,7 +314,7 @@ public class StudentScore {
      * 班级排名
      * @return class_ranking 班级排名
      */
-    public Integer getClassRanking() {
+    public String getClassRanking() {
         return classRanking;
     }
 
@@ -322,7 +322,7 @@ public class StudentScore {
      * 班级排名
      * @param classRanking 班级排名
      */
-    public void setClassRanking(Integer classRanking) {
+    public void setClassRanking(String classRanking) {
         this.classRanking = classRanking;
     }
 

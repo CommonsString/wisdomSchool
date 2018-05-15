@@ -57,7 +57,7 @@ public interface SchoolSubjectMapper {
     /**
      * 根据学校ID,科目名称,模糊查询
      */
-    List<SchoolSubject> selectByScholId(@Param("schoolId") Long schoolId, @Param("pager") Pager pager);
+    List<SchoolSubject> selectByScholId(@Param("schoolId") Long schoolId/*, @Param("pager") Pager pager*/);
 
     /**
      * 批量查询,根据科目ID

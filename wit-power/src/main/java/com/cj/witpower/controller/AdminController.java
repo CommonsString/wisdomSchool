@@ -430,6 +430,13 @@ public class AdminController {
         admin.setAdminName(adminName);
         admin.setAdminPass(adminPass);
 
+//        //检查用户是否已登录
+//        String oldAdminName = (String) request.getSession().getAttribute("adminName");
+//        if(oldAdminName != null && oldAdminName.length() > 0){
+//            a.setCode(ApiCode.account_login);
+//            a.setMsg(ApiCode.account_login_MSG);
+//            return a;
+//        }
 
         ApiResult apiResult = new ApiResult();
 

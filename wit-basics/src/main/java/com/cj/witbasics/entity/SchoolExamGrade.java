@@ -1,7 +1,18 @@
 package com.cj.witbasics.entity;
 
-import java.util.Date;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ApiModel(value = "考试参数对象")
 public class SchoolExamGrade {
     /**
      * 考试成绩等级表
@@ -14,23 +25,59 @@ public class SchoolExamGrade {
     private Long schoolId;
 
     /**
+     * 考试父节点ID
+     */
+    @ApiModelProperty(name = "examParentId",value = "考试父节点ID",dataType = "Long")
+    private Long examParentId;
+
+    /**
      * 考试ID
      */
+    @ApiModelProperty(name = "examId",value = "考试ID",dataType = "Long")
     private Long examId;
+
+    /**
+     * 学段ID
+     */
+    @ApiModelProperty(name = "classPeriodId",value = "学段ID",dataType = "Integer")
+    private Integer classPeriodId;
+
+    /**
+     * 届次
+     */
+    @ApiModelProperty(name = "thetime",value = "届次",dataType = "String")
+    private String thetime;
+
+    /**
+     * 班级类型ID
+     */
+    @ApiModelProperty(name = "classTypeId",value = "班级类型ID",dataType = "Integer")
+    private Integer classTypeId;
+
+
 
     /**
      * 班级ID
      */
+    @ApiModelProperty(name = "classId",value = "班级ID",dataType = "Long")
     private Long classId;
 
     /**
-     * 考试科目ID
+     * 考试课程ID
      */
+    @ApiModelProperty(name = "examSubjectId",value = "考试课程ID",dataType = "Long")
     private Long examSubjectId;
+
+    /**
+     * 考试课程
+     */
+    @ApiModelProperty(name = "examSubject",value = "考试课程",dataType = "String")
+    private String examSubject;
 
     /**
      * 档次设置方式，1-分数，2-名次
      */
+    @ApiModelProperty(name = "gradeType",value = "档次设置方式，1-分数，2-名次",dataType = "String")
     private String gradeType;
 
     /**
@@ -59,178 +106,10 @@ public class SchoolExamGrade {
     private String state;
 
     /**
-     * 考试成绩等级表
-     * @return exam_grade_id 考试成绩等级表
+     * 档次信息集合
      */
-    public Long getExamGradeId() {
-        return examGradeId;
-    }
+    @ApiModelProperty(name = "grades",value = "档次信息集合",dataType = "List")
+    private List<Grade> grades;
 
-    /**
-     * 考试成绩等级表
-     * @param examGradeId 考试成绩等级表
-     */
-    public void setExamGradeId(Long examGradeId) {
-        this.examGradeId = examGradeId;
-    }
 
-    /**
-     * 学校（校区）ID
-     * @return school_id 学校（校区）ID
-     */
-    public Long getSchoolId() {
-        return schoolId;
-    }
-
-    /**
-     * 学校（校区）ID
-     * @param schoolId 学校（校区）ID
-     */
-    public void setSchoolId(Long schoolId) {
-        this.schoolId = schoolId;
-    }
-
-    /**
-     * 考试ID
-     * @return exam_id 考试ID
-     */
-    public Long getExamId() {
-        return examId;
-    }
-
-    /**
-     * 考试ID
-     * @param examId 考试ID
-     */
-    public void setExamId(Long examId) {
-        this.examId = examId;
-    }
-
-    /**
-     * 班级ID
-     * @return class_id 班级ID
-     */
-    public Long getClassId() {
-        return classId;
-    }
-
-    /**
-     * 班级ID
-     * @param classId 班级ID
-     */
-    public void setClassId(Long classId) {
-        this.classId = classId;
-    }
-
-    /**
-     * 考试科目ID
-     * @return exam_subject_id 考试科目ID
-     */
-    public Long getExamSubjectId() {
-        return examSubjectId;
-    }
-
-    /**
-     * 考试科目ID
-     * @param examSubjectId 考试科目ID
-     */
-    public void setExamSubjectId(Long examSubjectId) {
-        this.examSubjectId = examSubjectId;
-    }
-
-    /**
-     * 档次设置方式，1-分数，2-名次
-     * @return grade_type 档次设置方式，1-分数，2-名次
-     */
-    public String getGradeType() {
-        return gradeType;
-    }
-
-    /**
-     * 档次设置方式，1-分数，2-名次
-     * @param gradeType 档次设置方式，1-分数，2-名次
-     */
-    public void setGradeType(String gradeType) {
-        this.gradeType = gradeType == null ? null : gradeType.trim();
-    }
-
-    /**
-     * 创建人ID
-     * @return founder_id 创建人ID
-     */
-    public Long getFounderId() {
-        return founderId;
-    }
-
-    /**
-     * 创建人ID
-     * @param founderId 创建人ID
-     */
-    public void setFounderId(Long founderId) {
-        this.founderId = founderId;
-    }
-
-    /**
-     * 创建时间
-     * @return create_time 创建时间
-     */
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 创建时间
-     * @param createTime 创建时间
-     */
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    /**
-     * 操作员ID
-     * @return operator_id 操作员ID
-     */
-    public Long getOperatorId() {
-        return operatorId;
-    }
-
-    /**
-     * 操作员ID
-     * @param operatorId 操作员ID
-     */
-    public void setOperatorId(Long operatorId) {
-        this.operatorId = operatorId;
-    }
-
-    /**
-     * 删除时间
-     * @return delete_time 删除时间
-     */
-    public Date getDeleteTime() {
-        return deleteTime;
-    }
-
-    /**
-     * 删除时间
-     * @param deleteTime 删除时间
-     */
-    public void setDeleteTime(Date deleteTime) {
-        this.deleteTime = deleteTime;
-    }
-
-    /**
-     * 0-已删除，1-正常，默认为1
-     * @return state 0-已删除，1-正常，默认为1
-     */
-    public String getState() {
-        return state;
-    }
-
-    /**
-     * 0-已删除，1-正常，默认为1
-     * @param state 0-已删除，1-正常，默认为1
-     */
-    public void setState(String state) {
-        this.state = state == null ? null : state.trim();
-    }
 }

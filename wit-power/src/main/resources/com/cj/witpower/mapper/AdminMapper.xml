@@ -233,11 +233,13 @@
 
     <if test="parameters.containsKey('adminName')">
       AND
+      (
       a.admin_name LIKE concat(concat('%',#{parameters.adminName}),'%')
       OR
       ai.full_name LIKE concat(concat('%',#{parameters.adminName}),'%')
       OR
       so.full_name LIKE concat(concat('%',#{parameters.adminName}),'%')
+      )
     </if>
     <if test="parameters.containsKey('adminType')">
       AND
@@ -292,11 +294,13 @@
 
     <if test="parameters.containsKey('adminName')">
       AND
+      (
       a.admin_name LIKE concat(concat('%',#{parameters.adminName}),'%')
       OR
       ai.full_name LIKE concat(concat('%',#{parameters.adminName}),'%')
       OR
       so.full_name LIKE concat(concat('%',#{parameters.adminName}),'%')
+      )
     </if>
     <if test="parameters.containsKey('adminType')">
       AND

@@ -1713,21 +1713,23 @@ substantiveLevel,jdbcType=VARCHAR},
     SELECT
     ai.admin_info_id,ai.admin_id ,ai.birth_date ,ai.full_name,ai.id_card_no,ai.staff_number,ai.birth_date,ai.gender,ai.mobile_phone,ai.the_department,a.admin_state
     FROM
-    admin_info ai,admin a
+    admin_info ai
+    LEFT  JOIN admin a ON ai.admin_id = a.id
     WHERE
     ai.state = '1'
-    AND
-    a.id = ai.admin_id
+
     <if test="parameters.containsKey('theDepartment')">
       AND
       ai.the_department = #{parameters.theDepartment}
     </if>
 
     <if test="parameters.containsKey('vague')">
-      AND
-      ai.full_name LIKE concat(concat('%',#{parameters.vague}),'%')
-      OR
-      ai.staff_number LIKE concat(concat('%',#{parameters.vague}),'%')
+        AND
+        (
+        ai.full_name LIKE concat(concat('%',#{parameters.vague}),'%')
+        OR
+        ai.staff_number LIKE concat(concat('%',#{parameters.vague}),'%')
+        )
     </if>
     limit #{minRow},#{pageSize}
   </select>
@@ -1737,21 +1739,23 @@ substantiveLevel,jdbcType=VARCHAR},
     SELECT
     COUNT(ai.admin_info_id)
     FROM
-    admin_info ai,admin a
+    admin_info ai
+    LEFT  JOIN admin a ON ai.admin_id = a.id
     WHERE
     ai.state = '1'
-    AND
-    a.id = ai.admin_id
+
     <if test="parameters.containsKey('theDepartment')">
       AND
       ai.the_department = #{parameters.theDepartment}
     </if>
 
     <if test="parameters.containsKey('vague')">
-      AND
-      ai.full_name LIKE concat(concat('%',#{parameters.vague}),'%')
-      OR
-      ai.staff_number LIKE concat(concat('%',#{parameters.vague}),'%')
+        AND
+        (
+        ai.full_name LIKE concat(concat('%',#{parameters.vague}),'%')
+        OR
+        ai.staff_number LIKE concat(concat('%',#{parameters.vague}),'%')
+        )
     </if>
   </select>
 

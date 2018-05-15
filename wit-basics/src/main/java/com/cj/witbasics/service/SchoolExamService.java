@@ -16,7 +16,7 @@ public interface SchoolExamService {
 
 
     /**
-     * 查询学校下的年级
+     * 查询届次
      */
     List<Map> findAllGradeName(Long schoolId);
 

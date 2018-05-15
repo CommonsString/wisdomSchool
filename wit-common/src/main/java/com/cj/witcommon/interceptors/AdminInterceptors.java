@@ -126,8 +126,16 @@ public class AdminInterceptors implements HandlerInterceptor {
                     String oldSessionId = MemoryData.getSessionIDMap().get(adminId.toString());
                     String newSessionId = request.getSession().getId();
 
+                    System.out.println("登录==login调用的的sessionId=================>"+oldSessionId);
+                    System.out.println("登录后==调用的的sessionId=================>"+newSessionId);
+
                     if(!newSessionId.equals(oldSessionId)){
                         //如果sessionId不一致,用户已在其他设备登录
+                        //清理MemoryData中的用户数据
+                        MemoryData.getSessionIDMap().remove(adminId.toString());  //删除adminId-sessionID
+                        //销毁此session
+                        request.getSession().invalidate();
+
                         boo4 = false;
                         response.setCharacterEncoding("UTF-8");
                         response.setContentType("application/json; charset=utf-8");

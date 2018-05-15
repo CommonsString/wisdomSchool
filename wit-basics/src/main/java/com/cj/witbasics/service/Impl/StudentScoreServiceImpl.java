@@ -159,7 +159,7 @@ public class StudentScoreServiceImpl implements StudentScoreService {
                         //设置届次
                         stuScore.setThetime(tempThetime);
                         stuScore.setOperatorId(operatorId);
-                        this.scoreMapper.updateByPrimaryBySome(stuScore);
+                        successUpdate = this.scoreMapper.updateByPrimaryBySome(stuScore);
 //                        listScoreUpdate.add(stuScore);
                         System.out.println(stuScore.toString());
                     }else{   //插入
@@ -238,9 +238,77 @@ public class StudentScoreServiceImpl implements StudentScoreService {
                 e.printStackTrace();
                 return false;
             }
-            System.out.println(scoreInfo);
-        }
 
+            //判断标志
+            int successAdd = 0;
+            int successUpdate = 0;
+            //标题
+            ScoreModelTwoInfo title = scoreInfo.get(0);
+            //科目名字
+            List<String> subjectName = StringHandler.returnSubjectName2(title);
+            //插入集合
+            List<StudentScore> listScoreAdd = new ArrayList<StudentScore>();
+            for(int j = 2; j < scoreInfo.size(); j++){
+                System.out.println(scoreInfo.get(j).toString());
+                List<BigDecimal> subjectScore = StringHandler.saveSubjectScore2(scoreInfo.get(j));
+                for(int k = 0; k < subjectName.size(); k++){
+                    //科目名
+                    Long subjectId = this.subjectMapper.selectBySubNameReturnId(subjectName.get(k));
+                    int isCopy = this.scoreMapper.selectByCountScoreId(scoreInfo.get(j).getRegisterNumber(), subjectId);
+                    if(isCopy > 0){ //更新
+                        //创建分数对象
+                        StudentScore stuScore = new StudentScore();
+                        stuScore.setSchoolId(toLong());
+                        stuScore.setExamId((Long)params.get("eaxmId"));
+                        stuScore.setStudentName(scoreInfo.get(j).getStudentName());
+                        stuScore.setRegisterNumber(scoreInfo.get(j).getRegisterNumber());
+                        stuScore.setSchoolStageId((String)params.get("schoolStageId"));
+                        stuScore.setSchoolSubjectId(subjectId);
+                        //提取总分
+                        System.out.println("科目ID " + subjectId + "科目名： " + subjectName.get(k) + "科目分数： " + subjectScore.get(k));
+                        stuScore.setScore(subjectScore.get(k));
+                        //创建时间
+                        stuScore.setCreateTime(new Date());
+                        stuScore.setFounderId(operatorId);
+                        System.out.println("班级ID：" + (Long)params.get("classId"));
+                        //班级ID
+                        stuScore.setClassId((Long)params.get("classId"));
+                        //设置届次
+                        stuScore.setThetime(tempThetime);
+                        stuScore.setOperatorId(operatorId);
+                        successUpdate = this.scoreMapper.updateByPrimaryBySome(stuScore);
+                    }else{ //插入
+                        //创建分数对象
+                        StudentScore stuScore = new StudentScore();
+                        stuScore.setSchoolId(toLong());
+                        stuScore.setExamId((Long)params.get("eaxmId"));
+                        stuScore.setStudentName(scoreInfo.get(j).getStudentName());
+                        stuScore.setRegisterNumber(scoreInfo.get(j).getRegisterNumber());
+                        stuScore.setSchoolStageId((String)params.get("schoolStageId"));
+                        stuScore.setSchoolSubjectId(subjectId);
+                        //提取总分
+                        System.out.println("科目ID " + subjectId + "科目名： " + subjectName.get(k) + "科目分数： " + subjectScore.get(k));
+                        stuScore.setScore(subjectScore.get(k));
+                        //创建时间
+                        stuScore.setCreateTime(new Date());
+                        stuScore.setFounderId(operatorId);
+                        //班级ID
+                        System.out.println("班级ID：" + (Long)params.get("classId"));
+                        stuScore.setClassId((Long)params.get("classId"));
+                        //设置届次
+                        stuScore.setThetime(tempThetime);
+                        stuScore.setOperatorId(operatorId);
+                        System.out.println(stuScore.toString());
+                        listScoreAdd.add(stuScore);
+                    }
+                }
+            }
+
+            if(!listScoreAdd.isEmpty()){
+                successAdd = this.scoreMapper.insertBathInfo(listScoreAdd);
+            }
+            if(successUpdate > 0 || successAdd > 0) return true;
+         }
         return false;
     }
     ////////////////////////////////////模版二 /////////////////////////////////////

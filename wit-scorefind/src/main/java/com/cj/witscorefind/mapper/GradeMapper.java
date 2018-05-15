@@ -2,6 +2,8 @@ package com.cj.witscorefind.mapper;
 
 import com.cj.witbasics.entity.Grade;
 
+import java.util.List;
+
 public interface GradeMapper {
     /**
      *
@@ -38,4 +40,7 @@ public interface GradeMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(Grade record);
+
+    //批量添加档次详情信息
+    public int addGrade(List<Grade> grades);
 }

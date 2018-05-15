@@ -57,7 +57,7 @@ public class SchoolPeriodServiceImpl implements SchoolPeriodService {
      */
     @Override
     @Transactional
-    public boolean updateSchoolGradeInfo(Long gradeId, String gradeName) {
+    public boolean updateSchoolGradeInfo(Long gradeId, String gradeName, Long adminId) {
         //构造对象
         SchoolGrade grade = new SchoolGrade();
         grade.setGradeId(gradeId);

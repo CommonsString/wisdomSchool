@@ -1,5 +1,6 @@
 package com.cj.witcommon.utils.common;
 
+import com.cj.witcommon.utils.excle.ScoreModelTwoInfo;
 import com.cj.witcommon.utils.excle.StudentScoreInfo;
 import org.apache.xmlbeans.impl.regex.Match;
 
@@ -20,6 +21,21 @@ import java.util.regex.Pattern;
  * value：教师编号
  */
 public class StringHandler {
+
+
+    /**
+     * 成绩导入
+     */
+
+    public static boolean equalsIs(String str){
+        if(str == null) return false;
+        if("/".equals(str)) return true;
+        return false;
+    }
+
+    public static void changeTable(ScoreModelTwoInfo s){
+
+    }
 
 
 
@@ -113,7 +129,7 @@ System.out.println(str);
         now.setTime(classYeah);
         now.add(Calendar.YEAR, periodSystem);
         //毕业时间6月
-        now.add(Calendar.MONTH, -3);
+        now.add(Calendar.MONTH, -2);
         return now.getTime();
     }
 
@@ -145,8 +161,171 @@ System.out.println(str);
     //扩展.....
     //科目名
         return item;
-}
+    }
 
+    public static List<String> returnSubjectName2(ScoreModelTwoInfo s){
+        List<String> item = new ArrayList<String>();
+        item.add(s.getScoreChinese());
+        item.add(s.getScoreMatch());
+        item.add(s.getScoreEnglish());
+        item.add(s.getScorePhysical());
+        item.add(s.getScoreChemistry());
+        item.add(s.getScoreHistory());
+        item.add(s.getScoreBbs());
+
+        //扩展.....
+        //科目名
+        return item;
+    }
+
+
+    //班级排名
+    public static List<String> saveSubjectRankClass(ScoreModelTwoInfo item){
+        if(item == null) return null;
+        List<String> subjectScore = new ArrayList<String>();
+        subjectScore.add(item.getChineseClassRank());
+        subjectScore.add(item.getMatchClassRank());
+        subjectScore.add(item.getEnglishClassRank());
+        subjectScore.add(item.getPhysicalClassRank());
+        subjectScore.add(item.getChemistryClassRank());
+        subjectScore.add(item.getHistoryClassRank());
+        subjectScore.add(item.getBbsClassRank());
+        return subjectScore;
+    }
+
+    //年级排名
+    public static List<String> saveSubjectRankGrade(ScoreModelTwoInfo item){
+        if(item == null) return null;
+        List<String> subjectScore = new ArrayList<String>();
+        //语文年级排名
+        subjectScore.add(item.getChineseGradeRank());
+        //数学年级排名
+        subjectScore.add(item.getMatchGradeRank());
+        //英语年级排名
+        subjectScore.add(item.getEnglishGradeRank());
+        //物理年级排名
+        subjectScore.add(item.getPhysicalGradeRank());
+        //化学年级排名
+        subjectScore.add(item.getChineseClassRank());
+        //历史年级排名
+        subjectScore.add(item.getHistoryGradeRank());
+        //政治年级排名
+        subjectScore.add(item.getBbsGradeRank());
+        return subjectScore;
+    }
+
+
+    public static List<BigDecimal> saveSubjectScore2(ScoreModelTwoInfo item){
+        if(item == null) return null;
+        List<BigDecimal> subjectScore = new ArrayList<BigDecimal>();
+
+        //语文
+        if("".equals(item.getScoreChinese()) || item.getScoreChinese() == null){
+            //语文分数
+            subjectScore.add(new BigDecimal("0"));
+        }else{
+            //语文分数
+            subjectScore.add(new BigDecimal(item.getScoreChinese().trim()));
+        }
+
+        //数学
+        if("".equals(item.getScoreMatch()) || item.getScoreMatch() == null){
+            //数学分数
+            subjectScore.add(new BigDecimal("0"));
+        }else{
+            //数学分数
+            subjectScore.add(new BigDecimal(item.getScoreMatch().trim()));
+        }
+
+        //英语
+        if("".equals(item.getScoreEnglish()) || item.getScoreEnglish() == null){
+            //英语分数
+            subjectScore.add(new BigDecimal("0"));
+        }else{
+            //英语分数
+            subjectScore.add(new BigDecimal(item.getScoreEnglish().trim()));
+        }
+
+        //物理
+        if("".equals(item.getScorePhysical()) || item.getScorePhysical() == null){
+            //物理分数
+            subjectScore.add(new BigDecimal("0"));
+        }else{
+            //物理分数
+            subjectScore.add(new BigDecimal(item.getScorePhysical()));
+        }
+
+        //化学
+        if("".equals(item.getScoreChemistry()) || item.getScoreChemistry() == null){
+            //化学分数
+            subjectScore.add(new BigDecimal("0"));
+        }else{
+            //化学分数
+            subjectScore.add(new BigDecimal(item.getScoreChemistry().trim()));
+        }
+
+        //历史
+        if("".equals(item.getScoreHistory()) || item.getScoreHistory() == null){
+            //历史分数
+            subjectScore.add(new BigDecimal("0"));
+        }else{
+            //历史分数
+            subjectScore.add(new BigDecimal(item.getScoreHistory().trim()));
+        }
+
+        //政治
+        if("".equals(item.getScoreBbs()) || item.getScoreHistory() == null){
+            //历史分数
+            subjectScore.add(new BigDecimal("0"));
+        }else{
+            //历史分数
+            subjectScore.add(new BigDecimal(item.getScoreBbs().trim()));
+        }
+/*
+
+
+
+        if("/".equals(item.getScoreChinese())){
+            //语文分数
+            subjectScore.add(new BigDecimal("0"));
+            //数学分数
+            subjectScore.add(new BigDecimal(item.getScoreMatch()));
+            //英语分数
+            subjectScore.add(new BigDecimal(item.getScoreEnglish()));
+            //物理分数
+            subjectScore.add(new BigDecimal(item.getScorePhysical()));
+            //化学分数
+            subjectScore.add(new BigDecimal(item.getScoreChemistry()));
+            //历史分数
+            subjectScore.add(new BigDecimal(item.getScoreHistory()));
+            //政治
+            subjectScore.add(new BigDecimal(item.getScoreBbs()));
+        }else{
+
+
+        }*/
+
+/*
+        //语文分数
+        subjectScore.add(new BigDecimal(item.getScoreChinese().trim()));
+        //数学分数
+        subjectScore.add(new BigDecimal(item.getScoreMatch().trim()));
+        //英语分数
+        subjectScore.add(new BigDecimal(item.getScoreEnglish().trim()));
+        //物理分数
+        subjectScore.add(new BigDecimal(item.getScorePhysical().trim()));
+        //化学分数
+        subjectScore.add(new BigDecimal(item.getScoreChemistry().trim()));
+        //历史分数
+        subjectScore.add(new BigDecimal(item.getScoreHistory().trim()));
+        //政治
+        subjectScore.add(new BigDecimal(item.getScoreBbs().trim()));
+
+        */
+        return subjectScore;
+
+
+    }
 
     public static List<BigDecimal> saveSubjectScore(StudentScoreInfo item){
         if(item == null) return null;

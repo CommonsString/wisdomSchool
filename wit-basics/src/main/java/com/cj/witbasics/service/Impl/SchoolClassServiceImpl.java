@@ -516,7 +516,7 @@ public class SchoolClassServiceImpl implements SchoolClassService{
     public Pager findSchoolClassInfoUBW(Integer periodId, String thetime, String vague, Pager pager) {
         System.out.println(periodId + " " + thetime + " " + vague);
         //学段层
-        if(periodId != null && thetime == null) {
+        if(periodId != null && thetime == null && vague == null) {
             System.out.println("1成~~~~~~");
             //根据学段Id,查询对于班级
             List<SchoolClassInfo> underPeriodClass = classMapper.selectByPeriodIdUBW(pager);
@@ -530,13 +530,24 @@ public class SchoolClassServiceImpl implements SchoolClassService{
         }
 
         //学段届次
-        if(periodId != null && thetime != null){
+        if(periodId != null && thetime != null && vague == null){
             System.out.println("2成~~~~~~");
             List<SchoolClassInfo> undesrGradeClass = new ArrayList<SchoolClassInfo>();
             undesrGradeClass = this.classMapper.selectByByPeriodAndThetime(periodId, thetime, pager);
             pager.setContent(undesrGradeClass);
             //查询总数,测试
             pager.setRecordTotal(this.classMapper.selectCountByPeriodIdAndThetime(periodId, thetime));
+            return pager;
+        }
+
+        //模糊查询
+        if(periodId != null && thetime != null && vague != null){
+            System.out.println("3成~~~~~~");
+            List<SchoolClassInfo> undesrGradeClass = new ArrayList<SchoolClassInfo>();
+            undesrGradeClass = this.classMapper.selectByByPeriodAndThetimeAndVague(periodId, thetime, vague, pager);
+            pager.setContent(undesrGradeClass);
+            //查询总数,测试
+            pager.setRecordTotal(this.classMapper.selectCountByPeriodAndThetimeAndVague(periodId, thetime, vague));
             return pager;
         }
 
@@ -562,7 +573,7 @@ public class SchoolClassServiceImpl implements SchoolClassService{
 
 
 
-        //学段过滤
+/*        //学段过滤
         if(periodId != null){
             //根据学段Id,查询对于班级
             List<SchoolClassInfo> underPeriodClass = classMapper.selectByPeriodIdUBW(pager);
@@ -582,7 +593,7 @@ System.out.println("进入第二层");
                 for(SchoolClassInfo schoolClassInfo : underPeriodClass){
                     //获取数据
 System.out.println("测试" + schoolClassInfo.toString());
-                    SchoolClassInfo temp = classMapper.selectByPrimaryKeyByPeriodAndThetime(schoolClassInfo, thetime/*, pager*/);
+                    SchoolClassInfo temp = classMapper.selectByPrimaryKeyByPeriodAndThetime(schoolClassInfo, thetime*//*, pager*//*);
                     if(temp != null){
                         //存在,添加进结果集合
                         undesrGradeClass.add(temp);
@@ -624,7 +635,7 @@ System.out.println("二层数据：" + undesrGradeClass);
         }else{
             log.error("无记录");
             return pager;
-        }
+        }*/
         return pager;
     }
 
@@ -801,7 +812,10 @@ System.out.println("二层数据：" + undesrGradeClass);
      */
     @Override
     public Pager findHasPowerForHeadmaster(String vague, Pager pager) {
+
         List<Map> result = this.classMapper.findHasPowerForHeadmaster(vague);
+
+
         pager.setRecordTotal(result.size());
         pager.setContent(result);
         return pager;
@@ -944,10 +958,11 @@ System.out.println("二层数据：" + undesrGradeClass);
      * @return
      */
     @Override
-    public boolean updateClassInfoDel(Long classId) {
+    public boolean updateClassInfoDel(Long classId, Long adminId) {
         SchoolClass scLass = new SchoolClass();
         scLass.setClassId(classId);
         scLass.setState("0");
+        scLass.setOperatorId(adminId);
         int result = this.classMapper.updateByPrimaryKeySelective(scLass);
         if(result > 0) return true;
         return false;

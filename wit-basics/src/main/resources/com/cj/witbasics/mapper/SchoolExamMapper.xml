@@ -279,21 +279,20 @@
 
   <resultMap id="PeriodAndGrade" type="java.util.LinkedHashMap">
     <result column="period_id" property="periodId"></result>
-    <result column="period_name" property="periodName"></result>
-    <result column="grade_id" property="gradeId"></result>
-    <result column="grade_name" property="gradeName"></result>
+    <result column="thetime" property="thetime"></result>
   </resultMap>
 
   <!--根据学校ID联查学段-年级关系数据集合-->
   <select id="findAllPeriodAndGrade" parameterType="java.lang.Long" resultMap="PeriodAndGrade">
-    SELECT
-    sp.period_id, sp.period_name,sg.grade_id,sg.grade_name
-    FROM
-    school_period sp,school_grade sg
-    WHERE
-    sp.period_id = sg.period_id
+    select
+    IFNULL(period_id, -1) AS period_id, IFNULL(date_format(thetime,'%Y'), -1) AS thetime
+    from school_period_class_thetime
+    where
+    school_id = #{schoolId,jdbcType=BIGINT}
     AND
-    sp.school_id = #{schoolId}
+    state != '0'
+    GROUP BY thetime
+    ORDER BY thetime DESC
   </select>
 
   <!--根据班级id,科目名,查重记录-->
@@ -412,12 +411,14 @@
     <result column="class_period_id" property="classPeriodId"></result>
     <result column="class_period" property="classPeriod"></result>
     <result column="thetime" property="thetime"></result>
+    <result column="class_type_id" property="classTypeId"></result>
+    <result column="class_type" property="classType"></result>
 
   </resultMap>
   <!--根据考试父节点ID查询此次考试所有的 学段-届次-->
   <select id="findAllSchoolExamThetimeBySchoolExamParent" parameterType="java.lang.Long" resultMap="SchoolExamThetimeBySchoolExamParent">
     SELECT
-    sc.class_period_id,sc.class_period,DATE_FORMAT(se.thetime,'%Y') AS thetime
+    sc.class_period_id,sc.class_period,DATE_FORMAT(se.thetime,'%Y') AS thetime,sc.class_type_id,class_type
     FROM
     school_exam se
     LEFT JOIN school_class sc ON sc.`class_id` = se.`class_id`
@@ -458,23 +459,27 @@
     se.class_id = sc.class_id
     AND
     sc.class_period_id = #{classPeriodId}
+    AND
+    sc.class_type_id = #{classTypeId}
 
   </select>
 
   <resultMap id="SchoolExamThetimeAndSubjectByExamParentIdAndThetime" type="com.cj.witcommon.entity.ExamClassPeriod">
     <result column="class_period_id" property="classPeriodId"></result>
     <result column="class_period" property="classPeriod"></result>
+    <result column="class_type_id" property="classTypeId"></result>
+    <result column="class_type" property="classType"></result>
     <result column="thetime" property="thetime"></result>
     <collection property="examSubjects" ofType="com.cj.witcommon.entity.ExamSubject">
       <result column="exam_subject_id" property="examSubjectId"></result>
       <result column="exam_subject" property="examSubject"></result>
     </collection>
   </resultMap>
-  <!--根据 考试父节点ID/届次、学段ID查询年级考试课程 并封装-->
+  <!--根据 考试父节点ID/届次、学段ID、班级类型ID 查询年级考试课程 并封装-->
   <select id="findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime" parameterType="java.util.Map" resultMap="SchoolExamThetimeAndSubjectByExamParentIdAndThetime">
 
     SELECT
-    sc.class_period_id,sc.class_period,DATE_FORMAT(sc.thetime,'%Y') AS thetime,
+    sc.class_period_id,sc.class_period,DATE_FORMAT(sc.thetime,'%Y') AS thetime,sc.class_type_id,sc.class_type
     se.exam_subject_id,se.exam_subject
     FROM
     school_exam se,school_class sc
@@ -486,6 +491,8 @@
     se.class_id = sc.class_id
     AND
     sc.class_period_id = #{classPeriodId}
+    AND
+    sc.class_type_id = #{classTypeId}
     GROUP BY se.exam_subject
 
   </select>

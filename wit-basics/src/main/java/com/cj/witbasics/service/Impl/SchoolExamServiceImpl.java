@@ -35,6 +35,9 @@ public class SchoolExamServiceImpl implements SchoolExamService{
     @Autowired(required = false)
     private SchoolSubjectMapper subjectMapper;
 
+    @Autowired(required = false)
+    private SchoolPeriodMapper periodMapper;
+
 
     @Value("${school_id}")
     private String schoolId;
@@ -53,37 +56,22 @@ public class SchoolExamServiceImpl implements SchoolExamService{
 
 
     /**
-     * 查询学校下的年级
+     * 查询届次
      * @param schoolId
      * @return
      */
     @Override
     public List<Map> findAllGradeName(Long schoolId) {
-//        //获取一对多信息
-//        List<PeriodUnderGrade> result = this.examMapper.selectBySchoolIdForExam(schoolId);
-//        //信息再封装
-//        List<PeriodAndGrade> periodAndGrade = new ArrayList<PeriodAndGrade>();
-//        //遍历
-//        for(int i = 0, len = result.size(); i < len; i++){
-//            for(int j = 0, leng = result.get(i).getGrade().size(); j < leng; j++){
-//                PeriodAndGrade periodGradeInfo = null;
-//                if(result.get(i) != null){
-//                    //封装对象
-//                    periodGradeInfo = new PeriodAndGrade();
-//                    //设置属性
-//                    periodGradeInfo.setPeriodId(result.get(i).getPeriodId());
-//                    periodGradeInfo.setPeriodName(result.get(i).getPeriodName());
-//                    //获取属性
-//                    GradeInfo temp = result.get(i).getGrade().get(j);
-//                    periodGradeInfo.setGradeId(temp.getGradeId());
-//                    periodGradeInfo.setGradeName(temp.getGradeName());
-//                }
-//                periodAndGrade.add(periodGradeInfo);
-//            }
-//        }
-//System.out.println(periodAndGrade.size() + " 数量");
-        return examMapper.findAllPeriodAndGrade(schoolId);
+
+        List<Map> param = examMapper.findAllPeriodAndGrade(schoolId);
+        for(Map map : param){
+            System.out.println("学段ID" + map.get("periodId"));
+            SchoolPeriod period = this.periodMapper.selectByPrimaryKey((Long)map.get("periodId"));
+            map.put("periodName", period.getPeriodName());
+        }
+        return param;
     }
+
 
 
     /**
@@ -94,7 +82,17 @@ public class SchoolExamServiceImpl implements SchoolExamService{
     @Override
     @Transactional
     public List findAllUnderGradeClass(List<PeriodAndGrade> param) {
-        //总list
+        List<List<Map>> result = new ArrayList<>();
+        for(PeriodAndGrade temp : param){
+System.out.println(temp.toString());
+            String thetime = temp.getThetime();
+            thetime += "-7-1";
+            System.out.println(thetime);
+            List<Map> tempResult = this.classMapper.selectByByPeriodAndThetimeExam(temp.getPeriodId(), thetime);
+            result.add(tempResult);
+        }
+        return result;
+ /*       //总list
         List allList = new ArrayList();
         List<ExamClassInfo> resultList = new ArrayList<ExamClassInfo>();
         //学段年级
@@ -144,8 +142,7 @@ public class SchoolExamServiceImpl implements SchoolExamService{
             }
 //            allList.add(resultList);
             resultList.add(tem);
-        }
-        return resultList;
+        }*/
     }
 
 

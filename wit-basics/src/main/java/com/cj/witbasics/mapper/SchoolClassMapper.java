@@ -94,10 +94,23 @@ public interface SchoolClassMapper {
     List<SchoolClassInfo> selectByByPeriodAndThetime(@Param("periodId") Integer periodId,
                                                      @Param("thetime") String thetime,
                                                      @Param("pager") Pager pager);
+    //根据学段届次模糊条件返回班级
+    List<SchoolClassInfo> selectByByPeriodAndThetimeAndVague(@Param("periodId") Integer periodId,
+                                                     @Param("thetime") String thetime,
+                                                     @Param("vague") String vague,
+                                                     @Param("pager") Pager pager);
+
+    //考试管理，根据学段届次
+    List<Map> selectByByPeriodAndThetimeExam(@Param("periodId") Integer periodId,
+                                             @Param("thetime") String thetime);
 
     //计数
     int selectCountByPeriodIdAndThetime(@Param("periodId") Integer periodId,
                                         @Param("thetime") String thetime);
+    //计数
+    int selectCountByPeriodAndThetimeAndVague(@Param("periodId") Integer periodId,
+                                              @Param("thetime") String thetime,
+                                              @Param("vague") String vague);
 
     //考试模块,查询班级
     SchoolClassInfo findAllClassForYeah(@Param("sClass")SchoolClassInfo sClass, @Param("gradeAge") int gradeAge);

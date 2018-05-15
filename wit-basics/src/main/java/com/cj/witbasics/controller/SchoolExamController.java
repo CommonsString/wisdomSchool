@@ -45,20 +45,19 @@ public class SchoolExamController {
 
 
     /**
-     *  功能描述：查询学校下的年级(初一，初二，高一....)
+     *  功能描述：查询届次
      *  参数：学校ID
      *  返回：对应结果集
      *  时间：6小时
      */
-    @ApiOperation(value = "无参。查询---学段(高中...)--年级(一年级...)", notes = "返回状态")
-    @Log(name = "查询---学段")
+    @ApiOperation(value = "查询届次(考试)", notes = "返回状态")
+    @Log(name = "考试查询 ===> 查询借此")
     @GetMapping("/findGrade")
     public ApiResult findAllGradeName(){
         //获取学校Id
         Long schoolId = toLong();
         //返回对象
         ApiResult apiResult = new ApiResult();
-
         try{
             List<Map> result = examService.findAllGradeName(schoolId);
             if(result != null){
@@ -257,7 +256,7 @@ public class SchoolExamController {
             "{\n" +
             "  \"parameter\": \"考\"\n" +
             "}")
-    @Log(name = "考试  ==> 查询考试信息（模糊查询）")
+    @Log(name = "考试  ==> 查询考试信息（模糊查询->考试名称）")
     public ApiResult findAllSchoolExamParentByParameter(@ApiParam(name = "p",value = "parameter=考试名称",required = false)
                                                          @RequestBody Pager p){
 
@@ -273,8 +272,8 @@ public class SchoolExamController {
      * 根据考试父节点ID查询此次考试所有 学段-届次
      */
     @GetMapping("/findAllSchoolExamThetimeBySchoolExamParent")
-    @ApiOperation("查询考试届次（学段-届次-班级类型）")
-    @Log(name = "考试  ==> 查询考试届次（学段-届次-班级类型）")
+    @ApiOperation("查询考试届次（考试父节点ID->学段、届次、班级类型）")
+    @Log(name = "考试  ==> 查询考试届次（考试父节点ID->学段、届次、班级类型）")
     @ApiImplicitParam(name = "examParentId",value = "examParentId=考试父节点ID",required = true)
     public ApiResult findAllSchoolExamThetimeBySchoolExamParent(Long examParentId){
         ApiResult apiResult = new ApiResult();
@@ -288,18 +287,20 @@ public class SchoolExamController {
      * 根据考试 父节点ID 和 考试届次 查询此次考试的所有班级及课程信息
      */
     @GetMapping("/findAllSchoolExamClassAndSubject")
-    @ApiOperation("查询考试信息（届次-班级-课程）")
+    @ApiOperation("查询考试信息（考试父节点ID-届次-学段ID-班级类型ID->课程）")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "examParentId", value = "examParentId=考试父节点ID", required = true),
             @ApiImplicitParam(name = "thetime", value = "thetime=届次", required = true),
-            @ApiImplicitParam(name = "classPeriodId", value = "classPeriodId=学段ID", required = true)
+            @ApiImplicitParam(name = "classPeriodId", value = "classPeriodId=学段ID", required = true),
+            @ApiImplicitParam(name = "classTypeId", value = "classTypeId=班级类型ID", required = true)
     })
-    @Log(name = "考试  ==> 查询考试信息（届次-班级-课程）")
-    public ApiResult findAllSchoolExamClassAndSubject(Long examParentId,String thetime,Long classPeriodId){
+    @Log(name = "考试  ==> 查询考试信息（考试父节点ID-届次-班级ID->课程）")
+    public ApiResult findAllSchoolExamClassAndSubject(Long examParentId,String thetime,Long classPeriodId,Integer classTypeId){
         Map map = new HashMap();
         map.put("examParentId",examParentId);
         map.put("thetime",thetime);
         map.put("classPeriodId",classPeriodId);
+        map.put("classTypeId",classTypeId);
         ApiResult apiResult = new ApiResult();
         apiResult.setCode(ApiCode.SUCCESS);
         apiResult.setMsg(ApiCode.SUCCESS_MSG);
@@ -312,18 +313,20 @@ public class SchoolExamController {
      * 根据考试 父节点ID 和 考试届次 查询此次考试的所有班级的课程信息
      */
     @GetMapping("/findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime")
-    @ApiOperation("查询考试信息（届次-课程）")
+    @ApiOperation("查询考试信息（考试父节点ID-届次-学段ID-班级类型ID->课程）")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "examParentId", value = "examParentId=考试父节点ID", required = true),
             @ApiImplicitParam(name = "thetime", value = "thetime=届次", required = true),
-            @ApiImplicitParam(name = "classPeriodId", value = "classPeriodId=学段ID", required = true)
+            @ApiImplicitParam(name = "classPeriodId", value = "classPeriodId=学段ID", required = true),
+            @ApiImplicitParam(name = "classTypeId", value = "classTypeId=班级类型ID", required = true)
     })
-    @Log(name = "考试  ==> 查询考试信息（届次-课程）")
-    public ApiResult findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime(Long examParentId,String thetime,Long classPeriodId){
+    @Log(name = "考试  ==> 查询考试信息（考试父节点ID-届次-学段ID-班级类型ID->课程）")
+    public ApiResult findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime(Long examParentId,String thetime,Long classPeriodId,Integer classTypeId){
         Map map = new HashMap();
         map.put("examParentId",examParentId);
         map.put("thetime",thetime);
         map.put("classPeriodId",classPeriodId);
+        map.put("classTypeId",classTypeId);
         ApiResult apiResult = new ApiResult();
         apiResult.setCode(ApiCode.SUCCESS);
         apiResult.setMsg(ApiCode.SUCCESS_MSG);

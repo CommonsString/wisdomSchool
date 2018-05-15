@@ -23,7 +23,7 @@ public interface SchoolSubjectService {
     /**
      * 查询所有课程
      */
-    Pager findSchoolSunjectInfo(Long schoolId, Pager pager);
+    List<SchoolSubject> findSchoolSunjectInfo(Long schoolId/*, Pager pager*/);
 
     /**
      * 修改课程信息

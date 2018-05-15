@@ -66,9 +66,11 @@ public class SchoolSubjectController {
         ApiResult apiResult = new ApiResult();
         try{
             //数据填充
+            Long adminId = (Long)request.getSession().getAttribute("adminId");
             SchoolSubject schoolSubject = new SchoolSubject();
             schoolSubject.setSubjectsId(subjectsId);
             schoolSubject.setSubjectName(subjectName);
+            schoolSubject.setOperatorId(adminId);
             apiResult = this.subjectService.addSubjectInfo(request.getSession(), schoolSubject);
 System.out.println(apiResult.toString());
         }catch (Exception e){ //异常处理
@@ -88,16 +90,15 @@ System.out.println(apiResult.toString());
      */
     @ApiOperation(value = "查询课程信息", notes = "集合")
     @ApiImplicitParams({
-//            @ApiImplicitParam(name = "schoolId", value = "学校ID", required = true, dataType = "Long"),
-//            @ApiImplicitParam(name = "subjecName", value = "开课名", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "pager",value = "分页参数，初始页码1，初始条数10，可为空",required = false)
+//            @ApiImplicitParam(name = "pager",value = "分页参数，初始页码1，初始条数10，可为空",required = false)
     })
     @GetMapping("/findSubjectInfo")
-    public ApiResult findSchoolSunjectInfo(/*Long schoolId, *//*String subjecName, */Pager pager){
+    public ApiResult findSchoolSunjectInfo(/*Pager pager*/){
+
         //返回对象
         ApiResult apiResult = new ApiResult();
         try{
-            Pager result = this.subjectService.findSchoolSunjectInfo(toLong(), pager);
+            List<SchoolSubject> result = this.subjectService.findSchoolSunjectInfo(toLong()/*, pager*/);
 //            List result = null;
             if(result != null){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, result); //数据的封装
@@ -170,30 +171,30 @@ System.out.println(apiResult.toString());
      *  返回：成功/失败
      *  时间：
      */
-    @ApiOperation(value = "删除课程信息", notes = "成功/失败")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "subjectId", value = "开课ID", required = false, dataType = "Long"),
-    })
-    @DeleteMapping("/updataSubjectInfoDel")
-    @Log(name = "课程  ==> 删除课程（非物理删除）")
-    public ApiResult updataSubjectInfoDel(Long subjectId, HttpSession session){
-        //TODO:获取操作员ID
-        Long operatorId = (Long) session.getAttribute("adminId");
-        //返回对象
-        ApiResult apiResult = new ApiResult();
-        try{
-            //构造对象
-            SchoolSubject subject = new SchoolSubject();
-            subject.setSubjectId(subjectId);
-            subject.setOperatorId(operatorId);
-            apiResult = this.subjectService.updataSubjectInfoDel(subject);
-        }catch (Exception e){ //异常处理
-            ApiResultUtil.fastResultHandler(apiResult, false,
-                    ApiCode.error_delete_failed, ApiCode.error_unknown_database_operation_MSG, null);
-            e.printStackTrace();
-        }
-        return apiResult;
-    }
+//    @ApiOperation(value = "删除课程信息", notes = "成功/失败")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "subjectId", value = "开课ID", required = false, dataType = "Long"),
+//    })
+//    @DeleteMapping("/updataSubjectInfoDel")
+//    @Log(name = "课程  ==> 删除课程（非物理删除）")
+//    public ApiResult updataSubjectInfoDel(Long subjectId, HttpSession session){
+//        //TODO:获取操作员ID
+//        Long operatorId = (Long) session.getAttribute("adminId");
+//        //返回对象
+//        ApiResult apiResult = new ApiResult();
+//        try{
+//            //构造对象
+//            SchoolSubject subject = new SchoolSubject();
+//            subject.setSubjectId(subjectId);
+//            subject.setOperatorId(operatorId);
+//            apiResult = this.subjectService.updataSubjectInfoDel(subject);
+//        }catch (Exception e){ //异常处理
+//            ApiResultUtil.fastResultHandler(apiResult, false,
+//                    ApiCode.error_delete_failed, ApiCode.error_unknown_database_operation_MSG, null);
+//            e.printStackTrace();
+//        }
+//        return apiResult;
+//    }
 
     /**
      * 删除课程-物理删除

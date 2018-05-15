@@ -91,7 +91,7 @@ public class SchoolScoreController {
                                         Long classId, Long eaxmId, Integer modelNumber,
                                         MultipartFile file,  HttpServletRequest request){
         //TODO:获取操作人ID
-        Long operatorId = 11L;
+        Long operatorId = (Long)request.getSession().getAttribute("adminId");
         //返回对象
         ApiResult apiResult = new ApiResult();
         //TODO:校验文件是否为空
@@ -99,7 +99,7 @@ public class SchoolScoreController {
             ApiResultUtil.fastResultHandler(apiResult, false, ApiCode.FAIL, ApiCode.FAIL_MSG, null); //处理失败
             return apiResult;
         }
-        thetime += "-6-1";
+        thetime += "-7-1";
        //参数封装
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("schoolStageId", schoolStageId);

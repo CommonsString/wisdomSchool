@@ -335,14 +335,14 @@
   <!--批量插入-->
   <insert id="insertBathInfo" parameterType="com.cj.witbasics.entity.StudentScore" >
     insert into student_score (school_id, exam_id,
-    student_name, register_number, school_stage_id, thetime,
+    student_name, register_number, school_stage_id, thetime, class_id,
     school_subject_id, score,
     founder_id, create_time, operator_id)
     values 
     <foreach collection="list" item="score" separator=",">
       (#{score.schoolId,jdbcType=BIGINT}, #{score.examId,jdbcType=BIGINT},
       #{score.studentName,jdbcType=VARCHAR}, #{score.registerNumber,jdbcType=VARCHAR}, #{score.schoolStageId,jdbcType=VARCHAR},
-      #{score.thetime,jdbcType=TIMESTAMP},
+      #{score.thetime,jdbcType=TIMESTAMP}, #{score.classId,jdbcType=BIGINT},
       #{score.schoolSubjectId,jdbcType=BIGINT}, #{score.score,jdbcType=DECIMAL},
       #{score.founderId,jdbcType=BIGINT}, #{score.createTime,jdbcType=TIMESTAMP}, #{score.operatorId,jdbcType=BIGINT}
       )

@@ -95,10 +95,11 @@ System.out.println("schoolId============>>"+schoolId);
          @ApiImplicitParam(name = "gradeName", value = "新的年级名称", required = true, dataType = "String"),
     })
 //    @PutMapping("updateGradeInfo")
-    public ApiResult updateSchoolGradeInfo(Long gradeId, String gradeName){
+    public ApiResult updateSchoolGradeInfo(Long gradeId, String gradeName, HttpServletRequest request){
         ApiResult apiResult = new ApiResult(); //返回对象
+        Long adminId = (Long)request.getSession().getAttribute("adminId");
         try{
-            boolean result = this.periodService.updateSchoolGradeInfo(gradeId, gradeName);
+            boolean result = this.periodService.updateSchoolGradeInfo(gradeId, gradeName, adminId);
             if(result){
                 apiResult.setCode(ApiCode.SUCCESS); //状态码
                 apiResult.setMsg(ApiCode.SUCCESS_MSG);
@@ -182,12 +183,12 @@ System.out.println("schoolId============>>"+schoolId);
     public ApiResult addSchoolPeriodInfo(
         @ApiParam(name = "period",value = "periodName:学段名称---," +
                 "periodAge:入学年龄---,periodSystem:学制---,state:状态,---addGradeName:年级名称列表",required = true)
-        @RequestBody SchoolPeriodInfo period) {
+        @RequestBody SchoolPeriodInfo period, HttpServletRequest request) {
         ApiResult apiResult = new ApiResult(); //返回对象
 System.out.println(period.toString());
         try{
             //TODO:获取创建人信息：创建人ID， 创建时间
-            Long operatorId = 11L;
+            Long operatorId = (Long)request.getSession().getAttribute("adminId");
             Long schoolId = toLong();
             period.setSchoolId(schoolId);
             apiResult = this.periodService.addSchoolPeriodInfo(period, period.getAddGradeName(), operatorId);
@@ -216,7 +217,7 @@ System.out.println(apiResult.toString());
     public ApiResult updateSchoolPeriodInfoDel(HttpServletRequest request, Long periodId){
         ApiResult apiResult = new ApiResult(); //返回对象
         //TODO:获取操作员ID
-        Long operatorId = 1L;
+        Long operatorId = (Long)request.getSession().getAttribute("adminId");
 //        Long operatorId = (Long)request.getSession().getAttribute("operatorId");
         try{
             boolean result = this.periodService.updatePartInfoDel(periodId, operatorId);
@@ -254,7 +255,7 @@ System.out.println(apiResult.toString());
         //TODO:获取操作员ID
 //        Long operatorId = (Long)request.getSession().getAttribute("operatorId");
 System.out.println("数据： " + periodList);
-        Long operatorId = 1L;
+        Long operatorId = (Long)request.getSession().getAttribute("adminId");
         try{
             boolean result = this.periodService.updateBathPartInfoDel(periodList, operatorId);
             if(result){

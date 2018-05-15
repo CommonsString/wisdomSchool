@@ -429,7 +429,7 @@ public class SchoolClassController {
             }
             if (map.containsKey("thetime")){
                 thetime = (Integer)map.get("thetime")+"";
-                thetime += "-6-1";
+                thetime += "-7-1";
                 map.put("thetime", thetime);
                 System.out.println(thetime + " 届次");
             }
@@ -718,7 +718,7 @@ public class SchoolClassController {
         //填充
         try{
             //日期转换
-            theTime += "-6-1";
+            theTime += "-7-1";
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             Date date = format.parse(theTime);
             boolean result = this.schoolClassService.updateDirector(directorId, adminId, periodId, date);
@@ -816,7 +816,7 @@ public class SchoolClassController {
         //TODO:session里面获取学校ID
         Long schoolId = toLong();
         info.setSchoolId(schoolId);
-        Long adminId = 1L;
+        Long adminId = (Long)request.getSession().getAttribute("adminId");
         info.setOperatorId(adminId);
         info.setFounderId(adminId);
         //入学年度
@@ -838,10 +838,11 @@ public class SchoolClassController {
     @Log(name = "删除班级")
     @ApiImplicitParam(name = "classId", value = "班级ID", required = true)
     @DeleteMapping("/updateClassInfoDel")
-    public ApiResult updateClassInfoDel(Long classId){
+    public ApiResult updateClassInfoDel(Long classId, HttpServletRequest request){
         ApiResult apiResult = new ApiResult(); //返回对象
+        Long adminId = (Long)request.getSession().getAttribute("adminId");
         try{
-            boolean result = this.schoolClassService.updateClassInfoDel(classId);
+            boolean result = this.schoolClassService.updateClassInfoDel(classId, adminId);
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
             }else{

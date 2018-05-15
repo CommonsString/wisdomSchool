@@ -204,7 +204,7 @@ public class AdminServiceImpl implements AdminService {
             if(admin1.getAdminPass().equals(pwd)){
                 HttpSession session = request.getSession();
                 //生成Token
-                String Token = MD5Util.md5Hex(session.getId()+admin1.getAdminName()+ UUID.randomUUID());
+//                String Token = MD5Util.md5Hex(session.getId()+admin1.getAdminName()+ UUID.randomUUID());
 
                 //将用户ID、用户名、Token、角色Id绑定到session
                 Long adminId = admin1.getId();
@@ -216,11 +216,11 @@ public class AdminServiceImpl implements AdminService {
 
                 //将adiminId---sessionId放入 sessionIDMap,用于实现单设备登录
                 String sessionID = request.getSession().getId();
-
-                if (!MemoryData.getSessionIDMap().containsKey(adminId)) { //不存在，首次登陆，放入Map
+                System.out.println("登录时生成的sessionId=====>"+sessionID);
+                if (!MemoryData.getSessionIDMap().containsKey(adminId.toString())) { //不存在，首次登陆，放入Map
                     MemoryData.getSessionIDMap().put(adminId.toString(),sessionID);  //添加adminId-sessionID
-                }else if( MemoryData.getSessionIDMap().containsKey(adminId) && !StringUtils.equals(sessionID, MemoryData.getSessionIDMap().get(adminId))){
-                    MemoryData.getSessionIDMap().remove(adminId);  //删除adminId-sessionID
+                }else if( MemoryData.getSessionIDMap().containsKey(adminId) && !StringUtils.equals(sessionID, MemoryData.getSessionIDMap().get(adminId.toString()))){
+                    MemoryData.getSessionIDMap().remove(adminId.toString());  //删除adminId-sessionID
                     MemoryData.getSessionIDMap().put(adminId.toString(),sessionID);  //添加adminId-sessionID
                 }
 
@@ -292,7 +292,7 @@ public class AdminServiceImpl implements AdminService {
     public void ifLogout(HttpServletRequest request){
         Long adminId = (Long) request.getSession().getAttribute("adminId");
         //清理MemoryData中的用户数据
-        MemoryData.getSessionIDMap().remove(adminId);  //删除adminId-sessionID
+        MemoryData.getSessionIDMap().remove(adminId.toString());  //删除adminId-sessionID
         //销毁此session
         request.getSession().invalidate();
     }
@@ -302,12 +302,21 @@ public class AdminServiceImpl implements AdminService {
     public Map loginSuccess(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Long roleId = (Long)session.getAttribute("roleId");
-        System.out.println("========================= 查询用户权限 ==========================");
 
 
         //用于封装返回的结果集
         Map map = new HashMap();
 
+//        //从session中获取用户名
+//        String adminName = (String)request.getSession().getAttribute("adminName");
+//        Admin util2 = new Admin();
+//        util2.setAdminName(adminName);
+
+//        //用adminName查询
+//        Admin admin1 = adminMapper.findAdmin(admin);
+
+//        //根据roleId查询adminRole信息
+//        AdminRole adminRole = adminRoleMapper.findAdminRoleByAdminRoleId(roleId);
 
         //根据roleId查询该用户拥有的权限集合
         List roleIds = adminRoleModularMapper.findAllAdminRoleModularModularId(roleId);
@@ -319,6 +328,11 @@ public class AdminServiceImpl implements AdminService {
             //查询权限页面信息
             AdminModulars modulars = adminModularMapper.findAllRoleModular(roleIds);
 
+//            //将目录和权限封装为列表样式
+//            List<AdminModulars> catas = encapsulation(modulars);
+
+            //将权限列表封装到map
+//            map.put("catas",cleanCatas(catas));  //清理无权限的目录
 
             //提取用户拥有的权限url添加到session
             List<String> list = new ArrayList<>();

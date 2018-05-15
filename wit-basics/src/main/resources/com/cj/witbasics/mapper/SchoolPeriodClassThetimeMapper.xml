@@ -49,7 +49,7 @@
       </if>
       <if test="schoolId != null">
         school_id,
-      </if>
+    </if>
       <if test="periodId != null">
         period_id,
       </if>
@@ -195,10 +195,10 @@
   </resultMap>
   <select id="selectByPeriodId" parameterType="long" resultMap="asacMap">
     select
-    class_id, date_format(thetime,'%Y') AS thetime
+    period_id, date_format(thetime,'%Y') AS thetime
     from school_period_class_thetime
     where
-    period_id = #{periodId,jdbcType=BIGINT}
+    school_id = #{schoolId,jdbcType=BIGINT}
     AND
     state != '0'
     GROUP BY thetime

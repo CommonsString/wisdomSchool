@@ -39,10 +39,10 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
 
     private static final Logger log = LoggerFactory.getLogger(SchoolSubjectServiceImpl.class);
 
-    @Autowired
+    @Autowired(required = false)
     private SchoolSubjectMapper subjectMapper;
 
-    @Autowired
+    @Autowired(required = false)
     private ClassSubjectInfoMapper infoMapper;
 
     @Value("${school_id}")
@@ -101,20 +101,15 @@ public class SchoolSubjectServiceImpl implements SchoolSubjectService {
      */
     @Override
     @Transactional
-    public Pager findSchoolSunjectInfo(Long schoolId,Pager pager) {
-        //查询总条数
-        int total = this.subjectMapper.selectCountByAll(schoolId, pager);
-        //limit #{pager.minRow},#{pager.pageSize}
-        System.out.println(total);
-        pager.setRecordTotal(total);
+    public List<SchoolSubject> findSchoolSunjectInfo(Long schoolId/*,Pager pager*/) {
+//        //查询总条数
+//        int total = this.subjectMapper.selectCountByAll(schoolId, pager);
+//        //limit #{pager.minRow},#{pager.pageSize}
+//        System.out.println(total);
+//        pager.setRecordTotal(total);
         // 查询集合
-        List<SchoolSubject> result = this.subjectMapper.selectByScholId(schoolId, pager);
-        if(result.size() > 0){
-            pager.setContent(result);
-        }else{
-            return null;
-        }
-        return pager;
+        List<SchoolSubject> result = this.subjectMapper.selectByScholId(schoolId/*, pager*/);
+        return result;
     }
 
 
