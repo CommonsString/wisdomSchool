@@ -606,7 +606,7 @@ public class SchoolClassController {
         ApiResult apiResult = new ApiResult(); //返回对象
         try{
 //            Long operatorId_ = (Long) request.getSession().getAttribute("adminId");
-            Long operatorId_ = 1L;
+            Long operatorId_ =  (Long) request.getSession().getAttribute("adminId");
             SchoolPeriodClassThetime classThetime = new SchoolPeriodClassThetime();
 //            //填充
             classThetime.setOperatorId(operatorId_);
@@ -711,10 +711,10 @@ public class SchoolClassController {
     })
     @Log(name = "清空年级主任")
     @DeleteMapping ("/updateDirectorDel")
-    public ApiResult updateDirector(Long directorId, Long periodId, String theTime){
+    public ApiResult updateDirector(Long directorId, Long periodId, String theTime, HttpServletRequest request){
         ApiResult apiResult = new ApiResult(); //返回对象
         //            Long adminId = (Long) request.getSession().getAttribute("adminId");
-        Long adminId = 1L;
+        Long adminId = (Long) request.getSession().getAttribute("adminId");
         //填充
         try{
             //日期转换
@@ -745,13 +745,12 @@ public class SchoolClassController {
     @ApiImplicitParam(name = "classId", value = "班级Id", required = true)
     @Log(name = "清空班主任")
     @DeleteMapping ("/updateHeadmasterDel")
-    public ApiResult updateHeadmaster(Long classId){
+    public ApiResult updateHeadmaster(Long classId, HttpServletRequest request){
         ApiResult apiResult = new ApiResult();//返回对象
         //            Long adminId = (Long) request.getSession().getAttribute("adminId");
-        Long adminId = 1L;
+        Long adminId = (Long) request.getSession().getAttribute("adminId");
         try{
             boolean result = this.schoolClassService.updateHeadmaster(classId, adminId);
-            System.out.println(result + " haha ");
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
             }else{

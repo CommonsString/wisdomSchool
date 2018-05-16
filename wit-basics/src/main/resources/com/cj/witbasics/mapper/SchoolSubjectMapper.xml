@@ -248,9 +248,50 @@
     <result column="subject_id" property="subjectId" jdbcType="BIGINT" />
     <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
   </resultMap>
-  <!--返回班级对应科目-->
-  <select id="findSubjectInfo" resultMap="bbMap" parameterType="Long">
+
+  <resultMap id="ssssss" type="com.cj.witcommon.entity.SchoolClassInfo">
+    <id column="class_id" property="classId" jdbcType="BIGINT" />
+    <result property="className" column="class_name" />
+    <result property="classHeadmasterId" column="class_headmaster_id" />
+    <result property="classHeadmaster" column="class_headmaster" />
+    <result property="classNumber" column="class_number" />
+    <result property="classType" column="class_type" />
+    <result property="classLevel" column="class_level" />
+    <result column="class_period_id" property="classPeriodId" jdbcType="BIGINT" />
+    <result column="class_period" property="classPeriod" jdbcType="VARCHAR" />
+    <result column="class_year" property="classYear" jdbcType="TIMESTAMP" />
+    <!--<result column="thetime" property="thetime" jdbcType="TIMESTAMP" />-->
+    <collection property="subject" ofType="com.cj.witcommon.entity.SubjectForTea" select="getSubjectInfoss" column="class_id">
+    </collection>
+  </resultMap>
+
+  <resultMap id="subjectForTeaMaps" type="com.cj.witcommon.entity.SubjectForTea">
+    <result property="adminInfoId" column="admin_info_id" />
+    <result property="fullName" column="full_name" />
+    <result property="subjectId" column="subject_id" />
+    <result property="subjectName" column="subject_name" />
+  </resultMap>
+  <!--通用查询-->
+  <select id="getSubjectInfoss" parameterType="Long" resultMap="subjectForTeaMaps">
     SELECT
+    sb.subject_id, sb.subject_name, ai.admin_info_id, ai.full_name
+    FROM
+    class_subject_info ss
+    LEFT JOIN school_class AS sc
+    ON sc.class_id = ss.class_id
+    LEFT JOIN school_subject AS sb
+    ON ss.subject_id = sb.subject_id
+    LEFT JOIN admin_info AS ai
+    ON ss.admin_info_id = ai.admin_info_id
+    WHERE
+    sc.class_id = #{class_id,jdbcType=INTEGER}
+    AND
+    sc.state != '0'
+    AND
+    ss.state != '0'
+  </select>
+  <!--
+      SELECT
     ss.subject_id, ss.subject_name
     FROM class_subject_info AS cs
     LEFT JOIN school_subject AS ss
@@ -258,6 +299,18 @@
     LEFT JOIN school_class AS sc
     ON sc.class_id = cs.class_id
     WHERE sc.class_id = #{classId,jdbcType=BIGINT}
+
+  -->
+  <!--返回班级对应科目-->
+  <select id="findSubjectInfo" resultMap="ssssss" parameterType="Long">
+    SELECT
+    *
+    FROM
+    school_class AS sc
+    WHERE
+    sc.class_id = #{classId,jdbcType=BIGINT}
+    AND
+    sc.state != '0'
   </select>
 
   <!--返回所有开课信息,根据学校ID-->
@@ -276,7 +329,6 @@
   <select id="findAllSchoolSubjectBySubjectsId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
-
     FROM
     school_subject ss
     WHERE

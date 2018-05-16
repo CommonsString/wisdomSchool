@@ -30,7 +30,7 @@ public interface SchoolExamService {
     /**
      * 返回班级下的科目
      */
-    List findAllSubjectInfo(Long classId);
+    List findAllSubjectInfo(List<Long> classId);
 
 
     /**

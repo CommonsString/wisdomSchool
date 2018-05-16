@@ -65,7 +65,7 @@ public interface SchoolExamMapper {
      */
     int selectCountBySubjectNameAndClassId(@Param("classId") int classId,
                                            @Param("subjectName") String subjectName,
-                                           @Param("examTime") Date examTime);
+                                           @Param("examName") String examName);
 
     /**
      * 批量插入

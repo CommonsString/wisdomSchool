@@ -84,8 +84,6 @@ public class SchoolExamController {
     @ApiOperation(value = "查询班级", notes = "返回成功或失败")
     @Log(name = "查询班级")
     @ApiImplicitParam(name = "param", value = "参数")
-    //测试post
-//    @GetMapping("/findAllClass")
     @PostMapping("/findAllClass")
     public ApiResult findAllUnderGradeClass(
             @ApiParam(name = "param", value = "实体")
@@ -115,11 +113,13 @@ public class SchoolExamController {
      */
     @ApiOperation(value = "查询科目", notes = "返回成功或失败")
     @Log(name = "查询科目")
-    @ApiImplicitParam(name = "classId", value = "班级Id", required = true, dataType = "Long")
-    @GetMapping("/findSubjectInfo")
-    public ApiResult findAllSubjectInfo(Long classId){
+    @ApiImplicitParam(name = "classId", value = "班级Id", required = true)
+//    @GetMapping("/findSubjectInfo")
+    @PostMapping("/findSubjectInfo")
+    public ApiResult findAllSubjectInfo(@RequestBody List<Long> classId){
         ApiResult apiResult = new ApiResult();
         try{
+System.out.println(classId.size() + "　　尺寸 ：");
 //            List result = this.examService.findAllUnderGradeClass(param);
             List result = this.examService.findAllSubjectInfo(classId);
             if(result != null){

@@ -290,7 +290,12 @@
 
   <update id="updateByClassId" parameterType="com.cj.witbasics.entity.SchoolPeriodClassThetime">
     update school_period_class_thetime
-    <set>
+    SET
+    admin_id = null,
+    headmaster = null
+
+
+ <!--   <set>
       <if test="schoolId != null">
         school_id = #{schoolId,jdbcType=BIGINT},
       </if>
@@ -301,10 +306,10 @@
         class_id = #{classId,jdbcType=BIGINT},
       </if>
       <if test="adminId != null">
-        admin_id = #{adminId,jdbcType=BIGINT},
+        admin_id = null, /*#{adminId,jdbcType=BIGINT},*/
       </if>
       <if test="headmaster != null">
-        headmaster = #{headmaster,jdbcType=VARCHAR},
+        headmaster = null, /*#{headmaster,jdbcType=VARCHAR},*/
       </if>
       <if test="thetime != null">
         thetime = #{thetime,jdbcType=DATE},
@@ -324,7 +329,7 @@
       <if test="state != null">
         state = #{state,jdbcType=CHAR},
       </if>
-    </set>
+    </set>-->
     WHERE class_id = #{classId,jdbcType=BIGINT}
   </update>
   
@@ -332,7 +337,10 @@
     select
     *
     from school_period_class_thetime
-    where class_id = #{classId,jdbcType=BIGINT}
+    where
+    class_id = #{classId,jdbcType=BIGINT}
+    AND
+    state != '0'
   </select>
 
   

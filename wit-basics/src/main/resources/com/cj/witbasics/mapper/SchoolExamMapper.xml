@@ -306,7 +306,7 @@
 	AND
 	exam_subject = #{subjectName,jdbcType=VARCHAR}
     AND
-    exam_time = #{examTime,jdbcType=TIMESTAMP}
+    exam_name = #{examName,jdbcType=VARCHAR}
 	limit 1
   </select>
 

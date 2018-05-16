@@ -37,6 +37,7 @@ public interface SchoolClassMapper {
      * @mbggenerated
      */
     int updateByPrimaryKeySelective(SchoolClass record);
+    int updateByPrimaryKeySelective2(SchoolClass record);
 
     /**
      * @mbggenerated
@@ -101,7 +102,7 @@ public interface SchoolClassMapper {
                                                      @Param("pager") Pager pager);
 
     //考试管理，根据学段届次
-    List<Map> selectByByPeriodAndThetimeExam(@Param("periodId") Integer periodId,
+    List<SchoolClass> selectByByPeriodAndThetimeExam(@Param("periodId") Integer periodId,
                                              @Param("thetime") String thetime);
 
     //计数

@@ -13,10 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @Transactional
@@ -62,7 +61,6 @@ public class SchoolExamServiceImpl implements SchoolExamService{
      */
     @Override
     public List<Map> findAllGradeName(Long schoolId) {
-
         List<Map> param = examMapper.findAllPeriodAndGrade(schoolId);
         for(Map map : param){
             System.out.println("学段ID" + map.get("periodId"));
@@ -82,67 +80,35 @@ public class SchoolExamServiceImpl implements SchoolExamService{
     @Override
     @Transactional
     public List findAllUnderGradeClass(List<PeriodAndGrade> param) {
-        List<List<Map>> result = new ArrayList<>();
+        List<SubjectUnit> results = new ArrayList<SubjectUnit>();
         for(PeriodAndGrade temp : param){
-System.out.println(temp.toString());
             String thetime = temp.getThetime();
             thetime += "-7-1";
-            System.out.println(thetime);
-            List<Map> tempResult = this.classMapper.selectByByPeriodAndThetimeExam(temp.getPeriodId(), thetime);
-            result.add(tempResult);
-        }
-        return result;
- /*       //总list
-        List allList = new ArrayList();
-        List<ExamClassInfo> resultList = new ArrayList<ExamClassInfo>();
-        //学段年级
-        for(PeriodAndGrade item : param){
-            //获取学段id
-            Long periodId = item.getPeriodId();
-            //获取学段下的班级
-            List<SchoolClassInfo> periodUnderClass = this.classMapper.selectByPeriodIdNoPager(periodId);
-            //获取年级
-            int gradeAge = StringHandler.getGradeAge(item.getGradeName());
-            //二级筛选
-//            List<ClassInfoPx> resultList = new ArrayList<ClassInfoPx>();
-//            List<ExamClassInfo> resultList = new ArrayList<ExamClassInfo>();
-
-            ExamClassInfo tem = new ExamClassInfo();
-            tem.setPeriodId(periodId);
-            tem.setPeriodName(item.getPeriodName());
-            tem.setGradeId(item.getGradeId());
-            tem.setGradeName(item.getGradeName());
-
-            List<BaseClass> list = new ArrayList<BaseClass>();
-            for(SchoolClassInfo temp : periodUnderClass){
-                SchoolClassInfo classInfo = this.classMapper.findAllClassForYeah(temp, gradeAge);
-                if(classInfo != null){
-                    System.out.println(classInfo.toString());
-                    System.out.println(tem.toString());
-                    //班级信息
-                    BaseClass base = new BaseClass();
-                    base.setClassId(classInfo.getClassId());
-                    base.setClassName(classInfo.getClassName());
-                    base.setClassNumber(classInfo.getClassNumber());
-                    base.setClassYear(classInfo.getClassYear());
-                    list.add(base);
-                    tem.setClassInfo(list);
-//                    ClassInfoPx px = new ClassInfoPx();
-//                    px.setClassId(classInfo.getClassId());
-//                    px.setClassName(classInfo.getClassName());
-//                    px.setClassNumber(classInfo.getClassNumber());
-//                    px.setClassYear(classInfo.getClassYear());
-//                    px.setPeriodId(periodId);
-//                    px.setPeriodName(item.getPeriodName());
-//                    px.setGradeId(item.getGradeId());
-//                    px.setGradeName(item.getGradeName());
-                    //填充
-//                    resultList.add(px);
-                }
+            List<SchoolClass> tempResult = this.classMapper.selectByByPeriodAndThetimeExam(temp.getPeriodId(), thetime);
+            //学段信息
+            SchoolPeriod period = this.periodMapper.selectByPrimaryKey(temp.getPeriodId().longValue());
+            //返回结果封装
+            SubjectUnit unit = new SubjectUnit();
+            unit.setPeriodId(period.getPeriodId());
+            unit.setPeriodName(period.getPeriodName());
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                unit.setThetime(format.parse(thetime));
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-//            allList.add(resultList);
-            resultList.add(tem);
-        }*/
+            List item = new ArrayList();
+            for(SchoolClass sclass : tempResult){
+                SubjectDetail detail = new SubjectDetail();
+                detail.setClassId(sclass.getClassId());
+                detail.setClassName(sclass.getClassName());
+                detail.setClassType(sclass.getClassType());
+                item.add(detail);
+                unit.setClassInfo(item);
+            }
+            results.add(unit);
+        }
+        return results;
     }
 
 
@@ -151,11 +117,16 @@ System.out.println(temp.toString());
      */
     @Override
     @Transactional
-    public List findAllSubjectInfo(Long classId) {
-        List result = this.subjectMapper.findSubjectInfo(classId);
+    public List findAllSubjectInfo(List<Long> classId) {
+        List result = new ArrayList();
+        for(Long id : classId){
+            List<SchoolClassInfo> underPeriodClass = this.subjectMapper.findSubjectInfo(id);
+            for(SchoolClassInfo sc : underPeriodClass){
+                result.add(sc);
+            }
+        }
         return result;
     }
-
 
     /**
      * 查询考试名称
@@ -216,6 +187,7 @@ System.out.println(temp.toString());
 //    @Transactional
     public ApiResult addSchoolExamInfo(ExamParam examInfo, Long adminId) {
 
+        ApiResult result = new ApiResult();
         //父节点ID
         Long parentId = null;
         int flag_a = this.schoolExamParentMapper.selectByExamName(examInfo.getExamName());
@@ -228,10 +200,15 @@ System.out.println(temp.toString());
             //父节点ID
             parentId = schoolExamParent.getExamParentId();
 System.out.println(parentId + "  id");
-            //////////////////////////父节点////////////////////////////+
+            //////////////////////////父节点////////////////////////////
+        }else{
+            log.error("数据已存在");
+            result.setCode(ApiCode.error_duplicated_data);
+            result.setMsg(ApiCode.error_duplicated_data_MSG);
+            return result;
         }
         //===================================================================
-        ApiResult result = new ApiResult();
+
         //插入集合
         List<SchoolExam> examList = new ArrayList<SchoolExam>();
         //获取班级ID,科目ID集合
@@ -248,7 +225,7 @@ System.out.println(parentId + "  id");
                 String examSubject = s.getSubjectName();
                 Date start = examInfo.getExamTime();
                 //根据考试科目,班级ID,查重,增加时间
-                int isCopy = this.examMapper.selectCountBySubjectNameAndClassId(classId, examSubject, start);
+                int isCopy = this.examMapper.selectCountBySubjectNameAndClassId(classId, examSubject, examInfo.getExamName());
                 if(isCopy > 0){
                     //存在记录
                     log.error("数据已存在");
@@ -256,7 +233,6 @@ System.out.println(parentId + "  id");
                     result.setMsg(ApiCode.error_duplicated_data_MSG);
                     return result;
                 }
-
                 //封装结果集合
                 SchoolExam exam = new SchoolExam();
                 exam.setExamTypeName(examInfo.getExamTypeName());

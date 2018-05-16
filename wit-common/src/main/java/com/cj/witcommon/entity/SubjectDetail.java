@@ -17,5 +17,6 @@ public class SubjectDetail {
     private String className;
     private Long subjectId;
     private String subjectName;
+    private String classType;
 
 }

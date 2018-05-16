@@ -86,7 +86,7 @@ public class FindScoreServiceImpl implements FindScoreService {
         }
         //创建工作薄
         XSSFWorkbook workbook = new XSSFWorkbook();
-            //导出信息
+        //导出信息
         try {
             exportExcelUtil.exportExcel(workbook, 0, "成绩导出信息", titles, dataHandler, out);
             workbook.write(out);
@@ -101,7 +101,7 @@ public class FindScoreServiceImpl implements FindScoreService {
      */
     @Override
     public ApiResult findScoreForDifferentRole(HttpServletRequest request) {
-System.out.println("进入逻辑！");
+        System.out.println("进入逻辑！");
         ApiResult result = new ApiResult();
         //获取管理员ID
 //        Long adminId = (Long) request.getSession().getAttribute("adminId");
@@ -110,25 +110,25 @@ System.out.println("进入逻辑！");
 //        Admin admin = null;
         Admin admin = new Admin();
         admin.setId(61L);
-System.out.println(admin.toString());
+        System.out.println(admin.toString());
         //TODO:gg
         //根据角色ID,查询角色
         AdminRole role = new AdminRole();
         role.setId(4);
         role.setType("3");
-System.out.println(role.toString());
+        System.out.println(role.toString());
 //        AdminRole role = null;
         switch (role.getType()){
             //待定
             case "0" :
             case "1" :
             case "2" :
-    System.out.println("各种管理员");
+                System.out.println("各种管理员");
 //                result = allAdmin();
                 break;
 
             case "3" :
-System.out.println("班主任/科目教师/年级主任逻辑");
+                System.out.println("班主任/科目教师/年级主任逻辑");
                 result = caseThree(result, role, admin);
                 break;
             default : break;
@@ -182,7 +182,7 @@ System.out.println("班主任/科目教师/年级主任逻辑");
     private ApiResult caseThree(ApiResult result, AdminRole role, Admin admin){
         //角色类型,获取角色ID
         int id = role.getId();
-System.out.println("角色ID: " + id);
+        System.out.println("角色ID: " + id);
         if(id == 4){        //班主任
             //根据班主任ID,查询对应班科目分数统计
             Long headmasterId = admin.getId();

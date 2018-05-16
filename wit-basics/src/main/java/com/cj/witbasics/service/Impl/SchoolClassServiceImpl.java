@@ -98,6 +98,7 @@ public class SchoolClassServiceImpl implements SchoolClassService{
                 List<SchoolClass> readBaseInfo = ImportExeclUtil.readDateListT(workbook, baseInfo, 2, 0, i);
                 Date createTime = new Date();//创建的时间
                 for(SchoolClass info : readBaseInfo){
+                    System.out.println(info.toString());
                     //参数检查
                     System.out.println(info.toString());
                     int isClassType = this.classTypeMapper.selectByClassType(info.getClassType());
@@ -107,7 +108,8 @@ public class SchoolClassServiceImpl implements SchoolClassService{
                         apiResult.setMsg("班级类型：" + info.getClassPeriod() + "该班级类型不存在，无法导入");
                         return apiResult;
                     }
-                    String isPeriod = this.classMapper.selectInfoByPeriodInfo(info.getClassPeriod());
+                    String isPeriod = this.classMapper.selectInfoByPeriodInfo(info.getClassPeriod().trim());
+
                     if(isPeriod == null){
                         apiResult.setCode(ApiCode.import_failed);
                         apiResult.setData(info);
@@ -119,9 +121,13 @@ public class SchoolClassServiceImpl implements SchoolClassService{
                     int isCopy = this.classMapper.selectCountByClassNumber(info.getClassNumber());
                     System.out.println(isCopy + "是否重复！");
                     System.out.println(isCopy + " ： 存在");
+
                     if(isCopy > 0){
                         System.out.println("班级号：" + isCopy);
                         Long classId = this.classMapper.selectByClassNumber(info.getClassNumber());
+                        SchoolPeriod periodTemp = this.periodMapper.selectPeriodIdByPeriodName(info.getClassPeriod());
+                        Long periodIdTempId = periodTemp.getPeriodId();
+                        info.setClassPeriodId(periodIdTempId.intValue());
                         info.setClassId(classId);
                         //更新班级表
                         this.classMapper.updateByPrimaryKeySelective(info);
@@ -133,7 +139,6 @@ public class SchoolClassServiceImpl implements SchoolClassService{
                         SchoolPeriod period = this.periodMapper.selectByPrimaryKey(info.getClassPeriodId().longValue());
                         //转换届次
                         String classYear = info.getClassYear();
-
 
                         this.classThetimeMapper.updateByClassIdKeySelective(cTime);
 //                        //数据存在,无法导入
@@ -673,8 +678,13 @@ System.out.println("二层数据：" + undesrGradeClass);
         //查重
         System.out.println(classThetime.toString());
         SchoolPeriodClassThetime obj = this.classThetimeMapper.selectByAdminIdUbw(classThetime.getAdminId(), classThetime.getClassId());
-        if(obj == null){
-            //查询班级
+        SchoolPeriodClassThetime temps = this.classThetimeMapper.selectByClassId(classThetime.getClassId());
+
+        if(obj != null){
+            System.out.println("obj哈哈 ：　" + obj.toString());
+        }
+        if(temps == null){ //不存在
+/*            //查询班级
             SchoolClass temp = this.classMapper.selectByPrimaryKey(classThetime.getClassId());
             System.out.println(temp.toString());
             if(temp == null) return false;
@@ -698,15 +708,20 @@ System.out.println("二层数据：" + undesrGradeClass);
                 System.out.println(scClass.toString());
                 int result = this.classMapper.updateByPrimaryKeySelective(scClass);
                 if(result > 0) return true;
-            }
+            }*/
         }else{
             //存在
             System.out.println("数据存在");
+            System.out.println("对象： " + temps.toString());
+            SchoolClass sclass = this.classMapper.selectByPrimaryKey(temps.getClassId());
+            sclass.setClassHeadmasterId(classThetime.getAdminId().intValue());
+            sclass.setClassHeadmaster(classThetime.getHeadmaster());
+            int flag_c = this.classMapper.updateByPrimaryKeySelective2(sclass);
             //更新关联表
-            obj.setAdminId(classThetime.getAdminId());
-            obj.setClassId(classThetime.getClassId());
-            int flag_a = this.classThetimeMapper.updateByClassIdKeySelective(obj);
-            if(flag_a > 0) return true;
+            temps.setAdminId(classThetime.getAdminId());
+            temps.setHeadmaster(classThetime.getHeadmaster());
+            int flag_a = this.classThetimeMapper.updateByClassIdKeySelective(temps);
+            if(flag_a > 0 && flag_c > 0) return true;
         }
         return false;
     }
@@ -797,7 +812,7 @@ System.out.println("二层数据：" + undesrGradeClass);
         temp.setOperatorId(adminId);
         temp.setClassId(classId);
         temp.setUpdateTime(new Date());
-        temp.setState("0");
+        System.out.println(temp.toString());
         int flag_b = this.classThetimeMapper.updateByClassId(temp);
         if(flag_a > 0 && flag_b > 0){
             return true;
@@ -814,7 +829,6 @@ System.out.println("二层数据：" + undesrGradeClass);
     public Pager findHasPowerForHeadmaster(String vague, Pager pager) {
 
         List<Map> result = this.classMapper.findHasPowerForHeadmaster(vague);
-
 
         pager.setRecordTotal(result.size());
         pager.setContent(result);

@@ -252,6 +252,72 @@
     </set>
     where class_id = #{classId,jdbcType=BIGINT}
   </update>
+
+  <update id="updateByPrimaryKeySelective2" parameterType="com.cj.witbasics.entity.SchoolClass" >
+    update school_class
+    <set >
+      <if test="className != null" >
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="classAbbreviation != null" >
+        class_abbreviation = #{classAbbreviation,jdbcType=VARCHAR},
+      </if>
+      <if test="classNumber != null" >
+        class_number = #{classNumber,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=BIGINT},
+      </if>
+      <if test="classCampus != null" >
+        class_campus = #{classCampus,jdbcType=VARCHAR},
+      </if>
+      <if test="classTypeId != null" >
+        class_type_id = #{classTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="classType != null" >
+        class_type = #{classType,jdbcType=VARCHAR},
+      </if>
+      <if test="classLevelId != null" >
+        class_level_id = #{classLevelId,jdbcType=INTEGER},
+      </if>
+      <if test="classLevel != null" >
+        class_level = #{classLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="classYear != null" >
+        class_year = #{classYear,jdbcType=VARCHAR},
+      </if>
+      <if test="classPeriodId != null" >
+        class_period_id = #{classPeriodId,jdbcType=INTEGER},
+      </if>
+      <if test="classPeriod != null" >
+        class_period = #{classPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="classHeadmasterId != null" >
+        class_headmaster_id = #{classHeadmasterId,jdbcType=INTEGER},
+      </if>
+      <if test="classHeadmaster != null" >
+        class_headmaster = #{classHeadmaster,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null" >
+        founder_id = #{founderId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where class_id = #{classId,jdbcType=BIGINT}
+  </update>
+
+
   <update id="updateByPrimaryKey" parameterType="com.cj.witbasics.entity.SchoolClass" >
     update school_class
     set class_name = #{className,jdbcType=VARCHAR},
@@ -275,6 +341,10 @@
     state = #{state,jdbcType=CHAR}
     where class_id = #{classId,jdbcType=BIGINT}
   </update>
+
+
+
+
 
   <!--根据班级号更新-->
   <update id="updateByClassNumberSelective" parameterType="com.cj.witbasics.entity.SchoolClass" >
@@ -678,7 +748,6 @@
     </if>
   </select>
 
-
   <!--查询具有年级主任资质的角色-->
   <resultMap id="sscaxsd" type="java.util.HashMap">
     <result column="id" property="directorId" jdbcType="BIGINT" />
@@ -908,11 +977,15 @@
 
   </select>
 
-
-  <!--考试管理-根据届次学段返回编辑-->
-<select id="selectByByPeriodAndThetimeExam" resultType="java.util.Map">
-    SELECT
+<!--
     IFNULL(sc.class_id, -1) AS class_id, IFNULL(sc.class_name, "空") AS class_name, IFNULL(sc.thetime, "空") AS thetime
+    , IFNULL(sc.class_period, -1) AS class_period, IFNULL(sc.class_period_id, -1) AS class_period_id
+
+-->
+  <!--考试管理-根据届次学段返回编辑-->
+<select id="selectByByPeriodAndThetimeExam" resultMap="BaseResultMap">
+    SELECT
+    *
     FROM
     school_class AS sc
     WHERE
