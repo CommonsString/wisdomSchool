@@ -22,7 +22,6 @@ import java.util.List;
 @SpringBootApplication
 @MapperScan({"com.cj.*.mapper"})
 @ComponentScan(basePackages = {"com.cj"})
-//@EnableWebMvc
 public class WitServerApplication extends WebMvcConfigurerAdapter {
 
 	private static Logger logger = Logger.getLogger(WitServerApplication.class);
@@ -30,22 +29,5 @@ public class WitServerApplication extends WebMvcConfigurerAdapter {
 		SpringApplication.run(WitServerApplication.class, args);
 	}
 
-	//	@Override
-//	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//		super.configureMessageConverters(converters);
-//		//1.需要定义一个convert转换消息的对象;
-//		FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
-//		//2.添加 fastJson 的配置信息,比如：是否要格式化返回的json数据;
-//		FastJsonConfig fastJsonConfig = new FastJsonConfig();
-//		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
-//		//3处理中文乱码问题
-//		List<MediaType> fastMediaTypes = new ArrayList<>();
-//		fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
-//		//4.在convert中添加配置信息.
-//		fastJsonHttpMessageConverter.setSupportedMediaTypes(fastMediaTypes);
-//		fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
-//		//5.将convert添加到converters当中.
-//		converters.add(fastJsonHttpMessageConverter);
-//	}
 
 }

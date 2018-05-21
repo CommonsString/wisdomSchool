@@ -2,19 +2,14 @@ package com.cj.witbasics.controller;
 
 import com.cj.witbasics.entity.PeriodDirectorThetime;
 import com.cj.witbasics.entity.SchoolClass;
-import com.cj.witbasics.entity.SchoolClassType;
 import com.cj.witbasics.entity.SchoolPeriodClassThetime;
 import com.cj.witbasics.service.SchoolClassService;
 import com.cj.witbasics.service.SchoolPeriodService;
 import com.cj.witcommon.aop.Log;
 import com.cj.witcommon.entity.*;
-import com.cj.witcommon.utils.TimeToString;
 import com.cj.witcommon.utils.common.FileUtil;
-import com.cj.witcommon.utils.common.StringHandler;
 import com.cj.witcommon.utils.entity.other.Pager;
 import io.swagger.annotations.*;
-import io.swagger.models.auth.In;
-import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -74,8 +67,7 @@ public class SchoolClassController {
      *  时间：2
      */
     @ApiOperation(value = "模版下载", notes = "返回指定路径内的Excel模版文件")
-    @Log(name = "班级导入模版下载")
-//    @ApiImplicitParam(name = "response", value = "响应流")
+    @Log(name = "班级信息管理 ==> 班级导入模版下载")
     @GetMapping("/downLoadExcel")
     public void downLoadExcel(HttpServletResponse response, HttpServletRequest request){
         //TODO:获取文件名
@@ -96,7 +88,7 @@ public class SchoolClassController {
      *  时间：8
      */
     @ApiOperation("导入班级信息")
-    @Log(name = "导入班级信息")
+    @Log(name = "班级信息管理 ==> 导入班级信息")
     @ApiParam(value = "班级信息导入（选择文件）",required = true)
     @PostMapping("/bathImportInfo")
     public ApiResult bathImportInfo(MultipartFile file){
@@ -129,26 +121,19 @@ public class SchoolClassController {
      *  时间：2 小时
      */
     @ApiOperation(value = "添加班级类型", notes = "返回成功或失败")
-    @Log(name = "添加班级类型")
+    @Log(name = "班级信息管理 ==> 添加班级类型")
     @ApiImplicitParams({
-//            @ApiImplicitParam(name = "schoolId", value = "学校ID", required = true, dataType = "Long"),
-//            @ApiImplicitParam(name = "classTypeName", value = "班级类型名称", dataType = "String")
             @ApiImplicitParam(name = "classType", value = "班级类型名称")
     })
     @PostMapping("/addClassType")
     public ApiResult addClassType(/*Long schoolId, */@RequestBody List<String> classType){
         //TODO:session里面获取学校ID
-        /*String classTypeName*/
         Long schoolId = toLong();
         System.out.println(schoolId + " 学校ID");
-//        for(String type : classType){
-//            System.out.println(type);
-//        }
         ApiResult apiResult = new ApiResult(); //返回对象
         try{
             //根据班级类型名称，查重，Service层判断,返回状态
             boolean result = this.schoolClassService.addClassType(schoolId, classType);
-//            boolean result = false;
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
             }else{
@@ -170,7 +155,7 @@ public class SchoolClassController {
      *  时间：2小时
      */
     @ApiOperation(value = "修改班级类型名称", notes = "返回成功或失败")
-    @Log(name = "修改班级类型名称")
+    @Log(name = "班级信息管理 ==> 修改班级类型名称")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "classTypeId", value = "班级类型Id", required = true, dataType = "int"),
             @ApiImplicitParam(name = "classTypeName", value = "班级类型名称", required = true, dataType = "String"),
@@ -202,14 +187,13 @@ public class SchoolClassController {
      */
     @ApiOperation(value = "删除班级类型", notes = "返回成功或失败")
     @ApiImplicitParam(name = "classTypeId", value = "班级类型Id", required = true)
-    @Log(name = "删除班级类型")
+    @Log(name = "班级信息管理 ==> 删除班级类型")
     @DeleteMapping ("/updateClassTypeDel")
     public ApiResult updateClassTypeDel(Integer classTypeId){
         ApiResult apiResult = new ApiResult(); //返回对象
         try{
             System.out.println(classTypeId + "   班级类型");
             boolean result = this.schoolClassService.updateClassTypeDel(classTypeId);
-//            boolean result = false;
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
             }else{
@@ -230,9 +214,8 @@ public class SchoolClassController {
      *  时间：2 小时
      */
     @ApiOperation(value = "添加班级层次", notes = "返回成功或失败")
-    @Log(name = "添加班级层次")
+    @Log(name = "班级信息管理 ==> 添加班级层次")
     @ApiImplicitParams({
-//            @ApiImplicitParam(name = "schoolId", value = "学校Id", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "classLevel", value = "班级层次名")
     })
     @PostMapping("/addClassLevel")
@@ -242,7 +225,6 @@ public class SchoolClassController {
         Long schoolId = toLong();
         try{
             boolean result = this.schoolClassService.addClassLevel(schoolId, classLevel);
-//            boolean result = false;
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
             }else{
@@ -263,7 +245,7 @@ public class SchoolClassController {
      *  时间：2小时
      */
     @ApiOperation(value = "修改班级层次", notes = "返回成功或失败")
-    @Log(name = "修改班级层次")
+    @Log(name = "班级信息管理 ==> 修改班级层次")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "classLevelId", value = "班级层次Id", required = true, dataType = "int"),
             @ApiImplicitParam(name = "classlevelName", value = "新的班级层次名", required = true, dataType = "String")
@@ -294,7 +276,7 @@ public class SchoolClassController {
      *  时间：2小时
      */
     @ApiOperation(value = "删除班级层次", notes = "返回成功或失败")
-    @Log(name = "删除班级层次")
+    @Log(name = "班级信息管理 ==> 删除班级层次")
     @ApiImplicitParam(name = "classLevelId", value = "班级层次ID", required = true, dataType = "int")
     @DeleteMapping("/deleteClassLevel")
     public ApiResult updateClassLevelDel(Integer classLevelId){
@@ -322,7 +304,7 @@ public class SchoolClassController {
      *  未完成
      */
     @ApiOperation(value = "修改班级信息", notes = "返回成功或失败")
-    @Log(name = "修改班级信息")
+    @Log(name = "班级信息管理 ==> 修改班级信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "classId", value = "班级ID", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "className", value = "班级名称", required = false, dataType = "String"),
@@ -373,7 +355,7 @@ public class SchoolClassController {
      *  //未完成，SQL语句
      */
     @ApiOperation(value = "学段-年级-模糊条件--->查询班级信息", notes = "班级信息集合")
-    @Log(name = "学段-年级-模糊条件--->查询班级信息")
+    @Log(name = "班级信息管理 ==> 学段-年级-模糊条件--->查询班级信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "periodId", value = "学段Id", required = false, dataType = "Long"),
             @ApiImplicitParam(name = "gradeId", value = "年级Id", required = false, dataType = "Long"),
@@ -407,7 +389,7 @@ public class SchoolClassController {
      *  //未完成，SQL语句
      */
     @ApiOperation(value = "学段-届次-模糊条件--->查询班级信息", notes = "班级信息集合")
-    @Log(name = "学段-届次-模糊条件---> 查询班级信息")
+    @Log(name = "班级信息管理 ==> 学段-届次-模糊条件---> 查询班级信息")
     @PostMapping("/findSchoolClassInfoUBW")
     public ApiResult findSchoolClassInfoUBW(@ApiParam(name = "p",value = "查询条件，parameters(periodId=学段Id,thetime=届次,vague=模糊条件) {\n" +
             "\n" +
@@ -418,7 +400,6 @@ public class SchoolClassController {
 
 
         ApiResult apiResult = new ApiResult(); //返回对象
-        //String className, String classHeadmaster, Integer classNumber
         try{
             Map map = p.getParameters();
             Integer periodId = null;
@@ -459,7 +440,7 @@ public class SchoolClassController {
      *  时间：2
      */
     @ApiOperation(value = "查询学段下的年级信息", notes = "成功/失败")
-    @Log(name = "学查询学段下的年级信息")
+    @Log(name = "班级信息管理 ==> 学查询学段下的年级信息")
     @ApiImplicitParam(name = "periodId", value = "学段ID", required = true, dataType = "Long")
     @GetMapping("/findGradeInfo")
     public ApiResult findSchoolGradeInfo(Long periodId){
@@ -489,7 +470,7 @@ public class SchoolClassController {
      *  时间：2
      */
     @ApiOperation(value = "返回学段/班级类型/班级层次", notes = "成功/失败")
-    @Log(name = "返回学段/班级类型/班级层次")
+    @Log(name = "班级信息管理 ==> 返回学段/班级类型/班级层次")
     @ApiImplicitParam(name = "schoolId", value = "学校(校区)ID", required = true, dataType = "Long")
 //    @GetMapping("findLevelTypePeriod")
     public ApiResult findSchoolLevelTypePeriod(Long schoolId){
@@ -515,9 +496,9 @@ public class SchoolClassController {
      *  时间：2
      */
     @ApiOperation(value = "返回班级类型", notes = "成功/失败")
-//    @ApiImplicitParam(name = "schoolId", value = "学校(校区)ID", required = true, dataType = "Long")
     @GetMapping("/findType")
-    public ApiResult findSchoolType(/*Long schoolId*/){
+    @Log(name = "班级信息管理 ==> 返回班级类型")
+    public ApiResult findSchoolType(){
         Long schoolId = toLong();
         System.out.println(schoolId);
         ApiResult apiResult = new ApiResult(); //返回对象
@@ -544,9 +525,9 @@ public class SchoolClassController {
      *  时间：2
      */
     @ApiOperation(value = "返回班级层次", notes = "成功/失败")
-//    @ApiImplicitParam(name = "schoolId", value = "无参数", required = false, dataType = "Long")
     @GetMapping("/findLevel")
-    public ApiResult findSchoolLevel(/*Long schoolId*/){
+    @Log(name = "班级信息管理 ==> 返回班级层次")
+    public ApiResult findSchoolLevel(){
         Long schoolId = toLong();
         System.out.println(schoolId);
         ApiResult apiResult = new ApiResult(); //返回对象
@@ -575,7 +556,7 @@ public class SchoolClassController {
 
     @ApiOperation(value = "返回届次", notes = "成功/失败")
     @ApiImplicitParam(name = "periodId", value = "学段ID", required = true, dataType = "Long")
-    @Log(name = "班级管理 ==> 返回届次")
+    @Log(name = "班级信息管理 ==>返回届次")
     @GetMapping("/findTheTime")
     public ApiResult findTheTime(Long periodId){
         ApiResult apiResult = new ApiResult(); //返回对象
@@ -600,12 +581,11 @@ public class SchoolClassController {
             @ApiImplicitParam(name = "adminId", value = "班主任ID" , required = true),
             @ApiImplicitParam(name = "fullName", value = "班主任名字", required = true)
     })
-    @Log(name = "编辑班主任")
+    @Log(name = "班级信息管理 ==> 返回届次")
     @PutMapping("/updateHeadmaster")
     public ApiResult updateHeadmasterId(Long classId, Long adminId, String fullName, HttpServletRequest request){
         ApiResult apiResult = new ApiResult(); //返回对象
         try{
-//            Long operatorId_ = (Long) request.getSession().getAttribute("adminId");
             Long operatorId_ =  (Long) request.getSession().getAttribute("adminId");
             SchoolPeriodClassThetime classThetime = new SchoolPeriodClassThetime();
 //            //填充
@@ -640,12 +620,11 @@ public class SchoolClassController {
             @ApiImplicitParam(name = "periodId", value = "学段ID" , required = true),
             @ApiImplicitParam(name = "theTime", value = "届次", required = false)
     })
-    @Log(name = "编辑年级主任")
+    @Log(name = "班级信息管理 ==> 编辑年级主任")
     public ApiResult updateDirectorId(Long directorId, Long periodId, String theTime, HttpServletRequest request){
         ApiResult apiResult = new ApiResult(); //返回对象
         try{
-//            Long adminId = (Long) request.getSession().getAttribute("adminId");
-            Long adminId = 1L;
+            Long adminId = (Long) request.getSession().getAttribute("adminId");;
             //填充
             PeriodDirectorThetime param = new PeriodDirectorThetime();
             param.setPeriodId(periodId);
@@ -677,13 +656,11 @@ public class SchoolClassController {
      *  返回：
      */
     @ApiOperation(value = "返回没有班主任的班级", notes = "成功/失败")
-//    @ApiImplicitParam(name = "schoolId", value = "无参数", required = false, dataType = "Long")
-    @Log(name = "返回没有班主任的班级")
+    @Log(name = "班级信息管理 ==> 返回没有班主任的班级")
     @GetMapping("/findClassNoHeadmaster")
     public ApiResult findClassNoHeadmaster(){
         ApiResult apiResult = new ApiResult(); //返回对象
         try{
-//            List result = this.schoolClassService.findSchoolLevelTypePeriod(schoolId);
             List result = this.schoolClassService.findClassNoHeadmaster();
             if(!result.isEmpty()){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, result); //数据的封装
@@ -709,11 +686,10 @@ public class SchoolClassController {
             @ApiImplicitParam(name = "periodId", value = "学段ID" , required = true),
             @ApiImplicitParam(name = "theTime", value = "届次", required = false)
     })
-    @Log(name = "清空年级主任")
+    @Log(name = "班级信息管理 ==> 清空年级主任")
     @DeleteMapping ("/updateDirectorDel")
     public ApiResult updateDirector(Long directorId, Long periodId, String theTime, HttpServletRequest request){
         ApiResult apiResult = new ApiResult(); //返回对象
-        //            Long adminId = (Long) request.getSession().getAttribute("adminId");
         Long adminId = (Long) request.getSession().getAttribute("adminId");
         //填充
         try{
@@ -743,11 +719,10 @@ public class SchoolClassController {
      */
     @ApiOperation(value = "清空班主任", notes = "返回成功或失败")
     @ApiImplicitParam(name = "classId", value = "班级Id", required = true)
-    @Log(name = "清空班主任")
+    @Log(name = "班级信息管理 ==> 清空班主任")
     @DeleteMapping ("/updateHeadmasterDel")
     public ApiResult updateHeadmaster(Long classId, HttpServletRequest request){
         ApiResult apiResult = new ApiResult();//返回对象
-        //            Long adminId = (Long) request.getSession().getAttribute("adminId");
         Long adminId = (Long) request.getSession().getAttribute("adminId");
         try{
             boolean result = this.schoolClassService.updateHeadmaster(classId, adminId);
@@ -770,7 +745,7 @@ public class SchoolClassController {
     /***********************************************************************************************/
 
     @ApiOperation("查询角色为班主任,并显示麾下是否有班级")
-    @Log(name = "查询角色为班主任")
+    @Log(name = "班级信息管理 ==> 查询角色为班主任")
     @GetMapping("/findIsHeadmaster")
     @ApiImplicitParam(name = "vague",value = "班主任名字/编号",required = false)
     public ApiResult findHasPowerForHeadmaster(String vague, Pager pager){
@@ -784,7 +759,7 @@ public class SchoolClassController {
     }
 
     @ApiOperation("查询角色为年级主任,并显示是否分管年级")
-    @Log(name = "查询角色为年级主任")
+    @Log(name = "班级信息管理 ==> 查询角色为年级主任")
     @GetMapping("/findIsDirector")
     @ApiImplicitParam(name = "vague",value = "年级主任名字/编号",required = false)
     public ApiResult findHasPowerForDirector(String vague, Pager pager){
@@ -799,7 +774,7 @@ public class SchoolClassController {
     //////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////
     @ApiOperation(value = "添加班级", notes = "返回成功或失败")
-    @Log(name = "添加班级")
+    @Log(name = "班级信息管理 ==> 添加班级")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "className", value = "班级名称", required = true),
             @ApiImplicitParam(name = "classAbbreviation", value = "班级简称"),
@@ -834,7 +809,7 @@ public class SchoolClassController {
 
 
     @ApiOperation(value = "删除班级", notes = "返回成功或失败")
-    @Log(name = "删除班级")
+    @Log(name = "班级信息管理 ==> 删除班级")
     @ApiImplicitParam(name = "classId", value = "班级ID", required = true)
     @DeleteMapping("/updateClassInfoDel")
     public ApiResult updateClassInfoDel(Long classId, HttpServletRequest request){
@@ -862,7 +837,7 @@ public class SchoolClassController {
      *  时间：2小时
      */
     @ApiOperation(value = "修改班级信息", notes = "返回成功或失败")
-    @Log(name = "修改班级信息")
+    @Log(name = "班级信息管理 ==> 修改班级信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "classId", value = "班级Id", required = true),
             @ApiImplicitParam(name = "className", value = "班级名称"),

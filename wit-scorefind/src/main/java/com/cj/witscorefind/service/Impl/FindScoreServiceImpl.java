@@ -104,20 +104,13 @@ public class FindScoreServiceImpl implements FindScoreService {
         System.out.println("进入逻辑！");
         ApiResult result = new ApiResult();
         //获取管理员ID
-//        Long adminId = (Long) request.getSession().getAttribute("adminId");
+        Long adminId = (Long) request.getSession().getAttribute("adminId");
         //根据管理员角色ID,查询管理员表
         //TODO:GG
-//        Admin admin = null;
-        Admin admin = new Admin();
-        admin.setId(61L);
-        System.out.println(admin.toString());
+        Admin admin = this.scoreMapper.selectAdminInfoById(adminId);
         //TODO:gg
         //根据角色ID,查询角色
-        AdminRole role = new AdminRole();
-        role.setId(4);
-        role.setType("3");
-        System.out.println(role.toString());
-//        AdminRole role = null;
+        AdminRole role = this.scoreMapper.selectAdminRoleByRoleId(admin.getRoleId());
         switch (role.getType()){
             //待定
             case "0" :

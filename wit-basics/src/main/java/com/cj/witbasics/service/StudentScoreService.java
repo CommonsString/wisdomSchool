@@ -1,5 +1,6 @@
 package com.cj.witbasics.service;
 
+import com.cj.witcommon.entity.ApiResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;

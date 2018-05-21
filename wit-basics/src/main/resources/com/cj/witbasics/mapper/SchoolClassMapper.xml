@@ -974,6 +974,15 @@
   </resultMap>
   <!--/查询学段、届次、班级信息 树形结构-->
   <select id="findAllPeriodAndThetimeAndClassBySchoolId" parameterType="java.lang.Long" resultMap="PeriodAndThetime">
+    SELECT
+    sc.class_period_id,sc.class_period,
+    sc.class_year,date_format(sc.thetime,'%Y') AS thetiem,
+    sc.class_id,sc.class_name
+    FROM
+    school_class sc
+    WHERE
+    sc.school_id = #{schoolId}
+
 
   </select>
 
@@ -995,5 +1004,6 @@
     AND
     sc.state != '0'
 </select>
+
 
 </mapper>

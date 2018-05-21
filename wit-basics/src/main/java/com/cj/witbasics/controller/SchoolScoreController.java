@@ -63,9 +63,9 @@ public class SchoolScoreController {
      *  时间：
      */
     @ApiOperation("参数转移")
-    @Log(name = "参数转移")
+    @Log(name = "成绩导入 ===> 参数转移")
     @ApiImplicitParam(name = "params", value = "参数", required = true)
-    @PostMapping("/changeParam")
+//    @PostMapping("/changeParam")
     public void changeParam(@RequestBody Map params){
 
     }
@@ -80,15 +80,14 @@ public class SchoolScoreController {
     @ApiOperation("导入成绩信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "schoolStageId", value = "学期(前端单选)", required = true, paramType = "form"),
-            @ApiImplicitParam(name = "thetime", value = "届次", required = true, paramType = "form"),
-            @ApiImplicitParam(name = "classId", value = "班级ID", required = true, paramType = "form"),
-            @ApiImplicitParam(name = "eaxmId", value = "考试Id", required = true, paramType = "form"),
+            @ApiImplicitParam(name = "thetime", value = "届次", required = false, paramType = "form"),
+//            @ApiImplicitParam(name = "classId", value = "班级ID", required = true, paramType = "form"),
+            @ApiImplicitParam(name = "examParentId", value = "考试父Id", required = false, paramType = "form"),
             @ApiImplicitParam(name = "modelNumber", value = "模版编号：1 ， 2", required = true, paramType = "form")
     })
     @Log(name = "成绩导入 ===> 导入成绩")
     @PostMapping("/bathImportInfo")
-    public ApiResult bathImportScoreInfo(String schoolStageId, String thetime,
-                                        Long classId, Long eaxmId, Integer modelNumber,
+    public ApiResult bathImportScoreInfo(String schoolStageId, String thetime, Long examParentId, Integer modelNumber,
                                         MultipartFile file,  HttpServletRequest request){
         //TODO:获取操作人ID
         Long operatorId = (Long)request.getSession().getAttribute("adminId");
@@ -104,8 +103,8 @@ public class SchoolScoreController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("schoolStageId", schoolStageId);
         params.put("thetime", thetime);
-        params.put("classId", classId);
-        params.put("eaxmId", eaxmId);
+        params.put("examParentId", examParentId);
+        System.out.println("父Id： " + examParentId);
         try{
             //获取文件流
             InputStream in = file.getInputStream();

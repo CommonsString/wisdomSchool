@@ -162,5 +162,6 @@ public interface SchoolClassMapper {
     //查询学段、届次、班级信息 树形结构
     public List<PeriodAndThetime> findAllPeriodAndThetimeAndClassBySchoolId(Long schoolId);
 
+
 }
 

@@ -1029,5 +1029,12 @@
     so.register_number = #{registerNumber}
   </select>
 
+  <select id="selectByRegisterNumber" parameterType="String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from student_osaas
+    where register_number = #{registerNumber,jdbcType=VARCHAR}
+  </select>
+
 
 </mapper>

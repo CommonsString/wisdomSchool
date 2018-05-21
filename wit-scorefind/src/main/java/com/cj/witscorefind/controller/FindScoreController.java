@@ -23,7 +23,7 @@ import java.util.List;
  * 成绩查询类
  *
  */
-@Api(tags = "成绩管理")
+@Api(tags = "成绩查询")
 @RestController
 @RequestMapping("/api/v1/findScore")
 public class FindScoreController {
@@ -40,13 +40,12 @@ public class FindScoreController {
     @ApiOperation("查询成绩统计信息(班主任，年级主任，各类管理员)")
     @ApiParam(value = "无参数",required = false)
     @PostMapping("/bathImportInfo")
-    @Log(name = "查询信息")
-    @ApiImplicitParam(name = "test", value = "测试参数")
-    public ApiResult findScoreForDifferentRole(HttpServletRequest request, String test){
-        Long operatorId = 1L;
+    @Log(name = "成绩查询 ==> 查询信息")
+//    @ApiImplicitParam(name = "test", value = "测试参数")
+    public ApiResult findScoreForDifferentRole(HttpServletRequest request/*, String test*/){
         //返回对象
-        ApiResult apiResult = null;
-        System.out.println("进入： " + test);
+        ApiResult apiResult = new ApiResult();
+//        System.out.println("进入： " + test);
         try{
             //构造对象
             apiResult = this.findService.findScoreForDifferentRole(request);
@@ -66,7 +65,7 @@ public class FindScoreController {
      *  返回：
      */
     @ApiOperation("添加成绩档次")
-    @Log(name = "添加成绩档次")
+    @Log(name = "成绩查询 ==> 添加成绩档次")
     @PostMapping("/updateDirector")
     public ApiResult addGradeLevelInfo(HttpServletRequest request,
                                        @ApiParam(name = "info",
@@ -94,7 +93,7 @@ public class FindScoreController {
      *  返回：
      */
     @ApiOperation(value = "查看分数", notes = "成功/失败")
-    @Log(name = "查看分数")
+    @Log(name = "成绩查询 ==> 查看分数")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "classId", value = "班级Id", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "subjectId", value = "科目ID", required = true, dataType = "Long")
@@ -124,7 +123,7 @@ public class FindScoreController {
      *  返回：
      */
     @ApiOperation(value = "导出信息(选择导出)", notes = "成功/失败")
-    @Log(name = "导出信息")
+    @Log(name = "成绩查询 ==> 导出信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "classIdList", value = "班级ID集合"),
     })

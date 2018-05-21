@@ -64,5 +64,8 @@ public interface StudentOsaasMapper {
     //根据 学籍号 查询 adminId
     public Long findAdminIdByRegisterNumber(String registerNumber);
 
+    //学籍号-班级ID
+    StudentOsaas selectByRegisterNumber(String registerNumber);
+
 
 }

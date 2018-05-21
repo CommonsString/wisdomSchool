@@ -5,10 +5,8 @@ import com.cj.witbasics.entity.SchoolClass;
 import com.cj.witbasics.entity.SchoolPeriodClassThetime;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.utils.entity.other.Pager;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;

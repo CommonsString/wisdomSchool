@@ -1,14 +1,18 @@
 package com.cj.witcommon.utils.excle;
 
+import com.google.gson.Gson;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.xssf.usermodel.*;
 
+import java.beans.PropertyDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +28,26 @@ public class exportExcelUtil {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        exportExcelUtil e = new exportExcelUtil();
-        e.testPOI();
+//        exportExcelUtil e = new exportExcelUtil();
+//        e.testPOI();
+
+        StudentBaseInfo studentBaseInfo = new StudentBaseInfo();
+        studentBaseInfo.setId(1);
+        studentBaseInfo.setName("卡德加");
+        studentBaseInfo.setAge(33);
+
+        try {
+            PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
+            PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(studentBaseInfo);
+            for (int i = 0; i < descriptors.length; i++) {
+                String name = descriptors[i].getName();
+                if (!"class".equals(name)) {
+                    System.out.println(name+":"+ propertyUtilsBean.getNestedProperty(studentBaseInfo, name));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

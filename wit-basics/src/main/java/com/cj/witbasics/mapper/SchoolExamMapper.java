@@ -115,6 +115,13 @@ public interface SchoolExamMapper {
     public List<ExamClassPeriod> findAllSchoolExamThetimeAndSubjectByExamParentIdAndThetime(Map map);
 
 
+    /**
+     */
+    SchoolExam selectByParentIdAndSubjectName(@Param("examParentId") Long examParentId,
+                                              @Param("examSubject") String subjectName,
+                                              @Param("classId") Long classId);
+
+
 
 
 }

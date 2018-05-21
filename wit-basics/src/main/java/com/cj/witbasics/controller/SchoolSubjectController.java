@@ -72,7 +72,6 @@ public class SchoolSubjectController {
             schoolSubject.setSubjectName(subjectName);
             schoolSubject.setOperatorId(adminId);
             apiResult = this.subjectService.addSubjectInfo(request.getSession(), schoolSubject);
-System.out.println(apiResult.toString());
         }catch (Exception e){ //异常处理
             ApiResultUtil.fastResultHandler(apiResult, false,
             ApiCode.error_create_failed, ApiCode.error_unknown_database_operation_MSG, null);
@@ -90,8 +89,8 @@ System.out.println(apiResult.toString());
      */
     @ApiOperation(value = "查询课程信息", notes = "集合")
     @ApiImplicitParams({
-//            @ApiImplicitParam(name = "pager",value = "分页参数，初始页码1，初始条数10，可为空",required = false)
     })
+    @Log(name = "课程管理 ==> 查询课程信息")
     @GetMapping("/findSubjectInfo")
     public ApiResult findSchoolSunjectInfo(/*Pager pager*/){
 
@@ -99,7 +98,6 @@ System.out.println(apiResult.toString());
         ApiResult apiResult = new ApiResult();
         try{
             List<SchoolSubject> result = this.subjectService.findSchoolSunjectInfo(toLong()/*, pager*/);
-//            List result = null;
             if(result != null){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, result); //数据的封装
             }else{
@@ -150,7 +148,6 @@ System.out.println(apiResult.toString());
         ApiResult apiResult = new ApiResult();
         try{
             boolean result = this.subjectService.updateSubjectInfo(schoolSubject);
-//            boolean result = false;
             if(result){
                 ApiResultUtil.fastResultHandler(apiResult, true, null, null, null);
             }else{
@@ -201,7 +198,7 @@ System.out.println(apiResult.toString());
      */
     @ApiOperation("删除课程-物理删除")
     @DeleteMapping("/deleteSubject")
-    @Log(name = "课程 ==> 删除课程")
+    @Log(name = "课程管理 ==> 删除课程")
     @ApiImplicitParam(name = "subjectId",value = "subjectId=课程ID",required = true)
     public ApiResult deleteSubject(Long subjectId){
 
@@ -237,6 +234,7 @@ System.out.println(apiResult.toString());
             @ApiImplicitParam(name = "subjectId", value = "开课ID", required = false, dataType = "Long"),
     })
     @DeleteMapping("/stopSubject")
+    @Log(name = "课程管理 ==> 停课")
     public ApiResult updataStopSubject(Long subjectId){
         //TODO:获取操作员ID
         Long operatorId = 1L;
@@ -266,17 +264,13 @@ System.out.println(apiResult.toString());
             @ApiImplicitParam(name = "subjectList", value = "开课ID集合(选中需要导出的数据行)"),
     })
     @GetMapping("/exportSubjectInfo")
+    @Log(name = "课程管理 ==> 导出信息(选择导出)")
     public void exportSubjectInfo(
             @ApiParam(name = "subjectList")
             @RequestBody List<Long> subjectList, HttpServletResponse response){
         //TODO:获取导出路径
         String savePath = "D:/file/subjectInfoTable.xlsx";
         //TODO:获取输入文件名
-//        String fileName = "subjectInfoTable.xlsx";
-System.out.println("进入！");
-        for(Long val : subjectList){
-            System.out.println(val);
-        }
         this.subjectService.exportSubjectInfo(response, subjectList);
     }
 
@@ -287,6 +281,7 @@ System.out.println("进入！");
      */
     @ApiOperation(value = "导出信息(全部导出)", notes = "成功/失败")
     @GetMapping("/exportSubjectAll")
+    @Log(name = "课程管理 ==> 导出信息(全部导出)")
     public ApiResult exportSubjectInfoAll(HttpServletResponse response){
         //TODO:获取导出路径
         //TODO:获取输入文件名
@@ -310,10 +305,6 @@ System.out.println("进入！");
      */
     @ApiOperation(value = "设置课程右移(班级为基础，选择课程)", notes = "成功/失败")
     @ApiImplicitParams({
-//            @ApiImplicitParam(name = "schoolId", value = "学校ID", required = true, dataType = "Long"),
-//            @ApiImplicitParam(name = "classId",value = "班级Id"),
-//            @ApiImplicitParam(name = "subjectId", value = "课程Id集合")
-
     })
     @Log(name = "课程管理 ==> 设置课程右移(增加)")
     @PostMapping("/SelectSubjectRight")
@@ -323,11 +314,6 @@ System.out.println("进入！");
         //TODO:获取操作员ID
         Long operatorId = 1L;
         ApiResult apiResult = new ApiResult();
-//        System.out.println(params.isEmpty());
-//        List<Integer> a = (List<Integer>)params.get("classId");
-//        for(Integer in : a){
-//            System.out.println(in);
-//        }
 
         try{
             //构造对象
@@ -347,6 +333,7 @@ System.out.println("进入！");
      *  时间：
      */
     @ApiOperation(value = "设置课程左移(班级为基础，移除课程)", notes = "成功/失败")
+    @Log(name = "课程管理 ==> 设置课程左移(班级为基础，移除课程)")
     @PostMapping("/SelectSubjectLeight")
     public ApiResult SelectSubjectAndClassLeight(@RequestBody Map params,
                                                  HttpServletRequest request){

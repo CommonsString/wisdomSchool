@@ -51,7 +51,7 @@ public class SchoolExamController {
      *  时间：6小时
      */
     @ApiOperation(value = "查询届次(考试)", notes = "返回状态")
-    @Log(name = "考试查询 ===> 查询借此")
+    @Log(name = "考试管理 ===> 查询届次")
     @GetMapping("/findGrade")
     public ApiResult findAllGradeName(){
         //获取学校Id
@@ -74,7 +74,6 @@ public class SchoolExamController {
     }
 
 
-
     /**
      *  功能描述：查询选择条件下的所有班级
      *  参数：学校ID，年级ID
@@ -82,7 +81,7 @@ public class SchoolExamController {
      *  时间：8小时
      */
     @ApiOperation(value = "查询班级", notes = "返回成功或失败")
-    @Log(name = "查询班级")
+    @Log(name = "考试管理 ===> 查询班级")
     @ApiImplicitParam(name = "param", value = "参数")
     @PostMapping("/findAllClass")
     public ApiResult findAllUnderGradeClass(
@@ -112,14 +111,13 @@ public class SchoolExamController {
      *  时间：6小时
      */
     @ApiOperation(value = "查询科目", notes = "返回成功或失败")
-    @Log(name = "查询科目")
+    @Log(name = "考试管理 ===> 查询科目")
     @ApiImplicitParam(name = "classId", value = "班级Id", required = true)
 //    @GetMapping("/findSubjectInfo")
     @PostMapping("/findSubjectInfo")
     public ApiResult findAllSubjectInfo(@RequestBody List<Long> classId){
         ApiResult apiResult = new ApiResult();
         try{
-System.out.println(classId.size() + "　　尺寸 ：");
 //            List result = this.examService.findAllUnderGradeClass(param);
             List result = this.examService.findAllSubjectInfo(classId);
             if(result != null){
@@ -151,7 +149,7 @@ System.out.println(classId.size() + "　　尺寸 ：");
      *  时间：16小时
      */
     @ApiOperation(value = "新增考试", notes = "成功/失败")
-    @Log(name = "新增考试")
+    @Log(name = "考试管理 ===> 新增考试")
     @PostMapping("/addExamInfo")
     public ApiResult addSchoolExamInfo(
             @ApiParam(name = "examInfo", value = "params（subjectId=课程ID,subjectName=课程名）")
@@ -177,7 +175,7 @@ System.out.println(classId.size() + "　　尺寸 ：");
      *  时间：10小时
      */
     @ApiOperation(value = "查询考试名称", notes = "返回成功或失败")
-    @Log(name = "查询考试名称")
+    @Log(name = "考试管理 ===> 查询考试名称")
     @GetMapping("/findExamName")
     public ApiResult findExamName(){
         ApiResult apiResult = new ApiResult();
@@ -205,7 +203,7 @@ System.out.println(classId.size() + "　　尺寸 ：");
      *  时间：10小时
      */
     @ApiOperation(value = "查询考试", notes = "返回成功或失败")
-    @Log(name = "查询考试(模糊)")
+    @Log(name = "考试管理 ===> 查询考试")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "examName", value = "考试名称", required = false, dataType = "String"),
             @ApiImplicitParam(name = "vague", value = "模糊条件", required = false, dataType = "String"),
@@ -252,7 +250,7 @@ System.out.println(classId.size() + "　　尺寸 ：");
      * 模糊查询考试集合
      */
     @PostMapping("/findAllSchoolExamParentByParameter")
-    @ApiOperation("查询考试信息（模糊查询）" +
+    @ApiOperation("考试管理 ===> 查询考试信息（模糊查询）" +
             "{\n" +
             "  \"parameter\": \"考\"\n" +
             "}")

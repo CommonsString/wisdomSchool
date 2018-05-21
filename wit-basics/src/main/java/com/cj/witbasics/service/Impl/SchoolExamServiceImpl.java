@@ -63,7 +63,6 @@ public class SchoolExamServiceImpl implements SchoolExamService{
     public List<Map> findAllGradeName(Long schoolId) {
         List<Map> param = examMapper.findAllPeriodAndGrade(schoolId);
         for(Map map : param){
-            System.out.println("学段ID" + map.get("periodId"));
             SchoolPeriod period = this.periodMapper.selectByPrimaryKey((Long)map.get("periodId"));
             map.put("periodName", period.getPeriodName());
         }
@@ -199,7 +198,6 @@ public class SchoolExamServiceImpl implements SchoolExamService{
             schoolExamParentMapper.insertSelective(schoolExamParent);
             //父节点ID
             parentId = schoolExamParent.getExamParentId();
-System.out.println(parentId + "  id");
             //////////////////////////父节点////////////////////////////
         }else{
             log.error("数据已存在");
@@ -240,7 +238,6 @@ System.out.println(parentId + "  id");
                 exam.setExamName(examInfo.getExamName());
                 exam.setSchoolId(toLong());
                 SchoolClass info = classMapper.selectByPrimaryKey(classId.longValue());
-System.out.println(info.toString());
                 //设置届次
                 exam.setThetime(info.getThetime());
                 //设置父节点ID
@@ -258,12 +255,7 @@ System.out.println(info.toString());
         }
         //批量插入
         int success = this.examMapper.insertBatchInfoByU(examList);
-//        for(SchoolExam ss : examList){
-//            System.out.println(ss.toString());
-//        }
         //新增考试父节点信息
-
-
         if(success > 0){
             ApiResultUtil.fastResultHandler(result, true, null, null, null);
         }else{

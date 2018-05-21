@@ -1,9 +1,7 @@
 package com.cj.witbasics.service.Impl;
 
-import com.cj.witbasics.entity.SchoolSubject;
-import com.cj.witbasics.entity.StudentScore;
-import com.cj.witbasics.mapper.SchoolSubjectMapper;
-import com.cj.witbasics.mapper.StudentScoreMapper;
+import com.cj.witbasics.entity.*;
+import com.cj.witbasics.mapper.*;
 import com.cj.witbasics.service.StudentScoreService;
 import com.cj.witcommon.utils.TimeToString;
 import com.cj.witcommon.utils.common.StringHandler;
@@ -39,6 +37,14 @@ public class StudentScoreServiceImpl implements StudentScoreService {
     @Autowired(required = false)
     private SchoolSubjectMapper subjectMapper;
 
+    @Autowired(required = false)
+    private StudentOsaasMapper osaasMapper;
+
+    @Autowired(required = false)
+    private SchoolExamMapper examMapper;
+
+    @Autowired(required = false)
+    private SchoolExamParentMapper examPMapper;
 
     @Value("${school_id}")
     private String schoolId;
@@ -133,17 +139,22 @@ public class StudentScoreServiceImpl implements StudentScoreService {
                 for(int j = 0, len_sub = subList.size(); j < len_sub; j++){ //涉及科目ID,无科目分数
                     //科目名
                     Long subjectId = this.subjectMapper.selectBySubNameReturnId(subList.get(j));
-                    System.out.println("科目ID " + subjectId + "科目名： " + subList.get(j));
+System.out.println("科目ID " + subjectId + "科目名： " + subList.get(j));
                     //科目查重,即存在该科目成绩,无法导入
 //                        System.out.println("科目ID： " + subjectId + " 学籍号" + scoreInfo.get(k).getRegisterNumber());
                     int isCopy = this.scoreMapper.selectByCountScoreId(scoreInfo.get(k).getRegisterNumber(), subjectId);
+                    StudentOsaas info = this.osaasMapper.selectByRegisterNumber(scoreInfo.get(k).getRegisterNumber());
+                    SchoolExam exam = this.examMapper.selectByParentIdAndSubjectName((Long)params.get("examParentId")
+                        , subList.get(j), info.getClassId());
+                    if(exam == null) return false;
 //System.out.println(isCopy > 0 ? "重复数据" : "可以插入");
                     if(isCopy > 0){   //更新
                         //创建分数对象
                         StudentScore stuScore = new StudentScore();
                         stuScore.setSchoolId(toLong());
                         //TODO:前台获取,考试ID
-                        stuScore.setExamId((Long)params.get("eaxmId"));
+                        stuScore.setExamId(exam.getExamId());
+                        stuScore.setExamParentId((Long)params.get("examParentId"));
                         stuScore.setStudentName(scoreInfo.get(k).getStudentName());
                         stuScore.setRegisterNumber(scoreInfo.get(k).getRegisterNumber());
                         //TODO:学期前端单选
@@ -155,19 +166,22 @@ public class StudentScoreServiceImpl implements StudentScoreService {
                         stuScore.setCreateTime(createTime);
                         stuScore.setFounderId(operatorId);
                         //班级ID
-                        stuScore.setClassId((Long)params.get("classId"));
+//                        stuScore.setClassId((Long)params.get("classId"));
+                        stuScore.setClassId(info.getClassId());
                         //设置届次
                         stuScore.setThetime(tempThetime);
                         stuScore.setOperatorId(operatorId);
                         successUpdate = this.scoreMapper.updateByPrimaryBySome(stuScore);
-//                        listScoreUpdate.add(stuScore);
-                        System.out.println(stuScore.toString());
+System.out.println(stuScore.toString());
                     }else{   //插入
                         //创建分数对象
                         StudentScore stuScore = new StudentScore();
                         stuScore.setSchoolId(toLong());
                         //TODO:前台获取,考试ID
-                        stuScore.setExamId((Long)params.get("eaxmId"));
+//                        stuScore.setExamId((Long)params.get("eaxmId"));
+                        if(exam != null) stuScore.setExamId(exam.getExamId());
+//                        SchoolExamParent parent = this.examPMapper.selectByPrimaryKey((Long)params.get("examParentId"));
+                        stuScore.setExamParentId((Long)params.get("examParentId"));
                         stuScore.setStudentName(scoreInfo.get(k).getStudentName());
                         stuScore.setRegisterNumber(scoreInfo.get(k).getRegisterNumber());
                         //TODO:学期前端单选
@@ -179,13 +193,13 @@ public class StudentScoreServiceImpl implements StudentScoreService {
                         //创建时间
                         stuScore.setCreateTime(createTime);
                         stuScore.setFounderId(operatorId);
+
                         //班级ID
-                        stuScore.setClassId((Long)params.get("classId"));
+//                        stuScore.setClassId((Long)params.get("classId"));
+                        stuScore.setClassId(info.getClassId());
                         //设置届次
                         stuScore.setThetime(tempThetime);
-                        stuScore.setOperatorId(operatorId);
-                        System.out.println(stuScore.toString());
-                        System.out.println(stuScore.toString());
+                        stuScore.setFounderId(operatorId);
                         listScoreAdd.add(stuScore);
                     }
                 }
@@ -254,16 +268,24 @@ public class StudentScoreServiceImpl implements StudentScoreService {
                 for(int k = 0; k < subjectName.size(); k++){
                     //科目名
                     Long subjectId = this.subjectMapper.selectBySubNameReturnId(subjectName.get(k));
+                    System.out.println("信息：" + scoreInfo.get(j).toString());
+                    StudentOsaas info = this.osaasMapper.selectByRegisterNumber(scoreInfo.get(j).getRegisterNumber());
+                    System.out.println("学生信息：" + info.toString());
+                    System.out.println("参数：" + (Long)params.get("examParentId") + "  " + subjectName.get(k) + "  " + info.getClassId());
+                    SchoolExam exam = this.examMapper.selectByParentIdAndSubjectName((Long)params.get("examParentId")
+                            , subjectName.get(k), info.getClassId());
                     int isCopy = this.scoreMapper.selectByCountScoreId(scoreInfo.get(j).getRegisterNumber(), subjectId);
+                    if(exam == null) return false;
                     if(isCopy > 0){ //更新
                         //创建分数对象
                         StudentScore stuScore = new StudentScore();
                         stuScore.setSchoolId(toLong());
-                        stuScore.setExamId((Long)params.get("eaxmId"));
+                        stuScore.setExamParentId((Long)params.get("examParentId"));
                         stuScore.setStudentName(scoreInfo.get(j).getStudentName());
                         stuScore.setRegisterNumber(scoreInfo.get(j).getRegisterNumber());
                         stuScore.setSchoolStageId((String)params.get("schoolStageId"));
                         stuScore.setSchoolSubjectId(subjectId);
+                        stuScore.setExamId(exam.getExamId());
                         //提取总分
                         System.out.println("科目ID " + subjectId + "科目名： " + subjectName.get(k) + "科目分数： " + subjectScore.get(k));
                         stuScore.setScore(subjectScore.get(k));
@@ -272,7 +294,7 @@ public class StudentScoreServiceImpl implements StudentScoreService {
                         stuScore.setFounderId(operatorId);
                         System.out.println("班级ID：" + (Long)params.get("classId"));
                         //班级ID
-                        stuScore.setClassId((Long)params.get("classId"));
+                        stuScore.setClassId(info.getClassId());
                         //设置届次
                         stuScore.setThetime(tempThetime);
                         stuScore.setOperatorId(operatorId);
@@ -281,7 +303,8 @@ public class StudentScoreServiceImpl implements StudentScoreService {
                         //创建分数对象
                         StudentScore stuScore = new StudentScore();
                         stuScore.setSchoolId(toLong());
-                        stuScore.setExamId((Long)params.get("eaxmId"));
+                        //考试ID
+                        stuScore.setExamId(exam.getExamId());
                         stuScore.setStudentName(scoreInfo.get(j).getStudentName());
                         stuScore.setRegisterNumber(scoreInfo.get(j).getRegisterNumber());
                         stuScore.setSchoolStageId((String)params.get("schoolStageId"));
@@ -294,7 +317,7 @@ public class StudentScoreServiceImpl implements StudentScoreService {
                         stuScore.setFounderId(operatorId);
                         //班级ID
                         System.out.println("班级ID：" + (Long)params.get("classId"));
-                        stuScore.setClassId((Long)params.get("classId"));
+                        stuScore.setClassId(info.getClassId());
                         //设置届次
                         stuScore.setThetime(tempThetime);
                         stuScore.setOperatorId(operatorId);
@@ -312,7 +335,6 @@ public class StudentScoreServiceImpl implements StudentScoreService {
         return false;
     }
     ////////////////////////////////////模版二 /////////////////////////////////////
-
 
 
 }

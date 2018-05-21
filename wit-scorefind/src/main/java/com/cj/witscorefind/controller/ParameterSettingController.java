@@ -7,6 +7,8 @@ import com.cj.witcommon.entity.ApiCode;
 import com.cj.witcommon.entity.ApiResult;
 import com.cj.witcommon.utils.entity.other.Pager;
 import com.cj.witscorefind.service.ParameterSettingService;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +44,8 @@ public class ParameterSettingController {
                                    @ApiParam(name = "schoolExamGrades",value = "档次设置信息",required = true)
                                    @RequestBody List<SchoolExamGrade> schoolExamGrades){
 
+//        Gson gson = new Gson();
+//        List<SchoolExamGrade> schoolExamGrades = gson.fromJson(s, new TypeToken<List<SchoolExamGrade>>() {}.getType());
         int i = parameterSettingService.addExamGrade(schoolExamGrades,session);
 
         ApiResult apiResult = new ApiResult();

@@ -334,13 +334,13 @@
 
   <!--批量插入-->
   <insert id="insertBathInfo" parameterType="com.cj.witbasics.entity.StudentScore" >
-    insert into student_score (school_id, exam_id,
+    insert into student_score (school_id, exam_id ,exam_parent_id,
     student_name, register_number, school_stage_id, thetime, class_id,
     school_subject_id, score,
     founder_id, create_time, operator_id)
     values 
     <foreach collection="list" item="score" separator=",">
-      (#{score.schoolId,jdbcType=BIGINT}, #{score.examId,jdbcType=BIGINT},
+      (#{score.schoolId,jdbcType=BIGINT}, #{score.examId,jdbcType=BIGINT},#{score.examParentId,jdbcType=BIGINT},
       #{score.studentName,jdbcType=VARCHAR}, #{score.registerNumber,jdbcType=VARCHAR}, #{score.schoolStageId,jdbcType=VARCHAR},
       #{score.thetime,jdbcType=TIMESTAMP}, #{score.classId,jdbcType=BIGINT},
       #{score.schoolSubjectId,jdbcType=BIGINT}, #{score.score,jdbcType=DECIMAL},
@@ -540,7 +540,39 @@
       state = #{state,jdbcType=CHAR}
     where score_id = #{scoreId,jdbcType=BIGINT}
   </update>
-  
-  
+
+
+
+  <resultMap id="adminMap" type="com.cj.witbasics.entity.Admin" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="role_id" property="roleId" jdbcType="BIGINT" />
+    <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+    <result column="admin_pass" property="adminPass" jdbcType="VARCHAR" />
+    <result column="salt_val" property="saltVal" jdbcType="VARCHAR" />
+    <result column="admin_type" property="adminType" jdbcType="CHAR" />
+    <result column="admin_state" property="adminState" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectAdminInfoById" parameterType="Long" resultMap="adminMap">
+    select
+    *
+    from admin
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <resultMap id="roleMap" type="com.cj.witbasics.entity.AdminRole" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectAdminRoleByRoleId" parameterType="Long" resultMap="roleMap">
+    select
+    *
+    from admin_role
+    where id = #{roleId,jdbcType=INTEGER}
+  </select>
   
 </mapper>

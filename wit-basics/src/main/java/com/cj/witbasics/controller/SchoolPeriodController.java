@@ -60,11 +60,9 @@ public class SchoolPeriodController {
      *  未完成
      */
     @ApiOperation(value = "查询学段信息(渲染)", notes = "成功/失败")
-    @Log(name = "查询学段信息")
-//    @ApiImplicitParam(name = "schoolId", value = "学校(校区)ID", required = true,dataType = "Long")
+    @Log(name = "学段管理 ==> 查询学段信息")
     @GetMapping("/findInfo")
-    public ApiResult findSchoolPeriodInfo(/*Long schoolId*/){
-System.out.println("schoolId============>>"+schoolId);
+    public ApiResult findSchoolPeriodInfo(){
         //TODO:session中获取学校id,就无需传参数
         ApiResult apiResult = new ApiResult(); //返回对象
         try{
@@ -89,7 +87,7 @@ System.out.println("schoolId============>>"+schoolId);
      *  返回：成功/失败
      */
     @ApiOperation(value = "修改年级", notes = "成功/失败")
-    @Log(name = "修改年级")
+    @Log(name = "学段管理 ==> 修改年级")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "gradeId", value = "年级ID", required = true, dataType = "Long"),
          @ApiImplicitParam(name = "gradeName", value = "新的年级名称", required = true, dataType = "String"),
@@ -121,7 +119,7 @@ System.out.println("schoolId============>>"+schoolId);
      *  返回：成功/失败
      */
     @ApiOperation(value = "年级删除", notes = "成功/失败")
-    @Log(name = "年级删除")
+    @Log(name = "学段管理 ==> 年级删除")
     @ApiImplicitParam(name = "gradeId", value = "年级ID", required = true, dataType = "Long")
 //    @DeleteMapping("updateGradeDel")
     public ApiResult updateSchoolGradeDel(Long gradeId){
@@ -180,19 +178,18 @@ System.out.println("schoolId============>>"+schoolId);
      */
     @ApiOperation(value = "学段/年级添加", notes = "返回状态")
     @PostMapping("/addPeriodInfo")
+    @Log(name = "学段管理 ==> 学段/年级添加")
     public ApiResult addSchoolPeriodInfo(
         @ApiParam(name = "period",value = "periodName:学段名称---," +
                 "periodAge:入学年龄---,periodSystem:学制---,state:状态,---addGradeName:年级名称列表",required = true)
         @RequestBody SchoolPeriodInfo period, HttpServletRequest request) {
         ApiResult apiResult = new ApiResult(); //返回对象
-System.out.println(period.toString());
         try{
             //TODO:获取创建人信息：创建人ID， 创建时间
             Long operatorId = (Long)request.getSession().getAttribute("adminId");
             Long schoolId = toLong();
             period.setSchoolId(schoolId);
             apiResult = this.periodService.addSchoolPeriodInfo(period, period.getAddGradeName(), operatorId);
-System.out.println(apiResult.toString());
         }catch (Exception e){ //异常处理
             apiResult.setCode(ApiCode.error_create_failed);
             apiResult.setMsg(ApiCode.error_unknown_database_operation_MSG);
@@ -213,12 +210,12 @@ System.out.println(apiResult.toString());
      */
     @ApiOperation(value = "删除学段", notes = "返回状态")
     @ApiImplicitParam(name = "periodId", value = "学段信息表Id", required = true, dataType = "Long")
+    @Log(name = "学段管理 ==> 删除学段")
     @DeleteMapping("/updatePeriodInfoDel")
     public ApiResult updateSchoolPeriodInfoDel(HttpServletRequest request, Long periodId){
         ApiResult apiResult = new ApiResult(); //返回对象
         //TODO:获取操作员ID
         Long operatorId = (Long)request.getSession().getAttribute("adminId");
-//        Long operatorId = (Long)request.getSession().getAttribute("operatorId");
         try{
             boolean result = this.periodService.updatePartInfoDel(periodId, operatorId);
             if(result){
@@ -245,16 +242,12 @@ System.out.println(apiResult.toString());
      */
     @ApiOperation(value = "根据学段信息Id列表(List)(批量删除)", notes = "返回状态")
     @ApiImplicitParam(name = "periodList", value = "学段信息表Id集合", required = true, dataType = "List")
+    @Log(name = "学段管理 ==> 根据学段信息Id列表(List)(批量删除)")
     @DeleteMapping("/updateBathPartInfoDel")
-    public ApiResult updateBathPartInfoDel(HttpServletRequest request,
-                                           /*@ApiParam(name = "periodList", value = "学段信息表Id集合", required = true)
-                                                   @RequestParam(value = "periodList")*/
-                                                   List<Long> periodList){
+    public ApiResult updateBathPartInfoDel(HttpServletRequest request, List<Long> periodList){
         ApiResult apiResult = new ApiResult(); //返回对象
         //测试数据
         //TODO:获取操作员ID
-//        Long operatorId = (Long)request.getSession().getAttribute("operatorId");
-System.out.println("数据： " + periodList);
         Long operatorId = (Long)request.getSession().getAttribute("adminId");
         try{
             boolean result = this.periodService.updateBathPartInfoDel(periodList, operatorId);
@@ -280,21 +273,15 @@ System.out.println("数据： " + periodList);
      *  时间：2
      */
     @ApiOperation(value = "修改学段下的年级名称", notes = "返回状态")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "periodId", value = "学段Id", required = true, dataType = "Long"),
-//            @ApiImplicitParam(name = "gradeId", value = "年级ID", required = true, dataType = "String"),
-//            @ApiImplicitParam(name = "gradeName", value = "年级名称(新的名字)", required = true, dataType = "String")
-//    })
     @PutMapping("/updatePartInfo")
+    @Log(name = "学段管理 ==> 修改学段下的年级名称")
     public ApiResult updatePartInfo(
             @ApiParam(name = "info", value = "periodId:学段ID, gradeList:年级信息{gradeId:年级ID, gradeName:年级名称}")
             @RequestBody SchoolPeriodInfo info){
         ApiResult apiResult = new ApiResult(); //返回对象
         System.out.println(info.toString());
         try{
-            //periodId, gradeId, gradeName
             boolean result = this.periodService.updatePartInfo(info);
-//            boolean result = false;
             if(result){
                 apiResult.setCode(ApiCode.SUCCESS); //状态码
                 apiResult.setMsg(ApiCode.SUCCESS_MSG);

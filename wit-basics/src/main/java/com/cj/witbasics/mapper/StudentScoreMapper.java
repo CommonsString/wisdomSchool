@@ -1,8 +1,6 @@
 package com.cj.witbasics.mapper;
 
-import com.cj.witbasics.entity.ClassSubjectInfo;
-import com.cj.witbasics.entity.PeriodDirectorThetime;
-import com.cj.witbasics.entity.StudentScore;
+import com.cj.witbasics.entity.*;
 import com.cj.witcommon.entity.ClassGradeInfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -92,5 +90,16 @@ public interface StudentScoreMapper {
      * 更新
      */
     int updateByPrimaryBySome(StudentScore record);
+
+
+    /**
+     * 根据ID,查询管理员
+     */
+    Admin selectAdminInfoById(Long adminId);
+
+    /**
+     * 根据角色Id，查询角色类
+     */
+    AdminRole selectAdminRoleByRoleId(Long roleId);
 
 }

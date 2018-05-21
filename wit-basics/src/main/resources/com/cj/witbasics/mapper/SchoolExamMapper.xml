@@ -393,7 +393,7 @@
       </when>
     </choose>
     GROUP BY
-    exam_type_name
+    exam_name
   </select>
 
   <!--根据届次查询考试集合-->
@@ -461,7 +461,6 @@
     sc.class_period_id = #{classPeriodId}
     AND
     sc.class_type_id = #{classTypeId}
-
   </select>
 
   <resultMap id="SchoolExamThetimeAndSubjectByExamParentIdAndThetime" type="com.cj.witcommon.entity.ExamClassPeriod">
@@ -494,7 +493,19 @@
     AND
     sc.class_type_id = #{classTypeId}
     GROUP BY se.exam_subject
+  </select>
 
+
+  <select id="selectByParentIdAndSubjectName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from school_exam
+    where
+    exam_parent_id = #{examParentId,jdbcType=BIGINT}
+    AND
+    exam_subject = #{examSubject,jdbcType=VARCHAR}
+    AND
+    class_id = #{classId,jdbcType=INTEGER}
   </select>
 
 </mapper>
